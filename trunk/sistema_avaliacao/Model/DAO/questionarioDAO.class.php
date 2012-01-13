@@ -22,9 +22,7 @@ class questionarioDAO{
 	* @since 11/01/2012
 	* adiciona um novo questionario no bd
 	**/
-	public function add($questionario) {
-		$questionario = new questionario();
-		
+	public function add(questionario $questionario) {
 		$descricao = $questionario->getDescricao();
 		$instrumento_id = $questionario->getInstrumento_id();
 		
@@ -72,6 +70,9 @@ class questionarioDAO{
 		$questionario = new questionario();
 		
 		//faz o select e busca o registro no banco
+		$sql = "SELECT * from ".$this->table." WHERE id = ".$id;
+		
+		//percorre o resultset e pega o registro
 		
 		//seta as propriedades do objeto
 		

@@ -6,7 +6,6 @@
 
 //define qual página chamar de acordo com a action
 
-//bla bla bla
 /**
  * @name questionarioController
  * @author Fabio Baía
@@ -23,29 +22,6 @@ class questionarioController {
 
 
 	/**
-	 * @name sem_nome
-	 * @author Fabio Baía
-	 * @since 12/01/2012
-	 * função que trata os dados recebidos via get ???
-	 **/
-	function sem_nome() {
-		if(isset($_GET["action"])){
-			$this->action = $_GET["action"];
-		}
-
-		if($this->action == ""){
-			$this->page = $this->default_page;
-
-		}
-		if($this->action == "new"){
-			$this->page = "new_questionario.php";
-		}
-		if($this->action == "edit"){
-			$this->page = "edit_questionario.php";
-		}
-	}
-
-	/**
 	 * @name control
 	 * @author Fabio Baía
 	 * @since 12/01/2012
@@ -58,12 +34,22 @@ class questionarioController {
 		}
 
 		if($this->action == "new"){
-			
-			$this->add();
+			//redireciona para pagina de cadastro
+			//como vou tentar fazer tudo em uma view só a action definira quais partes da view devem ser mostradas
 		}
 		if($this->action == "edit"){
-			//$this->page = "edit_questionario.php";
-			$this->update();
+			//se for edicao pega o id do questionario que será editado
+			if(isset($_POST["id"])){
+				$id = $_POST["id"];
+			}
+						
+			$this->questionarioDAO = new questionarioDAO();
+			$this->questionario = $this->questionarioDAO->get($id);
+			
+			$this->prepareSession($this->questionario);
+			$this->page = "questionario.php";
+			$this->redirectTo($this->page);
+			
 		}
 	}
 
@@ -117,7 +103,9 @@ class questionarioController {
 	 * @since 12/01/2012
 	 * função que lança dados na sessão
 	 **/
-	public function prepareSession($param) {
+	public function prepareSession(string $nome, questionario $questionario) {
+		//prepara a sessao
+		//seta valores na sessao
 		;
 	}
 
