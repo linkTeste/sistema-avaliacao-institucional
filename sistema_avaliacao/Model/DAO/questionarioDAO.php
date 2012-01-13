@@ -1,7 +1,14 @@
 <?php
+/**
+* @name questionarioDAO
+* @author Fabio Baía
+* @since 12/01/2012
+* DAO do questionario
+*/
 class questionarioDAO{
 	private $table = "questionario";
 	private $db;
+	private $UNSAVED_ID = 0;
 	
 	//construtor
 	function __construct(){
@@ -35,9 +42,25 @@ class questionarioDAO{
 		
 	}
 	
-	//update
-	//persiste
+	//persiste	
+	/**
+	* @name persiste
+	* @author Fabio Baía
+	* @since 12/01/2012
+	* função que persiste um objeto no banco, criando um novo objeto ou atualizando quando necessario
+	**/
+	public function persiste(questionario $questionario) {
+		$id = $questionario->getId();
+		
+		if($questionario->getId() == $this->UNSAVED_ID){
+			$this->add($questionario);
+		}else{
+			$this->update($questionario);
+		}
+	}
 	//remove
+	
+	
 	//obtem
 	/**
 	* @name get
@@ -55,8 +78,11 @@ class questionarioDAO{
 		//return o objeto - unique result
 		return $questionario;
 	}
+	
+	
 	//list
 	
+	//connect
 	function connect(){
 		//conexao aqui
 	}
@@ -94,16 +120,18 @@ class questionarioDAO{
 		}
 	}
 	
-	
+	//update
 	/**
 	* @name update
 	* @author Fabio Baía
 	* @since 11/01/2012
 	* insert a description here
 	**/
-	public function update($param) {
-		;
+	public function update(questionario $questionario) {
+	
+		//update table-x set ...;
 	}
+	
 	
 	
 }

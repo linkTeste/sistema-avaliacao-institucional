@@ -11,7 +11,7 @@
  * @name questionarioController
  * @author Fabio Baía
  * @since 12/01/2012
- * insert a description here
+ * controller do questionario
  */
 class questionarioController {
 	private $action;
@@ -23,12 +23,12 @@ class questionarioController {
 
 
 	/**
-	 * @name get
+	 * @name sem_nome
 	 * @author Fabio Baía
 	 * @since 12/01/2012
-	 * função que trata os dados recebidos via get
+	 * função que trata os dados recebidos via get ???
 	 **/
-	function get() {
+	function sem_nome() {
 		if(isset($_GET["action"])){
 			$this->action = $_GET["action"];
 		}
@@ -37,8 +37,8 @@ class questionarioController {
 			$this->page = $this->default_page;
 
 		}
-		if($this->action == "add"){
-			$this->page = "add_questionario.php";
+		if($this->action == "new"){
+			$this->page = "new_questionario.php";
 		}
 		if($this->action == "edit"){
 			$this->page = "edit_questionario.php";
@@ -46,21 +46,19 @@ class questionarioController {
 	}
 
 	/**
-	 * @name post
+	 * @name control
 	 * @author Fabio Baía
 	 * @since 12/01/2012
-	 * função que trata os dados recebidos via post
+	 * função que verifica a action e direciona para a action específica
 	 **/
-	public function post() {
-		$id;
-		$descricao;
-		$instrumento_id;
-
+	public function control() {
+		//fazer o tratamento aqui da codificacao utf-8, iso, etc
 		if(isset($_POST["action"])){
 			$this->action = $_POST["action"];
 		}
 
-		if($this->action == "add"){
+		if($this->action == "new"){
+			
 			$this->add();
 		}
 		if($this->action == "edit"){
@@ -70,22 +68,30 @@ class questionarioController {
 	}
 
 	/**
-	 * @name add
+	 * @name save
 	 * @author Fabio Baía
 	 * @since 12/01/2012
-	 * função responsavel por cadastrar um novo questionario
+	 * função responsavel por cadastrar/atualizar um questionario
 	 **/
-	public function add() {
+	public function save() {
+		$id;
+		$descricao;
+		$instrumento_id;
+		
 		if(isset($_POST["id"])){
-			$id = $_POST["id"];
+			if($_POST["id"] == ""){
+				$id = 0;
+			}else{
+				$id = $_POST["id"];
+			}
 		}
 			
 		if(isset($_POST["description"])){
-			$id = $_POST["description"];
+			$descricao = $_POST["description"];
 		}
 			
 		if(isset($_POST["instrumento_id"])){
-			$id = $_POST["instrumento_id"];
+			$instrumento_id = $_POST["instrumento_id"];
 		}
 			
 		$this->questionario = new questionario();
@@ -104,16 +110,7 @@ class questionarioController {
 		$this->redirectTo($this->page);
 	}
 
-	/**
-	 * @name update
-	 * @author Fabio Baía
-	 * @since 12/01/2012
-	 * função responsável por atualizar um questionario existente
-	 **/
-	public function update($param) {
-		;
-	}
-
+	
 	/**
 	 * @name prepareSession
 	 * @author Fabio Baía
