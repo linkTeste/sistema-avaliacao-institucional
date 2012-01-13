@@ -10,8 +10,9 @@
  * @name questionarioController
  * @author Fabio Baía
  * @since 12/01/2012
- * controller do questionario
- */
+ * controller do questionario - responsável por tratar as requisições via get, post ou session.
+ * Controla o fluxo da aplicação definindo qual página chamar de acordo com a action recebida.
+ **/
 class questionarioController {
 	private $action;
 	private $page;
@@ -22,12 +23,12 @@ class questionarioController {
 
 
 	/**
-	 * @name control
+	 * @name questionarioController
 	 * @author Fabio Baía
 	 * @since 12/01/2012
 	 * função que verifica a action e direciona para a action específica
 	 **/
-	public function control() {
+	public function questionarioController() {
 		//fazer o tratamento aqui da codificacao utf-8, iso, etc
 		if(isset($_POST["action"])){
 			$this->action = $_POST["action"];
