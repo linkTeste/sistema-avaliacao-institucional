@@ -31,7 +31,7 @@
 			$quest_inst = $registro["instrumento_id"];
 		}
 		?>
-    		<form action="questionarioController?action=new" id="form-questionario" method="post">
+    		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
         	<label for="input-name">Nome do questionário:</label><br />
             <input type="text" name="input-name" value="<?php echo $quest_nome ?>"/><br /><br /><br />
             <label for="select-instrumento">Instrumento:</label><br />
@@ -71,7 +71,7 @@
     <div id="content">
     <br />
     	
-        <span class="btn-novo-grande"><a href="adm_questionario.php?action=add"  title="Novo Questionário">Novo Questionário</a></span>
+        <span class="btn-novo-grande"><a href="../Controller/questionarioController.php?action=new"  title="Novo Questionário">Novo Questionário</a></span>
         <h3>Questionários Cadastrados</h3>
         
         <div id="questionarios">

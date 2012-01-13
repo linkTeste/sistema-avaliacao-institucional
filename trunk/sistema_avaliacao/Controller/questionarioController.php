@@ -21,6 +21,7 @@ class questionarioController {
 	private $questionario;
 	private $questionarioDAO;
 
+	
 
 	/**
 	 * @name questionarioController
@@ -33,9 +34,14 @@ class questionarioController {
 		if(isset($_POST["action"])){
 			$this->action = $_POST["action"];
 		}
+		
+		if(isset($_GET["action"])){
+			$this->action = $_GET["action"];
+		}
 
 		if($this->action == "new"){
 			//redireciona para pagina de cadastro
+			echo "aqui eu coloco um avariável na sessão indicando q é pra mostrar o form de cadastro";
 			//como vou tentar fazer tudo em uma view só a action definira quais partes da view devem ser mostradas
 		}
 		if($this->action == "edit"){
