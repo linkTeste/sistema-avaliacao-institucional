@@ -56,7 +56,32 @@ class questionarioDAO{
 			$this->update($questionario);
 		}
 	}
+	
 	//remove
+	/**
+	* @name remove
+	* @author Fabio Baía
+	* @since 12/01/2012 23:59:32
+	* insert a description here
+	**/
+	public function remove($param) {
+		;
+	}
+	
+	//list
+	/**
+	* @name listar
+	* @author Fabio Baía
+	* @since 13/01/2012 00:00:35
+	* insert a description here
+	**/
+	public function listar($param) {
+		$lista;
+		
+		//terminar depois
+		return $lista;
+	}
+	
 	
 	
 	//obtem
