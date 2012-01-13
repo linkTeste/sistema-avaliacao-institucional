@@ -84,43 +84,18 @@ class questionarioDAO{
 	//list
 	
 	//connect
-	function connect(){
-		//conexao aqui
-	}
 	
 	/**
-	 * @name insert
-	 * @author Fabio Baía
-	 * @since 11/01/2012
-	 * @param unknown_type $table
-	 * @param unknown_type $values
-	 * Método para inserção de questionarios no bd
-	 */	
-	public function insert($table, $values)
-	{
-		//pegar o objeto
-		$this->conn();
-		/*** snarg the field names from the first array member ***/
-		$fieldnames = array_keys($values[0]);
-		/*** now build the query ***/
-		$size = sizeof($fieldnames);
-		$i = 1;
-		$sql = "INSERT INTO $table";
-		/*** set the field names ***/
-		$fields = '( ' . implode(' ,', $fieldnames) . ' )';
-		/*** set the placeholders ***/
-		$bound = '(:' . implode(', :', $fieldnames) . ' )';
-		/*** put the query together ***/
-		$sql .= $fields.' VALUES '.$bound;
-	
-		/*** prepare and execute ***/
-		$stmt = $this->db->prepare($sql);
-		foreach($values as $vals)
-		{
-			$stmt->execute($vals);
-		}
+	* @name connect
+	* @author Fabio Baía
+	* @since 12/01/2012
+	* funçãopara conexao com o banco de dados
+	**/
+	public function connect($param) {
+		;
 	}
 	
+		
 	//update
 	/**
 	* @name update
