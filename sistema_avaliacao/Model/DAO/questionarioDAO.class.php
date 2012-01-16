@@ -111,6 +111,18 @@ class questionarioDAO{
 
 
 	//list
+	/**
+	* @name listAll
+	* @author Fabio Baía
+	* @since 16/01/2012 16:54:43
+	* Lista todo os questionários do banco
+	**/
+	public function listAll($param) {
+		$list_questioanario;
+		
+		$sql = "SELECT * FROM ".$this->table;
+		
+	}
 
 	//connect
 

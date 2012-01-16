@@ -1,3 +1,15 @@
+<?php
+ session_start();
+ if(isset($_SESSION["action"])){
+ 	if($_SESSION["action"] == "new"){
+ 		echo "na sessao ".$_SESSION["action"];
+ 		$new = true;
+ 	}
+ 	if($_SESSION["action"] == "edit"){
+ 		$edit = true;
+ 	}
+ }
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -13,15 +25,16 @@
 </head>
 
 <body>
-<?php if(($add == true) || $edit == true){	?>
+<?php if(($new == true) || $edit == true){	?>
 <div id="blackout"></div>
 <?php } ?>
 	
 <div id="wrapper" class="container">
-<?php if(($add == true) || $edit == true){	?>
+<?php if(($new == true) || $edit == true){	?>
     <div id="box">
     	<div id="box_inside">
         <?php
+        /*
 		$questionario = $crud->dbSelect("questionario", "id", $id); 
 		$quest_nome;
 		$quest_inst;
@@ -30,6 +43,7 @@
 			$quest_nome = $registro["descricao"];
 			$quest_inst = $registro["instrumento_id"];
 		}
+		*/
 		?>
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
         	<label for="input-name">Nome do questionário:</label><br />
