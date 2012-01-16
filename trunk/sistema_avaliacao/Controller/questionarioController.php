@@ -7,8 +7,8 @@
 //define qual página chamar de acordo com a action
 
 //incluir aqui as classes que serao usadas
-require_once "../Model/Bean/questionario.class.php";
-require_once "../Model/DAO/questionarioDAO.class.php";
+require "../Model/Bean/questionario.class.php";
+require "../Model/DAO/questionarioDAO.class.php";
 
 /**
  * @name questionarioController
@@ -71,6 +71,11 @@ require_once "../Model/DAO/questionarioDAO.class.php";
 			redirectTo($page);
 			
 		}
+		if($action == "save"){
+			
+			save();
+				
+		}
 	}
 
 	/**
@@ -106,14 +111,16 @@ require_once "../Model/DAO/questionarioDAO.class.php";
 		$questionario->setInstrumento_id($instrumento_id);
 			
 		$questionarioDAO = new questionarioDAO();
-		$status = $questionarioDAO->add($questionario);
+		$status = $questionarioDAO->persiste($questionario);
 			
 		if($status = true){
 			//cadastrado com sucesso
-			$page = "listar_questionario.php";
+			//exibir alguma mensagem aqui
 		}
 			
-		$redirectTo($page);
+		prepareSession($questionario, $action);
+		$page = "questionario.php";
+		redirectTo($page);
 	}
 
 	
