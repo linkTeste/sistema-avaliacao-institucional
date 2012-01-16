@@ -9,6 +9,9 @@
  		$edit = true;
  	}
  }
+ 
+ require '../Model/DAO/questionarioDAO.class.php';
+ $questionarioDAO = new questionarioDAO();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -98,8 +101,7 @@
                     <th>Opções</th>
                 </tr>
                 <?php
-					$result = $crud->dbSelect("questionario");
-		
+					$result = $questionarioDAO->listAll();
 					foreach ($result as $registro) {
 						echo "<tr>";
                 		echo "<td>".$registro["id"]."</td>";

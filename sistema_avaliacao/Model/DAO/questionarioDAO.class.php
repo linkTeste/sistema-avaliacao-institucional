@@ -11,7 +11,8 @@ class questionarioDAO{
 	private $UNSAVED_ID = 0;
 	
 	//database
-	private $dsn = "mysql:host=mysql01-farm26.kinghost.net;port=3606;dbname=faculdadeunica05";
+	private $host = "mysql01-farm26.kinghost.net";
+	private $db_name = "faculdadeunica05";
 	private $user = "faculdadeunica05";
 	private $password = "avaliacaounicampo159";
 
@@ -117,11 +118,12 @@ class questionarioDAO{
 	* @since 16/01/2012 16:54:43
 	* Lista todo os questionários do banco
 	**/
-	public function listAll($param) {
-		$list_questioanario;
+	public function listAll() {
 		
 		$sql = "SELECT * FROM ".$this->table;
+		$list_questionario = $this->pdo->query($sql)->fetchAll();
 		
+		return $list_questionario;
 	}
 
 	//connect
@@ -132,8 +134,8 @@ class questionarioDAO{
 	 * @since 12/01/2012
 	 * funçãopara conexao com o banco de dados
 	 **/
-	public function connect($param) {
-		$this->pdo = new PDO($this->dsn, $this->user, $this->password);
+	public function connect() {
+		$this->pdo = new PDO("mysql:host=$this->host;dbname=$this->db_name", $this->user, $this->password);
 	}
 
 
