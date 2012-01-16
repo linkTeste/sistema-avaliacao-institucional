@@ -6,6 +6,10 @@
 
 //define qual página chamar de acordo com a action
 
+//incluir aqui as classes que serao usadas
+require_once "../Model/Bean/questionario.class.php";
+require_once "../Model/DAO/questionarioDAO.class.php";
+
 /**
  * @name questionarioController
  * @author Fabio Baía
@@ -13,15 +17,17 @@
  * controller do questionario - responsável por tratar as requisições via get, post ou session.
  * Controla o fluxo da aplicação definindo qual página chamar de acordo com a action recebida.
  **/
-class questionarioController {
-	private $action;
-	private $page;
-	private $default_page = "home.php";
+//class questionarioController {
+	$action;
+	$page;
+	
+	$default_page = "home.php";
 
-	private $questionario;
-	private $questionarioDAO;
+	$questionario;
+	$questionarioDAO;
 
 	
+	questionarioController();
 
 	/**
 	 * @name questionarioController
@@ -29,33 +35,40 @@ class questionarioController {
 	 * @since 12/01/2012
 	 * função que verifica a action e direciona para a action específica
 	 **/
-	public function questionarioController() {
+	function questionarioController() {
 		//fazer o tratamento aqui da codificacao utf-8, iso, etc
 		if(isset($_POST["action"])){
-			$this->action = $_POST["action"];
+			$action = $_POST["action"];
 		}
 		
 		if(isset($_GET["action"])){
-			$this->action = $_GET["action"];
+			$action = $_GET["action"];
 		}
 
-		if($this->action == "new"){
+		if($action == "new"){
 			//redireciona para pagina de cadastro
-			echo "aqui eu coloco um avariável na sessão indicando q é pra mostrar o form de cadastro";
+			//echo "aqui eu coloco um avariável na sessão indicando q é pra mostrar o form de cadastro";
+			
 			//como vou tentar fazer tudo em uma view só a action definira quais partes da view devem ser mostradas
+			
+			$questionario = new questionario();
+			
+			prepareSession($questionario, $action);
+			$page = "questionario.php";
+			redirectTo($page);
 		}
-		if($this->action == "edit"){
+		if($action == "edit"){
 			//se for edicao pega o id do questionario que será editado
 			if(isset($_POST["id"])){
 				$id = $_POST["id"];
 			}
 						
-			$this->questionarioDAO = new questionarioDAO();
-			$this->questionario = $this->questionarioDAO->get($id);
+			$questionarioDAO = new questionarioDAO();
+			$questionario = $questionarioDAO->get($id);
 			
-			$this->prepareSession($this->questionario);
-			$this->page = "questionario.php";
-			$this->redirectTo($this->page);
+			prepareSession($questionario, $action);
+			$page = "questionario.php";
+			redirectTo($page);
 			
 		}
 	}
@@ -66,7 +79,7 @@ class questionarioController {
 	 * @since 12/01/2012
 	 * função responsavel por cadastrar/atualizar um questionario
 	 **/
-	public function save() {
+	function save() {
 		$id;
 		$descricao;
 		$instrumento_id;
@@ -87,20 +100,20 @@ class questionarioController {
 			$instrumento_id = $_POST["instrumento_id"];
 		}
 			
-		$this->questionario = new questionario();
-		$this->questionario->setId($id);
-		$this->questionario->setDescricao($descricao);
-		$this->questionario->setInstrumento_id($instrumento_id);
+		$questionario = new questionario();
+		$questionario->setId($id);
+		$questionario->setDescricao($descricao);
+		$questionario->setInstrumento_id($instrumento_id);
 			
-		$this->questionarioDAO = new questionarioDAO();
-		$status = $this->questionarioDAO->add($questionario);
+		$questionarioDAO = new questionarioDAO();
+		$status = $questionarioDAO->add($questionario);
 			
 		if($status = true){
 			//cadastrado com sucesso
-			$this->page = "listar_questionario.php";
+			$page = "listar_questionario.php";
 		}
 			
-		$this->redirectTo($this->page);
+		$redirectTo($page);
 	}
 
 	
@@ -110,11 +123,14 @@ class questionarioController {
 	 * @since 12/01/2012
 	 * função que lança dados na sessão
 	 **/
-	public function prepareSession(string $nome, questionario $questionario) {
+	function prepareSession(questionario $questionario, $action) {
 		//prepara a sessao
 		//seta valores na sessao
-		;
-	}
+		session_start();
+		
+		$_SESSION["action"] = $action;
+		$_SESSION["questionario"] = $questionario;
+		}
 
 	/**
 	 * @name redirectTo
@@ -122,12 +138,13 @@ class questionarioController {
 	 * @since 12/01/2012
 	 * função que redireciona pra uma pagina específica
 	 **/
-	public function redirectTo($url) {
-		header($url);
+	function redirectTo($page) {
+		$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
+		header("Location: ".$url_base.$page);
 	}
 
 
-}
+//}
 
 
-
+?>
