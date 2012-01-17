@@ -1,35 +1,46 @@
-<?php
- session_start();
- if(isset($_SESSION["action"])){
- 	if($_SESSION["action"] == "new"){
- 		echo "na sessao ".$_SESSION["action"];
- 		$new = true;
- 	}
- 	if($_SESSION["action"] == "edit"){
- 		$edit = true;
- 	}
- }
- 
- require '../Model/DAO/questionarioDAO.class.php';
- $questionarioDAO = new questionarioDAO();
+Ôªø<?php
+if (!isset($_SESSION)) {
+	session_start();
+}
+
+if(isset($_SESSION["action"])){
+	if($_SESSION["action"] == "new"){
+		//echo "na sessao ".$_SESSION["action"];
+		$new = true;
+	}
+	if($_SESSION["action"] == "edit"){
+		$edit = true;
+	}
+}
+
+require '../Model/DAO/questionarioDAO.class.php';
+$questionarioDAO = new questionarioDAO();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Sistema de AvaliaÁ„o Institucional - P·gina Inicial</title>
+<title>Sistema de Avalia√ß√£o Institucional - P√°gina Inicial</title>
 <link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
-<link href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth' rel='stylesheet' type='text/css' />
+<link
+	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
+	rel='stylesheet' type='text/css' />
 
 </head>
 
 <body>
+
+
 <?php if(($new == true) || $edit == true){	?>
-<div id="blackout"></div>
+	<div id="blackout"></div>
+	
+	
+	
+	
 <?php } ?>
 	
 <div id="wrapper" class="container">
@@ -49,13 +60,13 @@
 		*/
 		?>
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
-        	<label for="input-name">Nome do question·rio:</label><br />
+        	<label for="input-name">Nome do question√°rio:</label><br />
             <input type="text" name="description" value="<?php echo $quest_nome ?>"/><br /><br /><br />
             <label for="instrumento">Instrumento:</label><br />
             <select name="instrumento">
             	<option value="1">Instrumento 1 - Auno avalia professor</option>
                 <option value="2">Instrumento 2 - Aluno avalia curso</option>
-                <option value="3">Instrumento 3 - Funcion·rio avalia InstituiÁ„o</option>
+                <option value="3">Instrumento 3 - Funcion√°rio avalia Institui√ß√£o</option>
                 <option value="4">Instrumento 4 - Professor avalia ...</option>
                 <option value="5">Instrumento 5 - Coordenador avalia ...</option>
             </select><br /><br />
@@ -72,7 +83,7 @@
      <!--<div id="box">
     	<div id="box_inside">
     		<form action="adm_questionario.php" method="post">
-        	<label for="textarea-question">Texto da quest„o:</label><br />
+        	<label for="textarea-question">Texto da quest√£o:</label><br />
             <textarea id="textarea-question" name="textarea-question"></textarea>
         	
             <button class="btn-default float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
@@ -88,8 +99,8 @@
     <div id="content">
     <br />
     	
-        <span class="btn-novo-grande"><a href="../Controller/questionarioController.php?action=new"  title="Novo Question·rio">Novo Question·rio</a></span>
-        <h3>Question·rios Cadastrados</h3>
+        <span class="btn-novo-grande"><a href="../Controller/questionarioController.php?action=new"  title="Novo Question√°rio">Novo Question√°rio</a></span>
+        <h3>Question√°rios Cadastrados</h3>
         
         <div id="questionarios">
         	<table>
@@ -98,7 +109,7 @@
                     <th>Nome</th>
                     <th>Inst.</th>
                     <th>Criado em</th>
-                    <th>OpÁıes</th>
+                    <th>Op√ß√µes</th>
                 </tr>
                 <?php
 					$result = $questionarioDAO->listAll();

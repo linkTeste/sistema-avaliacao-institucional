@@ -118,9 +118,16 @@ class questionarioDAO{
 	* @since 16/01/2012 16:54:43
 	* Lista todo os questionários do banco
 	**/
-	public function listAll() {
+	public function listAll($ordem = null) {
+		if($ordem == "desc" || $order == null){
+			$order = " ORDER BY id DESC";
+		}
+		if($ordem == "asc"){
+			$order = " ORDER BY id ASC";
+		}
+		
 		//$list_questionario = array();
-		$sql = "SELECT * FROM ".$this->table;
+		$sql = "SELECT * FROM ".$this->table.$order;
 		$list_questionario = $this->pdo->query($sql)->fetchAll();
 		
 		return $list_questionario;
