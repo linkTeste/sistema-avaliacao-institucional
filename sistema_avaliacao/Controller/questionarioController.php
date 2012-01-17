@@ -71,10 +71,8 @@ require "../Model/DAO/questionarioDAO.class.php";
 			redirectTo($page);
 			
 		}
-		if($action == "save"){
-			
-			save();
-				
+		if($action == "save"){			
+			save();				
 		}
 	}
 
@@ -101,8 +99,8 @@ require "../Model/DAO/questionarioDAO.class.php";
 			$descricao = $_POST["description"];
 		}
 			
-		if(isset($_POST["instrumento_id"])){
-			$instrumento_id = $_POST["instrumento_id"];
+		if(isset($_POST["instrumento"])){
+			$instrumento_id = $_POST["instrumento"];
 		}
 			
 		$questionario = new questionario();
@@ -112,13 +110,14 @@ require "../Model/DAO/questionarioDAO.class.php";
 			
 		$questionarioDAO = new questionarioDAO();
 		$status = $questionarioDAO->persiste($questionario);
-			
+		$mensagem;	
 		if($status = true){
 			//cadastrado com sucesso
 			//exibir alguma mensagem aqui
+			$mensagem = "Cadastrado com Sucesso!";
 		}
 			
-		prepareSession($questionario, $action);
+		prepareSession($questionario, $action, $mensagem);
 		$page = "questionario.php";
 		redirectTo($page);
 	}
@@ -130,13 +129,14 @@ require "../Model/DAO/questionarioDAO.class.php";
 	 * @since 12/01/2012
 	 * função que lança dados na sessão
 	 **/
-	function prepareSession(questionario $questionario, $action) {
+	function prepareSession(questionario $questionario, $action, $mensagem = null) {
 		//prepara a sessao
 		//seta valores na sessao
 		session_start();
 		
 		$_SESSION["action"] = $action;
 		$_SESSION["questionario"] = $questionario;
+		$_SESSION["mensagem"] = $mensagem;
 		}
 
 	/**
