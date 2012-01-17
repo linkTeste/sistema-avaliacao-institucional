@@ -19,10 +19,10 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Sistema de Avaliação Institucional - Página Inicial</title>
-<link href="blueprint/ie.css" rel="stylesheet" type="text/css" />
-<link href="blueprint/screen.css" rel="stylesheet" type="text/css" />
-<link href="scrollbar.css" rel="stylesheet" type="text/css" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
+<link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
+<link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 <link href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth' rel='stylesheet' type='text/css' />
 
 </head>
@@ -50,9 +50,9 @@
 		?>
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
         	<label for="input-name">Nome do questionário:</label><br />
-            <input type="text" name="input-name" value="<?php echo $quest_nome ?>"/><br /><br /><br />
-            <label for="select-instrumento">Instrumento:</label><br />
-            <select name="select-instrumento">
+            <input type="text" name="description" value="<?php echo $quest_nome ?>"/><br /><br /><br />
+            <label for="instrumento">Instrumento:</label><br />
+            <select name="instrumento">
             	<option value="1">Instrumento 1 - Auno avalia professor</option>
                 <option value="2">Instrumento 2 - Aluno avalia curso</option>
                 <option value="3">Instrumento 3 - Funcionário avalia Instituição</option>
@@ -107,7 +107,8 @@
                 		echo "<td>".$registro["id"]."</td>";
 						echo "<td>".$registro["descricao"]."</td>";
 						echo "<td>".$registro["instrumento_id"]."</td>";
-						echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
+						//echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
+						echo "<td>".$registro["data_criacao"]."</td>";
 						echo "<td><a href='adm_questionario.php?action=edit&id=".$registro["id"]."'>Editar</a></td>";
 						echo "<td><a href='adm_questionario.php?action=delete&id=".$registro["id"]."'>Excluir</a></td>";
 						echo "</tr>";

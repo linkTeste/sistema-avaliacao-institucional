@@ -31,8 +31,8 @@ class questionarioDAO{
 	public function add(questionario $questionario) {
 		$descricao = $questionario->getDescricao();
 		$instrumento_id = $questionario->getInstrumento_id();
-
-		$stmt = $pdo->prepare("INSERT INTO ".$this->table." (descricao, instrumento_id) VALUES (:descricao, :instrumento_id)");
+		
+		$stmt = $this->pdo->prepare("INSERT INTO ".$this->table." (descricao, instrumento_id) VALUES (:descricao, :instrumento_id)");
 
 		// Fazendo o binding
 		$stmt->bindParam(":descricao", $descricao, PDO::PARAM_STR, 128);
@@ -119,7 +119,7 @@ class questionarioDAO{
 	* Lista todo os questionários do banco
 	**/
 	public function listAll() {
-		
+		//$list_questionario = array();
 		$sql = "SELECT * FROM ".$this->table;
 		$list_questionario = $this->pdo->query($sql)->fetchAll();
 		
