@@ -1,5 +1,7 @@
 <?php
-
+if (!isset($_SESSION)) {
+	session_start();
+}
 //pega os paramentros via get, post , sessao
 
 //trabalha com os beans e DAOS
@@ -132,11 +134,12 @@ require "../Model/DAO/questionarioDAO.class.php";
 	function prepareSession(questionario $questionario, $action, $mensagem = null) {
 		//prepara a sessao
 		//seta valores na sessao
-		session_start();
+		//session_start();
 		
 		$_SESSION["action"] = $action;
 		$_SESSION["questionario"] = $questionario;
 		$_SESSION["mensagem"] = $mensagem;
+		
 		}
 
 	/**
