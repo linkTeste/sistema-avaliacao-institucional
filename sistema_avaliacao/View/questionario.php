@@ -1,4 +1,10 @@
 ﻿<?php
+
+//obs: os requires devem vir antes da sessao
+require '../Model/Bean/questionario.class.php';
+require '../Model/DAO/questionarioDAO.class.php';
+require '../Utils/functions.php';
+
 if (!isset($_SESSION)) {
 	session_start();
 }
@@ -13,7 +19,7 @@ if(isset($_SESSION["action"])){
 	}
 }
 
-require '../Model/DAO/questionarioDAO.class.php';
+
 $questionarioDAO = new questionarioDAO();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -35,11 +41,15 @@ $questionarioDAO = new questionarioDAO();
 <body>
 
 
+
+
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
 	
 	
 	
+	
+		
 	
 <?php } ?>
 	
@@ -48,20 +58,23 @@ $questionarioDAO = new questionarioDAO();
     <div id="box">
     	<div id="box_inside">
         <?php
-        /*
-		$questionario = $crud->dbSelect("questionario", "id", $id); 
-		$quest_nome;
-		$quest_inst;
-		
-		foreach ($questionario as $registro) {
-			$quest_nome = $registro["descricao"];
-			$quest_inst = $registro["instrumento_id"];
-		}
-		*/
+		$descricao = "";
+      	if($edit == true){
+      	
+      		if(isset($_SESSION["questionario"])){
+        	//$questionario = new questionario;
+        	$questionario = $_SESSION["questionario"];
+        	//debug
+        	//print_r($questionario);
+        	$id = $questionario->getId();
+        	$descricao = $questionario->getDescricao();
+        }
+      	}
 		?>
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
         	<label for="input-name">Nome do questionário:</label><br />
-            <input type="text" name="description" value="<?php echo $quest_nome ?>"/><br /><br /><br />
+        	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
+            <input type="text" name="description" value="<?php echo $descricao; ?>"/><br /><br /><br />
             <label for="instrumento">Instrumento:</label><br />
             <select name="instrumento">
             	<option value="1">Instrumento 1 - Auno avalia professor</option>
@@ -118,10 +131,10 @@ $questionarioDAO = new questionarioDAO();
                 		echo "<td>".$registro["id"]."</td>";
 						echo "<td>".$registro["descricao"]."</td>";
 						echo "<td>".$registro["instrumento_id"]."</td>";
-						//echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
-						echo "<td>".$registro["data_criacao"]."</td>";
-						echo "<td><a href='adm_questionario.php?action=edit&id=".$registro["id"]."'>Editar</a></td>";
-						echo "<td><a href='adm_questionario.php?action=delete&id=".$registro["id"]."'>Excluir</a></td>";
+						echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
+						//echo "<td>".$registro["data_criacao"]."</td>";
+						echo "<td><a href='../Controller/questionarioController.php?action=edit&id=".$registro["id"]."'>Editar</a></td>";
+						echo "<td><a href='../Controller/questionarioController.php?action=delete&id=".$registro["id"]."'>Excluir</a></td>";
 						echo "</tr>";
 						
 						//print_r($registro);
