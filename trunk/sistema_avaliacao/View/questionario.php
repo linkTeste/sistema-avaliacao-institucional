@@ -39,17 +39,8 @@ $questionarioDAO = new questionarioDAO();
 </head>
 
 <body>
-
-
-
-
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
-	
-	
-	
-	
-		
 	
 <?php } ?>
 	
