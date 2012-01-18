@@ -31,12 +31,14 @@ class questionarioDAO{
 	public function add(questionario $questionario) {
 		$descricao = $questionario->getDescricao();
 		$instrumento_id = $questionario->getInstrumento_id();
+		$data_criacao = date('Y-m-d H:i:s');
 		
-		$stmt = $this->pdo->prepare("INSERT INTO ".$this->table." (descricao, instrumento_id) VALUES (:descricao, :instrumento_id)");
+		$stmt = $this->pdo->prepare("INSERT INTO ".$this->table." (descricao, instrumento_id, data_criacao) VALUES (:descricao, :instrumento_id, :data_criacao)");
 
 		// Fazendo o binding
 		$stmt->bindParam(":descricao", $descricao, PDO::PARAM_STR, 128);
 		$stmt->bindParam(":instrumento_id", $instrumento_id, PDO::PARAM_INT);
+		$stmt->bindParam(":data_criacao", $data_criacao, PDO::PARAM_INT);
 
 		// Executando a SQL com os valores definidos com binding
 		$consultou = $stmt->execute();
@@ -69,8 +71,17 @@ class questionarioDAO{
 	 * @since 12/01/2012 23:59:32
 	 * insert a description here
 	 **/
-	public function remove($param) {
-		;
+	public function remove($id) {
+		$where = " WHERE id = ".$id;
+		$sql = "DELETE FROM ".$this->table.$where;
+		$result = $this->pdo;
+		$result->beginTransaction();
+		if ($result->exec($sql)){
+			$result->commit();
+		}else{
+			$result->rollBack();
+		}		
+		
 	}
 
 	//list
@@ -97,16 +108,29 @@ class questionarioDAO{
 	 * obtem um questionario do banco baseado em um id
 	 **/
 	public function get($id) {
+		$where = " WHERE id = ".$id;
 		$questionario = new questionario();
 
 		//faz o select e busca o registro no banco
-		$sql = "SELECT * from ".$this->table." WHERE id = ".$id;
+		$sql = "SELECT id, descricao, instrumento_id FROM ".$this->table.$where;
 
 		//percorre o resultset e pega o registro
-
-		//seta as propriedades do objeto
-
-		//return o objeto - unique result
+		$result = $this->pdo->query($sql)->fetch();
+// 		$questionario = $this->pdo->query($sql)->fetchObject(questionario);
+		
+		
+		$descricao;
+		$instrumento_id;
+		//
+		
+		$id = $result["id"];
+		$descricao = $result["descricao"];
+		$instrumento_id = $result["instrumento_id"];
+			
+		$questionario->setId($id);
+		$questionario->setDescricao($descricao);
+		$questionario->setInstrumento_id($instrumento_id);
+		
 		return $questionario;
 	}
 
@@ -158,11 +182,11 @@ class questionarioDAO{
 		$descricao = $questionario->getDescricao();
 		$instrumento_id = $questionario->getInstrumento_id();
 		
-		$stmt = $this->pdo->prepare("UPDATE ".$this->table." SET descricao = ".$descricao.",
-		instrumento_id = ".$instrumento_id." WHERE id = :id");
+		$stmt = $this->pdo->prepare("UPDATE ".$this->table." SET descricao = :descricao,
+		instrumento_id = :instrumento_id WHERE id = :id");
 		
 		// Fazendo o binding
-		$stmt->bindParam(":id", $id);
+		$stmt->bindParam(":id", $id, PDO::PARAM_INT);
 		$stmt->bindParam(":descricao", $descricao, PDO::PARAM_STR, 128);
 		$stmt->bindParam(":instrumento_id", $instrumento_id, PDO::PARAM_INT);
 		

@@ -61,17 +61,36 @@ require "../Model/DAO/questionarioDAO.class.php";
 		}
 		if($action == "edit"){
 			//se for edicao pega o id do questionario que será editado
-			if(isset($_POST["id"])){
-				$id = $_POST["id"];
+			if(isset($_GET["id"])){
+				$id = $_GET["id"];
 			}
 						
 			$questionarioDAO = new questionarioDAO();
 			$questionario = $questionarioDAO->get($id);
 			
+			//debug
+			//print_r($questionario);
+			
 			prepareSession($questionario, $action);
 			$page = "questionario.php";
 			redirectTo($page);
 			
+		}
+		if($action == "delete"){
+			//se for edicao pega o id do questionario que será excluido
+			if(isset($_GET["id"])){
+				$id = $_GET["id"];
+			}
+		
+			$questionarioDAO = new questionarioDAO();
+			$questionarioDAO->remove($id);
+			$questionario = new questionario();
+				
+			//definir uma mensagem aqui pra enviar pro cliente				
+			prepareSession($questionario, $action);
+			$page = "questionario.php";
+			redirectTo($page);
+				
 		}
 		if($action == "save"){			
 			save();				
