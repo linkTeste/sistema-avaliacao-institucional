@@ -75,7 +75,9 @@ $questionarioDAO = new questionarioDAO();
                 <option value="5">Instrumento 5 - Coordenador avalia ...</option>
             </select><br /><br />
             
+                    
         	
+        	<hr />
             <button class="btn-default float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
             
             <button class="btn-default float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
@@ -132,24 +134,7 @@ $questionarioDAO = new questionarioDAO();
 					}
 		
 				?>
-                <!--<tr>
-                	<td>1</td>
-                    <td>Questionario de Filosofia</td>
-                    <td>15/02/2011</td>
-                    <td>editar | excluir</td>
-                </tr>
-                <tr>
-                	<td>1</td>
-                    <td>Questionario de Filosofia</td>
-                    <td>15/02/2011</td>
-                    <td>editar | excluir</td>
-                </tr>
-                <tr>
-                	<td>1</td>
-                    <td>Questionario de Filosofia</td>
-                    <td>15/02/2011</td>
-                    <td>editar | excluir</td>
-                </tr>-->
+               
             
             </table>
         

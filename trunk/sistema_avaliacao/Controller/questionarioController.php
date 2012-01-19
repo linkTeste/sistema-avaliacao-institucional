@@ -56,7 +56,7 @@ require "../Model/DAO/questionarioDAO.class.php";
 			$questionario = new questionario();
 			
 			prepareSession($questionario, $action);
-			$page = "questionario.php";
+			$page = "questionarios.php";
 			redirectTo($page);
 		}
 		if($action == "edit"){
@@ -72,7 +72,7 @@ require "../Model/DAO/questionarioDAO.class.php";
 			//print_r($questionario);
 			
 			prepareSession($questionario, $action);
-			$page = "questionario.php";
+			$page = "questionarios.php";
 			redirectTo($page);
 			
 		}
@@ -88,7 +88,7 @@ require "../Model/DAO/questionarioDAO.class.php";
 				
 			//definir uma mensagem aqui pra enviar pro cliente				
 			prepareSession($questionario, $action);
-			$page = "questionario.php";
+			$page = "questionarios.php";
 			redirectTo($page);
 				
 		}
@@ -139,7 +139,7 @@ require "../Model/DAO/questionarioDAO.class.php";
 		}
 			
 		prepareSession($questionario, $action, $mensagem);
-		$page = "questionario.php";
+		$page = "questionarios.php";
 		redirectTo($page);
 	}
 
