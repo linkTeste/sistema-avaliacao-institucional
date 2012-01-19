@@ -17,6 +17,9 @@ if(isset($_SESSION["action"])){
 	if($_SESSION["action"] == "edit"){
 		$edit = true;
 	}
+	if($_SESSION["action"] == "details"){
+		$details = true;
+	}
 }
 
 
@@ -39,8 +42,14 @@ $questionarioDAO = new questionarioDAO();
 </head>
 
 <body>
+
+
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
+	
+	
+	
+	
 	
 <?php } ?>
 	
@@ -103,10 +112,21 @@ $questionarioDAO = new questionarioDAO();
 <?php } ?>
 	<div id="header"></div>
     <div id="content">
+    <?php 
+    if(isset($_SESSION["questionario"])){
+    	//$questionario = new questionario;
+    	$questionario = $_SESSION["questionario"];
+    	//debug
+    	//print_r($questionario);
+    	$id = $questionario->getId();
+    	$descricao = $questionario->getDescricao();
+    }
+    ?>
+    <h2>Questionario <?php echo $descricao; ?></h2> 
     <br />
     	
-        <span class="btn-novo-grande"><a href="../Controller/questionarioController.php?action=new"  title="Novo Questionário">Novo Questionário</a></span>
-        <h3>Questionários Cadastrados</h3>
+        <span class="btn-novo-grande"><a href="../Controller/questionarioController.php?action=new"  title="Novo Questionário">Nova Questão</a></span>
+        <h3>Questões Cadastradas</h3>
         
         <div id="questionarios">
         	<table>
@@ -122,7 +142,7 @@ $questionarioDAO = new questionarioDAO();
 					foreach ($result as $registro) {
 						echo "<tr>";
                 		echo "<td>".$registro["id"]."</td>";
-						echo "<td><a href='../Controller/questionarioController.php?action=details&id=".$registro["id"]."'>".$registro["descricao"]."</a></td>";
+						echo "<td>".$registro["descricao"]."</td>";
 						echo "<td>".$registro["instrumento_id"]."</td>";
 						echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
 						//echo "<td>".$registro["data_criacao"]."</td>";

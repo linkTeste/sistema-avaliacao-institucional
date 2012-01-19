@@ -92,6 +92,22 @@ require "../Model/DAO/questionarioDAO.class.php";
 			redirectTo($page);
 				
 		}
+		if($action == "details"){
+			//se for details pega o id do questionario que sera exibido em detalhes na outra pagina
+			if(isset($_GET["id"])){
+				$id = $_GET["id"];
+			}
+		
+			$questionarioDAO = new questionarioDAO();
+			
+			$questionario = $questionarioDAO->get($id);
+		
+			//definir uma mensagem aqui pra enviar pro cliente
+			prepareSession($questionario, $action);
+			$page = "questionario.php";
+			redirectTo($page);
+		
+		}
 		if($action == "save"){			
 			save();				
 		}
