@@ -74,7 +74,7 @@ $().ready(function() {
 			"Scheme"
 		];
 		$("#texto").autocomplete({
-			source: availableTags
+			source: "../Utils/searchQuestions.php"
 		});
 	});
 	</script>
