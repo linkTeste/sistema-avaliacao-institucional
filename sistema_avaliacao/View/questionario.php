@@ -41,9 +41,12 @@ $questionarioDAO = new questionarioDAO();
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.autocomplete.css" />
+	
+<link href="css/smoothness/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />
 
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+
 <script type="text/javascript">
 $().ready(function() {
 		var availableTags = [
@@ -70,7 +73,7 @@ $().ready(function() {
 			"Scala",
 			"Scheme"
 		];
-		$("#tags").autocomplete({
+		$("#texto").autocomplete({
 			source: availableTags
 		});
 	});
