@@ -9,6 +9,7 @@ if (!isset($_SESSION)) {
 //define qual página chamar de acordo com a action
 
 //incluir aqui as classes que serao usadas
+require "../Model/Bean/questao.class.php";
 require "../Model/Bean/questionario.class.php";
 require "../Model/DAO/questionarioDAO.class.php";
 
@@ -154,7 +155,7 @@ function save() {
  * @since 19/01/2012 16:33:35
  * função que lança dados na sessão
  **/
-function prepareSession(questionario $questionario, $action, $mensagem = null) {
+function prepareSession(questao $questao, $action, $mensagem = null) {
 	//prepara a sessao
 	//seta valores na sessao
 	//session_start();

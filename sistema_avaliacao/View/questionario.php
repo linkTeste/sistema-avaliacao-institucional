@@ -35,17 +35,66 @@ $questionarioDAO = new questionarioDAO();
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
+<link rel="stylesheet" type="text/css"
+	href="css/jquery.autocomplete.css" />
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.autocomplete.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+		var availableTags = [
+			"ActionScript",
+			"AppleScript",
+			"Asp",
+			"BASIC",
+			"C",
+			"C++",
+			"Clojure",
+			"COBOL",
+			"ColdFusion",
+			"Erlang",
+			"Fortran",
+			"Groovy",
+			"Haskell",
+			"Java",
+			"JavaScript",
+			"Lisp",
+			"Perl",
+			"PHP",
+			"Python",
+			"Ruby",
+			"Scala",
+			"Scheme"
+		];
+		$("#tags").autocomplete({
+			source: availableTags
+		});
+	});
+	</script>
 
 </head>
 
 <body>
 
 
+
+
+
+
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -71,18 +120,18 @@ $questionarioDAO = new questionarioDAO();
         }
       	}
 		?>
+		<div class="ui-widget">
+	<label for="tags">Tags: </label>
+	<input id="tags" />
+</div>
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
         	<label for="input-name">Nome do questionário:</label><br />
         	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
             <input type="text" name="description" value="<?php echo $descricao; ?>"/><br /><br /><br />
-            <label for="instrumento">Instrumento:</label><br />
-            <select name="instrumento">
-            	<option value="1">Instrumento 1 - Auno avalia professor</option>
-                <option value="2">Instrumento 2 - Aluno avalia curso</option>
-                <option value="3">Instrumento 3 - Funcionário avalia Instituição</option>
-                <option value="4">Instrumento 4 - Professor avalia ...</option>
-                <option value="5">Instrumento 5 - Coordenador avalia ...</option>
-            </select><br /><br />
+            <label for="texto">Texto:</label><br />
+            
+            <textarea rows="" cols="" name="texto" id="texto"></textarea>
+			<br /><br />
             
                     
         	
@@ -125,7 +174,7 @@ $questionarioDAO = new questionarioDAO();
     <h2>Questionario <?php echo $descricao; ?></h2> 
     <br />
     	
-        <span class="btn-novo-grande"><a href="../Controller/questionarioController.php?action=new"  title="Novo Questionário">Nova Questão</a></span>
+        <span class="btn-novo-grande"><a href="../Controller/questaoController.php?action=new"  title="Nova Questão">Nova Questão</a></span>
         <h3>Questões Cadastradas</h3>
         
         <div id="questionarios">
