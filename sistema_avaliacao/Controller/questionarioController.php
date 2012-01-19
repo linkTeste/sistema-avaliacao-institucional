@@ -105,8 +105,7 @@ require "../Model/DAO/questionarioDAO.class.php";
 			//definir uma mensagem aqui pra enviar pro cliente
 			prepareSession($questionario, $action);
 			$page = "questionario.php";
-			redirectTo($page);
-		
+			redirectTo($page);		
 		}
 		if($action == "save"){			
 			save();				
