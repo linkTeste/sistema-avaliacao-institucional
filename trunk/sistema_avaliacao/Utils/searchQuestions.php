@@ -8,9 +8,12 @@ $database = "faculdadeunica05";
 $conn = mysql_connect("$host","$login_db","$senha_db");
 $banco = mysql_select_db("$database");
 
-$q=strtolower ($_GET["q"]);
+//$q=strtolower ($_GET["term"]);
+$q=utf8_decode($_GET["term"]);
+//echo "ola";
+//echo $_GET["term"];
 
-$sql = "SELECT * FROM questao WHERE texto like '%" . $q . "%'";
+$sql = "SELECT * FROM questao WHERE texto like '%$q%'";
 
 $result = mysql_query($sql);// or die ("Erro". mysql_query());
 

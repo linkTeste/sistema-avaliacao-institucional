@@ -10,6 +10,7 @@ class questao {
 	private $id;
 	private $texto;
 	private $topico;
+	private $questionarios = array();
 	
 	
 	public function setId($id){
@@ -34,5 +35,25 @@ class questao {
 	
 	public function getTopico(){
 		return $this->topico;
+	}
+	
+	/**
+	* @name addQuestionario
+	* @author Fabio Baía
+	* @since 23/01/2012 17:27:22
+	* adiciona um questionario ao array de questionarios
+	**/
+	public function addQuestionario(questionario $questionario) {
+		array_push($this->questionarios, $questionario);
+	}
+	
+	/**
+	* @name getQuestionarios
+	* @author Fabio Baía
+	* @since 23/01/2012 17:28:39
+	* retorna um array com os questionarios que têem essa questao
+	**/
+	public function getQuestionarios() {
+			return $this->questionarios;
 	}
 }
