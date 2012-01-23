@@ -7,6 +7,9 @@
 */
 class questaoDAO {
 	private $table = "questao";
+	private $table_alias ="q";
+	private $tableJoin = "questionario_has_questao";
+	private $tableJoin_alias = "qhq";
 	private $pdo;
 	private $UNSAVED_ID = 0;
 	
@@ -135,6 +138,22 @@ class questaoDAO {
 		
 		return $list_questionario;
 	}
+	
+	/**
+	* @name listById
+	* @author Fabio Baía
+	* @since 20/01/2012 15:27:31
+	* lista todos as questoes em um determinado questionario
+	**/
+	public function listById(questionario $questionario) {
+		$id = $questionario->getId();
+		$where = "WHERE qhq.questionario_id = ".$id." and qhq.questao_id = q.id";
+		$sql = "SELECT  q.* from questao q, questionario_has_questao qhq ".$where;
+		$list_questionario = $this->pdo->query($sql)->fetchAll();
+		
+		return $list_questionario;
+	}
+	
 
 	
 	/**

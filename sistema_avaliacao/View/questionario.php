@@ -3,6 +3,8 @@
 //obs: os requires devem vir antes da sessao
 require '../Model/Bean/questionario.class.php';
 require '../Model/DAO/questionarioDAO.class.php';
+require '../Model/Bean/questao.class.php';
+require '../Model/DAO/questaoDAO.class.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -20,10 +22,13 @@ if(isset($_SESSION["action"])){
 	if($_SESSION["action"] == "details"){
 		$details = true;
 	}
+	
+	$_SESSION["action"] = null;
 }
 
 
 $questionarioDAO = new questionarioDAO();
+$questaoDAO = new questaoDAO();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -41,38 +46,18 @@ $questionarioDAO = new questionarioDAO();
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.autocomplete.css" />
-	
-<link href="css/smoothness/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+<link href="css/smoothness/jquery-ui-1.8.17.custom.css" rel="stylesheet"
+	type="text/css" />
+
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 
 <script type="text/javascript">
 $().ready(function() {
-		var availableTags = [
-			"ActionScript",
-			"AppleScript",
-			"Asp",
-			"BASIC",
-			"C",
-			"C++",
-			"Clojure",
-			"COBOL",
-			"ColdFusion",
-			"Erlang",
-			"Fortran",
-			"Groovy",
-			"Haskell",
-			"Java",
-			"JavaScript",
-			"Lisp",
-			"Perl",
-			"PHP",
-			"Python",
-			"Ruby",
-			"Scala",
-			"Scheme"
-		];
+		
 		$("#texto").autocomplete({
 			source: "../Utils/searchQuestions.php"
 		});
@@ -85,20 +70,8 @@ $().ready(function() {
 
 
 
-
-
-
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -123,14 +96,9 @@ $().ready(function() {
         }
       	}
 		?>
-		<div class="ui-widget">
-	<label for="tags">Tags: </label>
-	<input id="tags" />
-</div>
-    		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
-        	<label for="input-name">Nome do questionário:</label><br />
-        	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
-            <input type="text" name="description" value="<?php echo $descricao; ?>"/><br /><br /><br />
+		
+    		<form action="../Controller/questaoController.php?action=save" id="form-questionario" method="post">
+        	
             <label for="texto">Texto:</label><br />
             
             <textarea rows="" cols="" name="texto" id="texto"></textarea>
@@ -177,28 +145,23 @@ $().ready(function() {
     <h2>Questionario <?php echo $descricao; ?></h2> 
     <br />
     	
-        <span class="btn-novo-grande"><a href="../Controller/questaoController.php?action=new"  title="Nova Questão">Nova Questão</a></span>
+        <span class="btn-novo-grande"><a href="../Controller/questaoController.php?action=new&questionario_id=<?php echo $id?>"  title="Nova Questão">Nova Questão</a></span>
         <h3>Questões Cadastradas</h3>
         
         <div id="questionarios">
         	<table>
             	<tr>
                 	<th>Id</th>
-                    <th>Nome</th>
-                    <th>Inst.</th>
-                    <th>Criado em</th>
+                    <th>Questão</th>
                     <th>Opções</th>
                 </tr>
                 <?php
-					$result = $questionarioDAO->listAll();
+					$result = $questaoDAO->listById($questionario);
 					foreach ($result as $registro) {
 						echo "<tr>";
                 		echo "<td>".$registro["id"]."</td>";
-						echo "<td>".$registro["descricao"]."</td>";
-						echo "<td>".$registro["instrumento_id"]."</td>";
-						echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
-						//echo "<td>".$registro["data_criacao"]."</td>";
-						echo "<td><a href='../Controller/questionarioController.php?action=edit&id=".$registro["id"]."'>Editar</a></td>";
+						echo "<td>".utf8_encode($registro["texto"])."</td>";
+						echo "<td><a href='../Controller/questionarioController.php?action=edit&id=".$registro["id"]."'>Remover do questionario</a></td>";
 						echo "<td><a href='../Controller/questionarioController.php?action=delete&id=".$registro["id"]."'>Excluir</a></td>";
 						echo "</tr>";
 						

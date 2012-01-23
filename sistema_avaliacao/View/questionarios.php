@@ -17,6 +17,7 @@ if(isset($_SESSION["action"])){
 	if($_SESSION["action"] == "edit"){
 		$edit = true;
 	}
+	$_SESSION["action"] = null;
 }
 
 

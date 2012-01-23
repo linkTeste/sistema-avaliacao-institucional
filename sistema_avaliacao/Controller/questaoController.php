@@ -12,6 +12,7 @@ if (!isset($_SESSION)) {
 require "../Model/Bean/questao.class.php";
 require "../Model/Bean/questionario.class.php";
 require "../Model/DAO/questionarioDAO.class.php";
+require "../Model/DAO/questaoDAO.class.php";
 
 /**
  * @name questionarioController
@@ -39,6 +40,8 @@ questaoController();
  * função que verifica a action e direciona para a action específica
  **/
 function questaoController() {
+	
+	$questionarioDAO = new questionarioDAO();
 	//fazer o tratamento aqui da codificacao utf-8, iso, etc
 	if(isset($_POST["action"])){
 		$action = $_POST["action"];
@@ -54,11 +57,12 @@ function questaoController() {
 			$questionario_id = $_GET["questionario_id"];
 		}
 			
+		
 		$questao = new questao();
-
+		$questionario = $questionarioDAO->get($questionario_id);
 		//seta o id do questionario
 		//$questao->set
-		prepareSession($questao, $action);
+		prepareSession($questionario, $questao, $action);
 		$page = "questionario.php";
 		redirectTo($page);
 	}
@@ -74,7 +78,7 @@ function questaoController() {
 		//debug
 		//print_r($questionario);
 			
-		prepareSession($questionario, $action);
+		prepareSession($questionario, $questao, $action);
 		$page = "questionario.php";
 		redirectTo($page);
 			
@@ -120,17 +124,20 @@ function save() {
 		}
 	}
 		
-	if(isset($_POST["description"])){
-		$descricao = $_POST["description"];
+	if(isset($_POST["texto"])){
+		$texto = $_POST["texto"];
 	}
 		
-	if(isset($_POST["instrumento"])){
-		$instrumento_id = $_POST["instrumento"];
+	if(isset($_POST["questionario_id"])){
+		$questionario_id = $_POST["questionario_id"];
 	}
 		
-	$questionario = new questionario();
-	$questionario->setId($id);
-	$questionario->setDescricao($descricao);
+	$questao = new questao();
+	$questao->setId($id);
+	$questao->setTexto($texto);
+	$questao->
+	
+	
 	$questionario->setInstrumento_id($instrumento_id);
 		
 	$questionarioDAO = new questionarioDAO();
@@ -155,13 +162,14 @@ function save() {
  * @since 19/01/2012 16:33:35
  * função que lança dados na sessão
  **/
-function prepareSession(questao $questao, $action, $mensagem = null) {
+function prepareSession(questionario $questionario, questao $questao, $action, $mensagem = null) {
 	//prepara a sessao
 	//seta valores na sessao
 	//session_start();
 
 	$_SESSION["action"] = $action;
 	$_SESSION["questionario"] = $questionario;
+	$_SESSION["questao"] = $questao;
 	$_SESSION["mensagem"] = $mensagem;
 
 }
