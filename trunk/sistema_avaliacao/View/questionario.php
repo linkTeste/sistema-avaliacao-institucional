@@ -1,10 +1,16 @@
-﻿<?php
+<?php
 
-//obs: os requires devem vir antes da sessao
-require '../Model/Bean/questionario.class.php';
-require '../Model/DAO/questionarioDAO.class.php';
-require '../Model/Bean/questao.class.php';
-require '../Model/DAO/questaoDAO.class.php';
+///obs: os requires devem vir antes da sessao
+require '../lumine/Lumine.php';
+require '../lumine-conf.php';
+
+//inicializa a configuracao
+$cfg = new Lumine_Configuration( $lumineConfig );
+
+require_once '../system/application/models/dao/Questionario.php';
+require_once '../system/application/models/dao/Questao.php';
+require_once '../system/application/models/dao/Avaliacao.php';
+// require_once '../system/application/models/dao/QuestionarioHasQuestao.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -27,15 +33,13 @@ if(isset($_SESSION["action"])){
 }
 
 
-$questionarioDAO = new questionarioDAO();
-$questaoDAO = new questaoDAO();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Sistema de Avaliação Institucional - Página Inicial</title>
+<title>Sistema de Avaliação Institucional - Questionário</title>
 <link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
@@ -68,7 +72,13 @@ $().ready(function() {
 
 <body>
 
-
+<?php
+    	if(isset($_SESSION["questionario"])){
+    		$questionario = unserialize($_SESSION["questionario"]);
+    		$questionario_id = $questionario->getId();    
+    		$questionario_avaliado = $questionario->getAvaliado();
+    	}
+    ?>
 
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
@@ -86,30 +96,34 @@ $().ready(function() {
 		$descricao = "";
       	if($edit == true){
       	
-      		if(isset($_SESSION["questionario"])){
-        	//$questionario = new questionario;
-        	$questionario = $_SESSION["questionario"];
-        	//debug
-        	//print_r($questionario);
-        	$id = $questionario->getId();
-        	$descricao = $questionario->getDescricao();
-        }
+//       		if(isset($_SESSION["questionario"])){
+//         	//$questionario = new questionario;
+//         	$questionario = $_SESSION["questionario"];
+//         	//debug
+//         	//print_r($questionario);
+//         	$id = $questionario->getId();
+//         	$descricao = $questionario->getDescricao();
+//         }
       	}
 		?>
 		
     		<form action="../Controller/questaoController.php?action=save" id="form-questionario" method="post">
-        	
+        	<input type="hidden" name="questionario_id" value="<?php echo $questionario->getId(); ?>"/>
             <label for="texto">Texto:</label><br />
             
             <textarea rows="" cols="" name="texto" id="texto"></textarea>
+            
+            <label for="checkbox-opcional">
+            <input name="checkbox-opcional" id="checkbox-opcional" value="1" type="checkbox" title="Marque para tornar essa questão opcional" /> Questão opcional
+            </label>
 			<br /><br />
             
                     
         	
         	<hr />
-            <button class="btn-default float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
+            <button class="botaoGoogleBlue float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
             
-            <button class="btn-default float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
+            <button class="botaoGoogleBlue float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
             
             <div class="clear"></div>
             </form>
@@ -132,43 +146,73 @@ $().ready(function() {
 <?php } ?>
 	<div id="header"></div>
     <div id="content">
-    <?php 
-    if(isset($_SESSION["questionario"])){
-    	//$questionario = new questionario;
-    	$questionario = $_SESSION["questionario"];
-    	//debug
-    	//print_r($questionario);
-    	$id = $questionario->getId();
-    	$descricao = $questionario->getDescricao();
-    }
-    ?>
-    <h2>Questionario <?php echo $descricao; ?></h2> 
+        
+    <h2>Questionario <?php echo $questionario->getDescricao(); ?></h2> 
     <br />
+    <?php 
+    	if($questionario_avaliado == "Avaliado"){
+    		
+    	}
+    	else{
+    	?>
+    			
+    	<a href="../Controller/questaoController.php?action=new&questionario_id=<?php echo $questionario->getId()?>"  title="Nova Questão" class="botao_right botaoGoogleBlue">Nova Questão</a>
     	
-        <span class="btn-novo-grande"><a href="../Controller/questaoController.php?action=new&questionario_id=<?php echo $id?>"  title="Nova Questão">Nova Questão</a></span>
+        <?php } ?>    	
+        
+
         <h3>Questões Cadastradas</h3>
         
         <div id="questionarios">
         	<table>
             	<tr>
-                	<th>Id</th>
-                    <th>Questão</th>
-                    <th>Opções</th>
+                	<th>ID</th>
+                	<th>QUEST&Atilde;O</th>
+                    <th>&nbsp;</th>
                 </tr>
-                <?php
-					$result = $questaoDAO->listById($questionario);
-					foreach ($result as $registro) {
-						echo "<tr>";
-                		echo "<td>".$registro["id"]."</td>";
-						echo "<td>".utf8_encode($registro["texto"])."</td>";
-						echo "<td><a href='../Controller/questionarioController.php?action=edit&id=".$registro["id"]."'>Remover do questionario</a></td>";
-						echo "<td><a href='../Controller/questionarioController.php?action=delete&id=".$registro["id"]."'>Excluir</a></td>";
-						echo "</tr>";
-						
-						//print_r($registro);
-					}
-		
-				?>
+                <?php 
+    
+    	
+    	// muda o alias
+    	$questionario->alias('q');
+    	// telefone
+    	$q = new Questao();
+    	
+    	// une as classes
+    	$questionario->join($q,'INNER','qu');
+    	
+    	// seleciona os dados desejados
+    	$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional");
+    	// recupera os registros
+    	$questionario->find();
+    	
+    	while( $questionario->fetch() ) {
+    		echo "<tr>";
+    		echo "<td>".$questionario->id."</td>";
+    		
+//     		if($questionario->opcional == "opcional"){
+//     			echo "<td><img src='css/images/opcional.png' alt='Opcional'/></td>";
+//     		}else{
+//     			echo "<td>&nbsp</td>";
+//     		}
+    		
+    		if($questionario->opcional == "opcional"){
+    			echo "<td>".utf8_encode($questionario->texto)."<span class='span_opcional'>Questão Opcional</span></td>";
+    		}else{
+    			echo "<td>".utf8_encode($questionario->texto)."</td>";
+    		}
+    		
+    		if($questionario_avaliado == "Avaliado"){
+    			echo "<td style='width: 10%'>&nbsp</td>";
+    		}
+    		else{
+    			echo "<td style='width: 10%'><a href='../Controller/questaoController.php?action=delete&id=".$questionario->id."&questionario_id=".$questionario_id."' class='botao_right botaoGoogleGrey' title='Remover do questionário'>Excluir</a></td>";
+    		}
+    		echo "</tr>";
+    		
+    	}
+    
+    ?>
                
             
             </table>

@@ -1,7 +1,17 @@
 <?php
-if (!isset($_SESSION)) {
-	session_start();
-}
+require '../lumine/Lumine.php';
+require '../lumine-conf.php';
+
+//inicializa a configuracao
+$cfg = new Lumine_Configuration( $lumineConfig );
+
+require_once '../system/application/models/dao/Questionario.php';
+require_once '../system/application/models/dao/Questao.php';
+
+//if (!isset($_SESSION)) {
+session_start();
+//}
+
 //pega os paramentros via get, post , sessao
 
 //trabalha com os beans e DAOS
@@ -9,10 +19,7 @@ if (!isset($_SESSION)) {
 //define qual página chamar de acordo com a action
 
 //incluir aqui as classes que serao usadas
-require "../Model/Bean/questao.class.php";
-require "../Model/Bean/questionario.class.php";
-require "../Model/DAO/questionarioDAO.class.php";
-require "../Model/DAO/questaoDAO.class.php";
+
 
 /**
  * @name questionarioController
@@ -27,8 +34,6 @@ $page;
 
 $default_page = "home.php";
 
-$questionario;
-$questionarioDAO;
 
 
 questaoController();
@@ -41,7 +46,6 @@ questaoController();
  **/
 function questaoController() {
 	
-	$questionarioDAO = new questionarioDAO();
 	//fazer o tratamento aqui da codificacao utf-8, iso, etc
 	if(isset($_POST["action"])){
 		$action = $_POST["action"];
@@ -58,11 +62,16 @@ function questaoController() {
 		}
 			
 		
-		$questao = new questao();
-		$questionario = $questionarioDAO->get($questionario_id);
-		//seta o id do questionario
-		//$questao->set
-		prepareSession($questionario, $questao, $action);
+		$questao = new Questao();
+		$questionario = new Questionario();
+		$questionario->get($questionario_id);
+		
+		//prepareSession($questionario, $questao, $action);
+		$_SESSION["action"] = $action;
+		$_SESSION["questionario"] = serialize($questionario);
+		$_SESSION["questao"] = serialize($questao);
+		$_SESSION["mensagem"] = $mensagem;
+		
 		$page = "questionario.php";
 		redirectTo($page);
 	}
@@ -88,14 +97,57 @@ function questaoController() {
 		if(isset($_GET["id"])){
 			$id = $_GET["id"];
 		}
+		if(isset($_GET["questionario_id"])){
+			$questionario_id = $_GET["questionario_id"];
+		}
 
-		$questionarioDAO = new questionarioDAO();
-		$questionarioDAO->remove($id);
-		$questionario = new questionario();
-
-		//definir uma mensagem aqui pra enviar pro cliente
-		prepareSession($questionario, $action);
-		$page = "questionarios.php";
+		$questao = new Questao();
+		$questao->get($id);
+		
+		$questionario = new Questionario();
+		$questionario->get($questionario_id);
+		
+		// muda o alias
+    	$questionario->alias('q');
+    	// telefone
+    	$q = new Questao();
+    	// une as classes
+    	$questionario->join($q,'INNER','qu');
+    	// seleciona os dados desejados
+    	$questionario->select("qu.id, qu.texto, qu.topico");
+    	// recupera os registros
+    	$questionario->find();
+    	
+    	$id_remover;
+    	while( $questionario->fetch() ) {
+    		if($questao->getId() == $questionario->getId()){
+    			//debug
+//     			echo "igual: ".$questao->getId()." - ".$questionario->id;
+//     			echo "<br />";
+    			$id_remover = $questao->getId();   			
+    			
+    		}else{
+    			//debug
+//     			echo "diferente: ".$questao->getId()." - ".$questionario->id;
+//     			echo "<br />";   			
+    			
+    		}
+    		
+    	}
+    	
+    	$questionario2 = new Questionario();
+    	$questionario2->get($questionario_id);
+    	//echo "id a remover ".$id_remover;
+    	
+    	//exibir mensagem informando a questao removida
+    	$questionario2->remove('questoes', array($id_remover));
+    	
+    	
+    	//$questionario->re
+    	
+		$_SESSION["questionario"] = serialize($questionario2);
+		
+		$page = "questionario.php";
 		redirectTo($page);
 
 	}
@@ -131,26 +183,51 @@ function save() {
 	if(isset($_POST["questionario_id"])){
 		$questionario_id = $_POST["questionario_id"];
 	}
-		
-	$questao = new questao();
-	$questao->setId($id);
-	$questao->setTexto($texto);
-	$questao->
 	
 	
-	$questionario->setInstrumento_id($instrumento_id);
-		
-	$questionarioDAO = new questionarioDAO();
-	$status = $questionarioDAO->persiste($questionario);
-	$mensagem;
-	if($status = true){
-		//cadastrado com sucesso
-		//exibir alguma mensagem aqui
-		$mensagem = "Cadastrado com Sucesso!";
+	
+	
+	
+	
+	$questao = new Questao();
+	$questao->texto = utf8_decode($texto);
+	
+	if(isset($_POST["checkbox-opcional"])){
+		$opcional = "opcional";
+		$questao->opcional = $opcional;
 	}
+	else  {
+		//$opcional = "";
+	}
+	
+	
+	$questao->find(true);
+// 	try {
+// // 		$questao->texto = $texto;
+// // 		$questao->find(true);
 		
-	prepareSession($questionario, $action, $mensagem);
-	$page = "questionarios.php";
+// 	} catch (Exception $e) {
+		
+// 	}
+	//$questao->setTexto($texto);
+	$questao->save();
+	
+	$questionario = new Questionario();
+	$questionario->get($questionario_id);
+			
+	$array_questions = $questionario->getQuestoes();
+	array_push($array_questions, $questao);
+	
+	$questionario->setQuestoes($array_questions);
+	$questionario->update();
+	
+	$_SESSION["action"] = $action;
+	$_SESSION["questionario"] = serialize($questionario);
+	$_SESSION["questao"] = serialize($questao);
+	$_SESSION["mensagem"] = $mensagem;
+		
+	//prepareSession($questionario, $questao, $action, $mensagem);
+	$page = "questionario.php";
 	redirectTo($page);
 }
 

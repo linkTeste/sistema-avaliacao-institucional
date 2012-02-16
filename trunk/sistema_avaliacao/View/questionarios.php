@@ -1,8 +1,12 @@
-﻿<?php
-
+<?php
 //obs: os requires devem vir antes da sessao
-require '../Model/Bean/questionario.class.php';
-require '../Model/DAO/questionarioDAO.class.php';
+require '../lumine/Lumine.php';
+require '../lumine-conf.php';
+
+//inicializa a configuracao
+$cfg = new Lumine_Configuration( $lumineConfig );
+
+require_once '../system/application/models/dao/Questionario.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -21,14 +25,14 @@ if(isset($_SESSION["action"])){
 }
 
 
-$questionarioDAO = new questionarioDAO();
+//$questionarioDAO = new questionarioDAO();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Sistema de Avaliação Institucional - Página Inicial</title>
+<title>Sistema de Avaliação Institucional - Questionários</title>
 <link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
@@ -40,8 +44,12 @@ $questionarioDAO = new questionarioDAO();
 </head>
 
 <body>
+
+
+
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
+	
 	
 <?php } ?>
 	
@@ -55,12 +63,13 @@ $questionarioDAO = new questionarioDAO();
       	
       		if(isset($_SESSION["questionario"])){
         	//$questionario = new questionario;
-        	$questionario = $_SESSION["questionario"];
+        	$questionario = unserialize($_SESSION["questionario"]);
         	//debug
         	//print_r($questionario);
         	$id = $questionario->getId();
         	$descricao = $questionario->getDescricao();
-        }
+        	$instrumento_id = $questionario->getInstrumentoId();
+        	}
       	}
 		?>
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
@@ -69,19 +78,60 @@ $questionarioDAO = new questionarioDAO();
             <input type="text" name="description" value="<?php echo $descricao; ?>"/><br /><br /><br />
             <label for="instrumento">Instrumento:</label><br />
             <select name="instrumento">
-            	<option value="1">Instrumento 1 - Auno avalia professor</option>
-                <option value="2">Instrumento 2 - Aluno avalia curso</option>
-                <option value="3">Instrumento 3 - Funcionário avalia Instituição</option>
-                <option value="4">Instrumento 4 - Professor avalia ...</option>
-                <option value="5">Instrumento 5 - Coordenador avalia ...</option>
+            <?php
+				switch ($instrumento_id) {
+					case 1:
+						echo '<option value="1" selected="selected">Instrumento 1 - Auno avalia professor</option>';
+						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
+                		echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
+                		echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
+                		echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
+					break;
+					case 2:
+						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
+						echo '<option value="2" selected="selected">Instrumento 2 - Aluno avalia curso</option>';
+                		echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
+                		echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
+                		echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
+					break;
+					case 3:
+						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
+						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
+                		echo '<option value="3" selected="selected">Instrumento 3 - Funcionário avalia Instituição</option>';
+                		echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
+                		echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
+					break;
+					case 4:
+						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
+						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
+						echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
+						echo '<option value="4" selected="selected">Instrumento 4 - Professor avalia ...</option>';
+						echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
+						break;
+					case 5:
+						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
+						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
+						echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
+						echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
+						echo '<option value="5" selected="selected">Instrumento 5 - Coordenador avalia ...</option>';
+					break;
+					default:
+						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
+						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
+						echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
+						echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
+						echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
+					break;
+				}
+            ?>
             </select><br /><br />
             
                     
         	
         	<hr />
-            <button class="btn-default float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
+            <button class="botaoGoogleBlue float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
             
-            <button class="btn-default float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
+            <button class="botaoGoogleBlue float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
             
             <div class="clear"></div>
             </form>
@@ -105,34 +155,57 @@ $questionarioDAO = new questionarioDAO();
 	<div id="header"></div>
     <div id="content">
     <br />
-    	
-        <span class="btn-novo-grande"><a href="../Controller/questionarioController.php?action=new"  title="Novo Questionário">Novo Questionário</a></span>
+
+        <a href="../Controller/questionarioController.php?action=new"  title="Novo Questionário" class="botao_right botaoGoogleBlue">Novo Questionário</a>
+
+		<br />
+		<br />
         <h3>Questionários Cadastrados</h3>
         
         <div id="questionarios">
         	<table>
             	<tr>
-                	<th>Id</th>
-                    <th>Nome</th>
-                    <th>Inst.</th>
-                    <th>Criado em</th>
-                    <th>Opções</th>
+                	<th>ID</th>
+                    <th>NOME</th>
+                    <th>INSTRUMENTO</th>
+                    <th>CRIADO EM</th>
+                    <th colspan="2"></th>
                 </tr>
                 <?php
-					$result = $questionarioDAO->listAll();
-					foreach ($result as $registro) {
+                	$lista = new Questionario();
+                	$lista->find();
+					while( $lista->fetch()) {
 						echo "<tr>";
-                		echo "<td>".$registro["id"]."</td>";
-						echo "<td><a href='../Controller/questionarioController.php?action=details&id=".$registro["id"]."'>".$registro["descricao"]."</a></td>";
-						echo "<td>".$registro["instrumento_id"]."</td>";
-						echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
-						//echo "<td>".$registro["data_criacao"]."</td>";
-						echo "<td><a href='../Controller/questionarioController.php?action=edit&id=".$registro["id"]."'>Editar</a></td>";
-						echo "<td><a href='../Controller/questionarioController.php?action=delete&id=".$registro["id"]."'>Excluir</a></td>";
-						echo "</tr>";
+						echo "<td>".$lista->getId()."</td>";
+						echo "<td><a href='../Controller/questionarioController.php?action=details&id=".$lista->getId()."' class='link2'>".$lista->getDescricao()."</a></td>";
+						echo "<td>".$lista->getInstrumentoId()."</td>";
+						echo "<td>".datetime_to_ptbr($lista->getDataCreate())."</td>";
+// 						echo "<td>".$lista->getDataCreate()."</td>";
+						echo "<td style='width: 10%'><a href='../Controller/questionarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Questionário'>Editar</a></td>";
 						
-						//print_r($registro);
+						if($lista->getAvaliado() == "Avaliado"){
+							echo "<td style='width: 10%'>&nbsp</td>";
+						}else{
+							echo "<td style='width: 10%'><a href='../Controller/questionarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Questionário'>Excluir</a></td>";
+						}
+						
+						echo "</tr>";
 					}
+                
+					
+// 					foreach ($result as $registro) {
+// 						echo "<tr>";
+//                 		echo "<td>".$registro["id"]."</td>";
+// 						echo "<td><a href='../Controller/questionarioController.php?action=details&id=".$registro["id"]."'>".$registro["descricao"]."</a></td>";
+// 						echo "<td>".$registro["instrumento_id"]."</td>";
+// 						echo "<td>".datetime_to_ptbr($registro["data_criacao"])."</td>";
+// 						//echo "<td>".$registro["data_criacao"]."</td>";
+// 						echo "<td><a href='../Controller/questionarioController.php?action=edit&id=".$registro["id"]."'>Editar</a></td>";
+// 						echo "<td><a href='../Controller/questionarioController.php?action=delete&id=".$registro["id"]."'>Excluir</a></td>";
+// 						echo "</tr>";
+						
+// 						//print_r($registro);
+// 					}
 		
 				?>
                
