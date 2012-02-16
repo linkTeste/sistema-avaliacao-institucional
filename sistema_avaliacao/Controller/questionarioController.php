@@ -1,7 +1,5 @@
 <?php
-if (!isset($_SESSION)) {
-	session_start();
-}
+
 //pega os paramentros via get, post , sessao
 
 //trabalha com os beans e DAOS
@@ -9,8 +7,21 @@ if (!isset($_SESSION)) {
 //define qual página chamar de acordo com a action
 
 //incluir aqui as classes que serao usadas
-require "../Model/Bean/questionario.class.php";
-require "../Model/DAO/questionarioDAO.class.php";
+//require "../Model/Bean/questionario.class.php";
+//require "../Model/DAO/questionarioDAO.class.php";
+
+require '../lumine/Lumine.php';
+require '../lumine-conf.php';
+
+//inicializa a configuracao
+$cfg = new Lumine_Configuration( $lumineConfig );
+
+require_once '../system/application/models/dao/Questionario.php';
+require_once '../system/application/models/dao/Questao.php';
+
+//if (!isset($_SESSION)) {
+session_start();
+//}
 
 /**
  * @name questionarioController
@@ -65,13 +76,13 @@ require "../Model/DAO/questionarioDAO.class.php";
 				$id = $_GET["id"];
 			}
 						
-			$questionarioDAO = new questionarioDAO();
-			$questionario = $questionarioDAO->get($id);
+			$questionario = new Questionario();
+			$questionario->get($id);
 			
-			//debug
-			//print_r($questionario);
+						
+			$_SESSION["action"] = $action;
+			$_SESSION["questionario"] = serialize($questionario);
 			
-			prepareSession($questionario, $action);
 			$page = "questionarios.php";
 			redirectTo($page);
 			
@@ -82,12 +93,37 @@ require "../Model/DAO/questionarioDAO.class.php";
 				$id = $_GET["id"];
 			}
 		
-			$questionarioDAO = new questionarioDAO();
-			$questionarioDAO->remove($id);
-			$questionario = new questionario();
+			$questionario = new Questionario();
+			$questionario->get($id);
+			
+			//primeiro devemos remover as questoes do questionario
+			
+			$questionario->alias('q');
+			$q = new Questao();
+			$questionario->join($q,'INNER','qu');
+			$questionario->select("qu.id, qu.texto, qu.topico");
+			$questionario->find();
+			 
+			$pos = 0;
+			$ids_remover = array();
+			while( $questionario->fetch() ) {
+				$ids_remover[$pos] = $questionario->id;
+				$pos++;			
+			}
+			
+			//criamos aqui um questionario2 pq o questionario agora guarda os 
+			//valores das questoes e por isso nao e mais um questionario
+			
+			$questionario2 = new Questionario();
+			$questionario2->get($id);
+			$questionario2->remove('questoes', $ids_remover);
+			
+			//depois excluimos o questionario			
+			$questionario2->delete();
+			
 				
-			//definir uma mensagem aqui pra enviar pro cliente				
-			prepareSession($questionario, $action);
+			//session
+			
 			$page = "questionarios.php";
 			redirectTo($page);
 				
@@ -98,18 +134,24 @@ require "../Model/DAO/questionarioDAO.class.php";
 				$id = $_GET["id"];
 			}
 		
-			$questionarioDAO = new questionarioDAO();
+			$questionario = new Questionario();
+			$questionario->get($id);
+						
+			$_SESSION["action"] = $action;
+			$_SESSION["questionario"] = serialize($questionario);
+			//$_SESSION["mensagem"] = $mensagem;
 			
-			$questionario = $questionarioDAO->get($id);
-		
-			//definir uma mensagem aqui pra enviar pro cliente
-			prepareSession($questionario, $action);
+			//debug
+			//$x = $_SESSION["questionario"];
+			//echo "id: ".$x->getDescricao();
+			
 			$page = "questionario.php";
 			redirectTo($page);		
 		}
 		if($action == "save"){			
 			save();				
 		}
+		
 	}
 
 	/**
@@ -139,26 +181,28 @@ require "../Model/DAO/questionarioDAO.class.php";
 			$instrumento_id = $_POST["instrumento"];
 		}
 			
-		$questionario = new questionario();
+		$questionario = new Questionario();
 		$questionario->setId($id);
 		$questionario->setDescricao($descricao);
-		$questionario->setInstrumento_id($instrumento_id);
-			
-		$questionarioDAO = new questionarioDAO();
-		$status = $questionarioDAO->persiste($questionario);
-		$mensagem;	
-		if($status = true){
-			//cadastrado com sucesso
-			//exibir alguma mensagem aqui
-			$mensagem = "Cadastrado com Sucesso!";
-		}
+		$questionario->setInstrumentoId($instrumento_id);
+		$questionario->setDataCreate(date('Y-m-d H:i:s'));
+		$questionario->save();
+		
+// 		$questionarioDAO = new questionarioDAO();
+// 		$status = $questionarioDAO->persiste($questionario);
+// 		$mensagem;	
+// 		if($status = true){
+// 			//cadastrado com sucesso
+// 			//exibir alguma mensagem aqui
+// 			$mensagem = "Cadastrado com Sucesso!";
+// 		}
 			
 		prepareSession($questionario, $action, $mensagem);
 		$page = "questionarios.php";
 		redirectTo($page);
 	}
-
 	
+		
 	/**
 	 * @name prepareSession
 	 * @author Fabio Baía

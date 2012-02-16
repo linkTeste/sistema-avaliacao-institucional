@@ -30,9 +30,12 @@ class questaoDAO {
 	* @since 18/01/2012 15:54:15
 	* adiciona uma nova questao
 	**/
-	public function add(questao $questao) {
+	public function add(questao $questao, $questionario_id) {
 		$texto = $questao->getTexto();
 		$topico = $questao->getTopico();
+		
+		//pega o id do questionario
+		//$questionario_id = $questao->
 		
 		$data_criacao = date('Y-m-d H:i:s');
 		
@@ -45,7 +48,15 @@ class questaoDAO {
 
 		// Executando a SQL com os valores definidos com binding
 		$consultou = $stmt->execute();
-
+		
+		//pega o id da ultima questao cadastrada
+		$questao_id = $this->pdo->lastInsertId();		
+		//faz a insercao na tabela join
+		$stmt2 = $this->pdo->prepare("INSERT INTO ".$this->tableJoin." (questionario_id, questao_id) VALUES (:questionario_id, :questao_id)");
+		$stmt2->bindParam(":questionario_id", $questionario_id, PDO::PARAM_INT);
+		$stmt2->bindParam(":questao_id", $questao_id, PDO::PARAM_INT);
+		$consultou2 = $stmt2->execute();
+		
 		return true;
 
 	}

@@ -19,3 +19,24 @@ function datetime_to_ptbr($datetime) {
 	return date("d/m/Y H:i:s", mktime ($hr,$mi,$sg,$mo,$da,$yr));
 }
 
+/**
+* @name pegaImagem
+* @author Fabio Baía
+* @since 15/02/2012 16:54:42
+* retorna a url da imagem a ser exibida ou retorna a url da imagem padrao 
+**/
+function pegaImagem($id) {
+	//pega a imagem do ID pelo id ou usa uma imagem padrao
+	//usar o @ para suprimir o warning
+	$handle = @fopen("css/images/avatar/".$id.".jpg", "r");
+	
+		
+	if($handle == false){
+		//nao achou a imagem, entao usa a padrao
+		$img = "css/images/avatar/default.png";
+	}else{
+		//achou a imagem, entao usa ela
+		$img = "css/images/avatar/".$id.".jpg";
+	}
+	return $img;
+}
