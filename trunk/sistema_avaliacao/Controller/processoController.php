@@ -16,8 +16,7 @@ require '../lumine-conf.php';
 //inicializa a configuracao
 $cfg = new Lumine_Configuration( $lumineConfig );
 
-require_once '../system/application/models/dao/Questionario.php';
-require_once '../system/application/models/dao/Questao.php';
+require_once '../system/application/models/dao/ProcessoAvaliacao.php';
 
 //if (!isset($_SESSION)) {
 session_start();
@@ -36,8 +35,8 @@ session_start();
 	
 	$default_page = "home.php";
 
-	$questionario;
-	$questionarioDAO;
+	//$questionario;
+	//$questionarioDAO;
 
 	
 	processoController();
@@ -62,7 +61,9 @@ session_start();
 						
 			$processo = new ProcessoAvaliacao();
 			
-			prepareSession($questionario, $action);
+			$_SESSION["action"] = $action;
+			$_SESSION["processo"] = serialize($processo);
+			
 			$page = "processos.php";
 			redirectTo($page);
 		}
@@ -79,7 +80,7 @@ session_start();
 			$_SESSION["action"] = $action;
 			$_SESSION["processo"] = serialize($processo);
 			
-			$page = "processo.php";
+			$page = "processos.php";
 			redirectTo($page);
 			
 		}
@@ -89,7 +90,7 @@ session_start();
 				$id = $_GET["id"];
 			}
 		
-			$processo = new Processo;
+			$processo = new ProcessoAvaliacao();
 			$processo->get($id);
 			
 			//primeiro devemos remover as questoes do questionario
@@ -169,12 +170,16 @@ session_start();
 			}
 		}
 			
-		if(isset($_POST["inicio"])){
-			$inicio = $_POST["inicio"];
+		if(isset($_POST["descricao"])){
+			$descricao = $_POST["descricao"];
+		}
+		
+		if(isset($_POST["input-inicio"])){
+			$inicio = $_POST["input-inicio"];
 		}
 			
-		if(isset($_POST["fim"])){
-			$fim = $_POST["fim"];
+		if(isset($_POST["input-fim"])){
+			$fim = $_POST["input-fim"];
 		}
 			
 		$processo = new ProcessoAvaliacao();
