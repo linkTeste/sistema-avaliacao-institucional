@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "avaliacao"
- * in 2012-02-16
+ * in 2012-02-17
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
