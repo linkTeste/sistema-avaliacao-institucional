@@ -37,6 +37,10 @@ if(isset($_SESSION["turma"])){
 	$id_professor = $turma->getProfessorId();
 }
 
+if(isset($_SESSION["aluno"])){
+	$aluno = unserialize($_SESSION["aluno"]);
+}
+
 $professor = new Professor();
 $professor->get($id_professor);
 
@@ -60,9 +64,36 @@ $professor->get($id_professor);
 </head>
 
 <body>
+<div id="menu_usuario">
+		<ul>
+			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
+					Unicampo</a></li>
+			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
+					Unicampo</a></li>
+			<li id="username">Ol&aacute;, <?php echo $aluno->getNome();?> - <a
+				href="http://ca.faculdadeunicampo.edu.br/portaldoaluno/login.php?logout=true">Sair</a>
+			</li>
+			
+		</ul>
+	</div>
 <div id="wrapper" class="container">
-	<div id="header"></div>
+	<div id="header">
+		<div id="header_logo"></div>
+	</div>
     <div id="content">
+    <div id="menu">
+				<ul>
+					<li><a href="index.php" title="P&aacute;gina Inicial"
+						class="botao_left botaoGoogleGrey">P&aacute;gina Inicial</a></li>
+					<li><a href="avaliacoes.php" title="Avalia&ccedil;&otilde;es"
+						class="botao_left botaoGoogleGrey">Avalia&ccedil;&otilde;es</a></li>
+					<li><a href="#" title="Relat&oacute;rios"
+						class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
+					
+				</ul>
+			</div>     
+    
+    <br />
     	
         <div id="avaliacao_current">
            	<div class="div1"> 
@@ -145,7 +176,7 @@ $professor->get($id_professor);
         
         <!-- <span class="btn-comecar-avaliacao"><a href="../Controller/avaliacaoController.php?action=saveInDatabase&questionario_id=<?php //echo $questionario_id?>">Salvar Avaliação</a></span> -->
 <!--         <span class="btn-comecar-avaliacao"> -->
-        <input type="submit" value="Salvar" name="enviar" class="botaoGoogleBlue" style="margin-left: 440px;" />
+        <input type="submit" value="Salvar" name="enviar" class="botaoGoogleBlue" style="/*margin-left: 440px;*/margin-left: 47%;" />
         <br />
 <!--         </span> -->
         
@@ -188,7 +219,9 @@ $professor->get($id_professor);
 						         
 						         //alert('ID: ' + $(this).attr('id') + '\nscore: ' + score + '\nevent: ' + evt);						
 						},
-						width: 948/*,
+						width: 1202
+						/*width: 948
+						/*,
 						target:     '.target',
 						targetKeep: true,
 						targetType: 'number'*/

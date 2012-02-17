@@ -158,7 +158,14 @@ session_start();
 				$avaliacao->setAlunoRa($aluno->getRa());
 				
 				$avaliacao->save();
-// 				$avaliacao->insert();
+				
+				//marca o questionario como avaliado
+				//para que ele não seja excluido por alguem
+				$questionario = new Questionario();
+				$questionario->get($questionario_id);
+				$questionario->setAvaliado("Avaliado");
+				$questionario->save();
+
 			
 			}
 			
