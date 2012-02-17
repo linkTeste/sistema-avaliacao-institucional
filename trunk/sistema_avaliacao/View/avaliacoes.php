@@ -25,6 +25,7 @@ if(isset($_GET['status'])){
 	}
 }
 
+
 $aluno = unserialize($_SESSION["aluno"]);
 
 //È importante guardar o ra pois a cada nova consulta sql precisaremos de um 'novo' aluno
@@ -47,9 +48,9 @@ if(isset($_SESSION["periodo"])){
 // $aluno->get($ra);
 
 
-echo "Aluno: ".$aluno->getNome();
-echo "<br />";
-echo "RA: ".$aluno->getRa();
+// echo "Aluno: ".$aluno->getNome();
+// echo "<br />";
+// echo "RA: ".$aluno->getRa();
 
 // //pega dados do processo de avaliacao
 // $processo = new ProcessoAvaliacao();
@@ -88,7 +89,18 @@ echo "RA: ".$aluno->getRa();
 	
 	
 <?php } ?>
-	
+<div id="menu_usuario">
+		<ul>
+			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
+					Unicampo</a></li>
+			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
+					Unicampo</a></li>
+			<li id="username">Ol&aacute;, <?php echo $aluno->getNome();?> - <a
+				href="http://ca.faculdadeunicampo.edu.br/portaldoaluno/login.php?logout=true">Sair</a>
+			</li>
+			
+		</ul>
+	</div>
 <div id="wrapper" class="container">
 <?php if(isset($_GET['status'])){	?>
     <div id="status">
@@ -100,26 +112,40 @@ echo "RA: ".$aluno->getRa();
        	</div>
     </div>
 <?php } ?>
-	<div id="header"></div>
+	<div id="header">
+		<div id="header_logo"></div>
+	</div>
     <div id="content">
+    <div id="menu">
+				<ul>
+					<li><a href="index.php" title="P&aacute;gina Inicial"
+						class="botao_left botaoGoogleGrey">P&aacute;gina Inicial</a></li>
+					<li><a href="avaliacoes.php" title="Avalia&ccedil;&otilde;es"
+						class="botao_left botaoGoogleGrey">Avalia&ccedil;&otilde;es</a></li>
+					<li><a href="#" title="Relat&oacute;rios"
+						class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
+					
+				</ul>
+			</div>      
+    
     <br />
     	<h3>Avalia√ß√µes Pendentes</h3>
     	
     	<!-- avaliacao do curso -->
-    	<div id="avaliacao_box">
-    	<div class="div1">
-    	            	<div class="photo">
-    	<img src="css/images/avatar/foto_psicologia.jpg" alt="Curso de Psicologia" />
-    	            	</div>
-    	<div class="description">
-    	<h4><span>Curso:</span> Psicologia</h4>
-    	<h4><span>Coordenador:</span> Pedro Paulo Rodrigues Cardoso de Melo</h4>
-    	</div>
-    	</div>
+<!--     	<div id="avaliacao_box"> -->
+<!--     	<div class="div1"> -->
+<!--     	            	<div class="photo"> -->
+<!--     	<img src="css/images/avatar/foto_psicologia.jpg" alt="Curso de Psicologia" /> -->
+<!--     	            	</div> -->
+<!--     	<div class="description"> -->
+<!--     	<h4><span>Curso:</span> Psicologia</h4> -->
+<!--     	<h4><span>Coordenador:</span> Pedro Paulo Rodrigues Cardoso de Melo</h4> -->
+<!--     	</div> -->
+<!--     	</div> -->
 
-    	<a href="" class="botao_right margin_top25 botaoGoogleBlue">Avaliar</a>
+<!--     	<a href="" class="botao_right btn_avaliacao botaoGoogleBlue">Avaliar</a> -->
 
-    	        </div>
+<!--     	        </div> -->
     	        
     	<?php
     	$aluno = new Aluno();
@@ -195,9 +221,9 @@ echo "RA: ".$aluno->getRa();
     		<h4><span>Professor: </span><?php echo strtoupper(utf8_encode($professor->getNome())); ?></h4>
     		</div>
     		</div>
-<!--     		<span class="btn-avaliar"> -->
-    		<a href="../Controller/avaliacaoController.php?action=avaliar&turma=<?php echo $aluno->id_turma ?>"  title="Avaliar o professor" class="botao_right margin_top25 botaoGoogleBlue">Avaliar</a>
-<!--     		</span> -->
+
+    		<a href="../Controller/avaliacaoController.php?action=avaliar&turma=<?php echo $aluno->id_turma ?>"  title="Avaliar o professor" class="botao_right btn_avaliacao botaoGoogleBlue">Avaliar</a>
+
     		</div>
     		<?php 
     
@@ -262,7 +288,7 @@ echo "RA: ".$aluno->getRa();
     
     	}
     	if($aluno2->fetch() == ""){
-    		echo "Nenhuma avaliaÁ„o foi realizada ainda";
+    		echo "Nenhuma avalia&ccedil;&atilde;o foi realizada ainda";
     	}
     	
     	?>

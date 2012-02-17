@@ -52,7 +52,18 @@ if(isset($_SESSION["action"])){
 	
 	
 <?php } ?>
-	
+<div id="menu_usuario">
+		<ul>
+			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
+					Unicampo</a></li>
+			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
+					Unicampo</a></li>
+			<li id="username">Ol&aacute;, FABIO CEZAR BA&Iacute;A - <a
+				href="#">Sair</a>
+			</li>
+			
+		</ul>
+	</div>	
 <div id="wrapper" class="container">
 <?php if(($new == true) || $edit == true){	?>
     <div id="box">
@@ -152,8 +163,22 @@ if(isset($_SESSION["action"])){
        	</div>
     </div>-->
 <?php } ?>
-	<div id="header"></div>
+	<div id="header">
+		<div id="header_logo"></div>
+	</div>
     <div id="content">
+    <div id="menu">
+    <ul>
+    	<li><a href="#"  title="Usu&aacute;rios" class="botao_left botaoGoogleGrey">Usu&aacute;rios</a></li>
+    	<li><a href="#"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
+    	<li><a href="../View/questionarios.php"  title="Question&aacute;rios" class="botao_left botaoGoogleGrey">Question&aacute;rios</a></li>
+    	<li><a href="#"  title="Cursos e Turmas" class="botao_left botaoGoogleGrey">Cursos e Turmas</a></li>
+    	<li><a href="#"  title="Relat&oacute;rios" class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
+    	<li><a href="#"  title="Configura&ccedil;&otilde;es" class="botao_left botaoGoogleGrey">Configura&ccedil;&otilde;es</a></li>
+    	
+    </ul>    
+    </div>       
+    
     <br />
 
         <a href="../Controller/questionarioController.php?action=new"  title="Novo Questionário" class="botao_right botaoGoogleBlue">Novo Questionário</a>
@@ -168,7 +193,7 @@ if(isset($_SESSION["action"])){
                 	<th>ID</th>
                     <th>NOME</th>
                     <th>INSTRUMENTO</th>
-                    <th>CRIADO EM</th>
+                    <th>MODIFICADO EM</th>
                     <th colspan="2"></th>
                 </tr>
                 <?php

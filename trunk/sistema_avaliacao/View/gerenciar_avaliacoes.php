@@ -88,9 +88,22 @@ $curso_escolhido = "Psicologia";
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="js/jqtransformplugin/jqtransform.css" />
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jqtransformplugin/jquery.jqtransform.js"></script>
+<script type="text/javascript">
+	/*$(document).ready(function(){
+
+    $('#gerenciar_avaliacoes').jqTransform();
+    
+	});
+	*/
+</script>	
 
 </head>
 
@@ -116,11 +129,14 @@ $curso_escolhido = "Psicologia";
        	</div>
     </div>
 <?php } ?>
-	<div id="header"></div>
+	<div id="header">
+		<div id="header_logo"></div>
+	</div>
     <div id="content">
     <br />
     	<h3>Turmas do periodo letivo atual(2/2011)</h3>
     	<p>Para cada turma escolha o questionario que sera usado.</p>
+    	
 
 <!-- 		<select class="select_right" name="cursos"> -->
 <!--     		<option value="1">Psicologia</option> -->
@@ -130,7 +146,7 @@ $curso_escolhido = "Psicologia";
 <!--     		<option value="5">Gest�o de Cooperativas</option>	 -->
 <!--     	</select> -->
     	
-    	<form action="" method="post">
+    	<form action="" id="gerenciar_avaliacoes" method="post">
     	<?php
     	
     	
@@ -151,7 +167,7 @@ $curso_escolhido = "Psicologia";
     		<div id="avaliacao_box">
     		<div class="div700">
     		<div class="photo">
-    		<img src="css/images/avatar/<?php echo $professor->getId(); ?>.jpg" alt="Marco Antonio Facione Berbel" />
+    		<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="Foto do Professor" />
     		</div>
     		<div class="description">
     		<h4><span>Disciplina: </span><?php echo $turma->getIdTurma()." - ".utf8_encode($turma->getNomeDisciplina()); ?></h4>
@@ -159,7 +175,8 @@ $curso_escolhido = "Psicologia";
     		</div>
     		</div>
     		<input type="hidden" name="turmas[]" value="<?php echo $turma->getIdTurma(); ?>"></input>
-    		<select class="select_right" name="quest[]">
+    		<div id="select" class="botaoGoogleGrey">
+    		<select name="quest[]">
     			<option value="0">Selecione</option>
     			<?php 
     			
@@ -184,7 +201,7 @@ $curso_escolhido = "Psicologia";
     			?>
     			
     		</select>
-    		
+    		</div>
     		</div>
     		<?php 
     		
@@ -200,53 +217,6 @@ $curso_escolhido = "Psicologia";
         <input type="submit" value="Salvar" name="enviar" />
         </form>
         
-        
-<!--     	<div id="avaliacao_box"> -->
-<!--         	<div class="div1"> -->
-<!--             	<div class="photo"> -->
-<!--                 	<img src="images/avatar/foto_marco-antonio.jpg" alt="Marco Antonio Facione Berbel" /> -->
-<!--             	</div> -->
-<!--             	<div class="description"> -->
-<!--             		<h4><span>Disciplina:</span> Antropologia</h4> -->
-<!--             		<h4><span>Professor:</span> Marco Antonio Facione Berbel</h4>                 -->
-<!--             	</div> -->
-<!--             </div> -->
-<!--             <span class="btn-avaliar"><a href="avaliacao.php"  title="Avaliar o professor Marco Antonio Facione Berbel">Avaliar</a></span> -->
-<!--         </div> -->
-<!--         <div id="avaliacao_box"> -->
-<!--         	<div class="div1"> -->
-<!--             	<div class="photo"> -->
-<!--             	</div> -->
-<!--             	<div class="description"> -->
-<!--             		<h4><span>Disciplina:</span> Estágio Básico I</h4> -->
-<!--             		<h4><span>Professor:</span> Lucivani Soares Zanella</h4>                 -->
-<!--             	</div> -->
-<!--             </div> -->
-<!--             <span class="btn-avaliar"><a href="">Avaliar</a></span> -->
-<!--         </div> -->
-<!--         <div id="avaliacao_box"> -->
-<!--         	<div class="div1"> -->
-<!--             	<div class="photo"> -->
-<!--                 	<img src="images/avatar/foto_marco-antonio.jpg" alt="Marco Antonio Facione Berbel" /> -->
-<!--             	</div> -->
-<!--             	<div class="description"> -->
-<!--             		<h4><span>Disciplina:</span> Filosofia da Ciência</h4> -->
-<!--             		<h4><span>Professor:</span> Marco Antonio Facione Berbel</h4>                 -->
-<!--             	</div> -->
-<!--             </div> -->
-<!--             <span class="btn-avaliar"><a href="">Avaliar</a></span> -->
-<!--         </div> -->
-<!--         <div id="avaliacao_box"> -->
-<!--         	<div class="div1"> -->
-<!--             	<div class="photo"> -->
-<!--             	</div> -->
-<!--             	<div class="description"> -->
-<!--             		<h4><span>Disciplina:</span> Fundamentos Históricos e Epistemológicos da Psicologia</h4> -->
-<!--             		<h4><span>Professor:</span> Fabíola Batista Gomes Fírbida</h4>                 -->
-<!--             	</div> -->
-<!--             </div> -->
-<!--             <span class="btn-avaliar"><a href="">Avaliar</a></span> -->
-<!--         </div> -->
         
         <br />
        
