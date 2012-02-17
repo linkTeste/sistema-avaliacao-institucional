@@ -165,6 +165,12 @@ session_start();
 				$questionario->get($questionario_id);
 				$questionario->setAvaliado("Avaliado");
 				$questionario->save();
+				
+				//marca o processo de avaliacao como avaliado
+				//para que ele não seja excluido por alguem
+				//$processo = new ProcessoAvaliacao();
+				$processo->setAvaliado("Avaliado");
+				$processo->save();
 
 			
 			}

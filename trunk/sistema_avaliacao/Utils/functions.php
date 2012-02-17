@@ -19,6 +19,20 @@ function datetime_to_ptbr($datetime) {
 	return date("d/m/Y H:i:s", mktime ($hr,$mi,$sg,$mo,$da,$yr));
 }
 
+
+/**
+* @name date_to_ptbr
+* @author Fabio Baía
+* @since 17/02/2012 16:44:48
+* Converte um date do formato(Y/m/d) no formato brasileiro(d/m/Y)
+**/
+function date_to_ptbr($date) {
+	$yr=strval(substr($date,0,4));
+	$mo=strval(substr($date,5,2));
+	$da=strval(substr($date,8,2));
+	
+	return date("d/m/Y", mktime ($mo,$da,$yr));
+}
 /**
 * @name pegaImagem
 * @author Fabio Baía

@@ -19,15 +19,7 @@ if (!isset($_SESSION)) {
 }
 
 if(isset($_SESSION["questionario"])){
-	
-	if ($_SESSION['questionario'] instanceof Questionario) {
-		$questionario = $_SESSION["questionario"];
-	}
-	else{
-		$questionario = unserialize($_SESSION["questionario"]);
-	}
-	
-	
+	$questionario = unserialize($_SESSION["questionario"]);
 	$questionario_id = $questionario->getId();
 }
 
@@ -110,7 +102,7 @@ $professor->get($id_professor);
         
         <form name="form" method="post" action="../Controller/avaliacaoController.php" onsubmit="return verifica()">
         	<input  type="hidden" name="action" value="saveInDatabase"/>
-        	<input  type="hidden" name="questionario_id" value="<?php echo $questionario_id?>"/>
+        	<input  type="hidden" name="questionario_id" value="<?php echo $questionario_id;?>"/>
         	
         <div id="escala_conceitos">
         	<h3>Questões</h3>
@@ -185,7 +177,7 @@ $professor->get($id_professor);
     </div>
     <div id="footer">
         <hr />
-    	<p>&copy;2011 - Faculdade Unicampo - Todos os direitos reservados</p>
+    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
     </div>
 </div>
 

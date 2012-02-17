@@ -299,7 +299,7 @@ if(isset($_SESSION["periodo"])){
     </div>
     <div id="footer">
         <hr />
-    	<p>&copy;2011 - Faculdade Unicampo - Todos os direitos reservados</p>
+    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
     </div>
 </div>
 <?php 

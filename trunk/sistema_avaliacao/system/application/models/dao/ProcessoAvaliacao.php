@@ -17,6 +17,7 @@ class ProcessoAvaliacao extends Lumine_Base {
     public $inicio;
     public $fim;
     public $dataCriacao;
+    public $avaliado;
     public $avaliacoes = array();
     
     
@@ -101,6 +102,22 @@ class ProcessoAvaliacao extends Lumine_Base {
     	$this->dataCriacao = $value;
     }
     /**
+     * get avaliado
+     *
+     */
+    public function getAvaliado() {
+    	return $this->avaliado;
+    }
+    
+    /**
+     * set avaliado
+     * @param Type $value
+     *
+     */
+    public function setAvaliado($value) {
+    	$this->avaliado = $value;
+    }
+    /**
      * get avaliacoes
      *
      */
@@ -134,6 +151,7 @@ class ProcessoAvaliacao extends Lumine_Base {
         $this->metadata()->addField('inicio', 'inicio', 'date', null, array());
         $this->metadata()->addField('fim', 'fim', 'date', null, array());
         $this->metadata()->addField('dataCriacao', 'data_criacao', 'datetime', null, array());
+        $this->metadata()->addField('avaliado', 'avaliado', 'varchar', 45, array());
 
         
         $this->metadata()->addRelation('avaliacoes', Lumine_Metadata::ONE_TO_MANY, 'Avaliacao', 'processoAvaliacaoId', null, null, null);
