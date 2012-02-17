@@ -268,6 +268,7 @@ function verifica(){
 <?php 
 
 $_SESSION["turma"] = serialize($turma);
+$_SESSION["aluno"] = serialize($aluno);
 
 ?>
 </html>
