@@ -25,9 +25,9 @@ if (!isset($_SESSION)) {
 // $ra = "0011.03.10"; //Dirnei de Fátima - Serviço Social
 // $ra = "0245.03.11"; //Camila Larissa - Serviço Social
 // $ra = "0012.02.10"; //ELIANE DOS SANTOS - Enfermagem
-$ra = "0025.04.10"; //THIAGO GABRIEL MARCELINO - Tecnologia em Gestão de Cooperativas
+// $ra = "0025.04.10"; //THIAGO GABRIEL MARCELINO - Tecnologia em Gestão de Cooperativas
 // $ra = "0028.05.10"; //GREYCE DA COSTA VICENTE - TECNOLOGIA EM GESTÃO COMERCIAL
-// $ra = "0031.01.10"; //AMANDA INTROVINI DE CASTRO - Psicologia
+$ra = "0031.01.10"; //AMANDA INTROVINI DE CASTRO - Psicologia
 // $ra = "0100.01.10"; //ELIANE GUADAGNIN RAIS - Psicologia
 
 $aluno = new Aluno();
@@ -212,7 +212,7 @@ $periodo_atual = "2/2011";
 		</div>
 		<div id="footer">
 			<hr />
-			<p>&copy;2011 - Faculdade Unicampo - Todos os direitos reservados</p>
+			<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
 		</div>
 	</div>
 </body>

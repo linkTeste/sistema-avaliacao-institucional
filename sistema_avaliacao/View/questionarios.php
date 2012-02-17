@@ -170,7 +170,7 @@ if(isset($_SESSION["action"])){
     <div id="menu">
     <ul>
     	<li><a href="#"  title="Usu&aacute;rios" class="botao_left botaoGoogleGrey">Usu&aacute;rios</a></li>
-    	<li><a href="#"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
+    	<li><a href="../View/processos.php"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
     	<li><a href="../View/questionarios.php"  title="Question&aacute;rios" class="botao_left botaoGoogleGrey">Question&aacute;rios</a></li>
     	<li><a href="#"  title="Cursos e Turmas" class="botao_left botaoGoogleGrey">Cursos e Turmas</a></li>
     	<li><a href="#"  title="Relat&oacute;rios" class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
@@ -205,12 +205,12 @@ if(isset($_SESSION["action"])){
 						echo "<td><a href='../Controller/questionarioController.php?action=details&id=".$lista->getId()."' class='link2'>".$lista->getDescricao()."</a></td>";
 						echo "<td>".$lista->getInstrumentoId()."</td>";
 						echo "<td>".datetime_to_ptbr($lista->getDataCreate())."</td>";
-// 						echo "<td>".$lista->getDataCreate()."</td>";
-						echo "<td style='width: 10%'><a href='../Controller/questionarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Questionário'>Editar</a></td>";
-						
+												
 						if($lista->getAvaliado() == "Avaliado"){
 							echo "<td style='width: 10%'>&nbsp</td>";
+							echo "<td style='width: 10%'>&nbsp</td>";
 						}else{
+							echo "<td style='width: 10%'><a href='../Controller/questionarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Questionário'>Editar</a></td>";
 							echo "<td style='width: 10%'><a href='../Controller/questionarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Questionário'>Excluir</a></td>";
 						}
 						
@@ -242,7 +242,7 @@ if(isset($_SESSION["action"])){
     </div>
     <div id="footer">
         <hr />
-    	<p>&copy;2011 - Faculdade Unicampo - Todos os direitos reservados</p>
+    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
     </div>
 </div>
 </body>

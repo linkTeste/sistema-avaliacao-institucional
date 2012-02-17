@@ -162,7 +162,7 @@ $().ready(function() {
     <div id="menu">
     <ul>
     	<li><a href="#"  title="Usu&aacute;rios" class="botao_left botaoGoogleGrey">Usu&aacute;rios</a></li>
-    	<li><a href="#"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
+    	<li><a href="../View/processos.php"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
     	<li><a href="../View/questionarios.php"  title="Question&aacute;rios" class="botao_left botaoGoogleGrey">Question&aacute;rios</a></li>
     	<li><a href="#"  title="Cursos e Turmas" class="botao_left botaoGoogleGrey">Cursos e Turmas</a></li>
     	<li><a href="#"  title="Relat&oacute;rios" class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
@@ -248,7 +248,7 @@ $().ready(function() {
     </div>
     <div id="footer">
         <hr />
-    	<p>&copy;2011 - Faculdade Unicampo - Todos os direitos reservados</p>
+    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
     </div>
 </div>
 </body>

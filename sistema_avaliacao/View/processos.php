@@ -47,8 +47,14 @@ if(isset($_SESSION["action"])){
 
 
 
+
+
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
+	
+	
+	
+	
 	
 	
 <?php } ?>
@@ -81,14 +87,14 @@ if(isset($_SESSION["action"])){
         	$descricao = $processo->getDescricao();
         	$inicio = $processo->getInicio();
         	$fim = $processo->getFim();
-        	
+        	$processo_avaliado = $processo->getAvaliado();
         	}
       	}
 		?>
     		<form action="../Controller/processoController.php?action=save" id="form-questionario" method="post">
         	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
         	
-        	<label for="descricao">Descrição</label><br />
+        	<label for="descricao">Descri&ccedil;&atilde;o</label><br />
         	<input type="text" name="descricao" value="<?php echo $descricao;?>"/><br /><br /><br />
             
             <label for="input-inicio">Data inicial:</label><br />
@@ -131,7 +137,7 @@ if(isset($_SESSION["action"])){
     <div id="menu">
     <ul>
     	<li><a href="#"  title="Usu&aacute;rios" class="botao_left botaoGoogleGrey">Usu&aacute;rios</a></li>
-    	<li><a href="#"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
+    	<li><a href="../View/processos.php"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
     	<li><a href="../View/questionarios.php"  title="Question&aacute;rios" class="botao_left botaoGoogleGrey">Question&aacute;rios</a></li>
     	<li><a href="#"  title="Cursos e Turmas" class="botao_left botaoGoogleGrey">Cursos e Turmas</a></li>
     	<li><a href="#"  title="Relat&oacute;rios" class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
@@ -142,7 +148,7 @@ if(isset($_SESSION["action"])){
     
     <br />
 
-        <a href="../Controller/processoController.php?action=new"  title="Novo Processo de Avaliação" class="botao_right botaoGoogleBlue">Novo Processo</a>
+        <a href="../Controller/processoController.php?action=new"  title="Novo Processo de Avalia&ccedil;&atilde;o" class="botao_right botaoGoogleBlue">Novo Processo</a>
 
 		<br />
 		<br />
@@ -152,6 +158,7 @@ if(isset($_SESSION["action"])){
         	<table>
             	<tr>
                 	<th>ID</th>
+                    <th>NOME</th>
                     <th>DATA INICIAL</th>
                     <th>DATA FINAL</th>
                     <th>MODIFICADO EM</th>
@@ -163,12 +170,19 @@ if(isset($_SESSION["action"])){
 					while( $lista->fetch()) {
 						echo "<tr>";
 						echo "<td>".$lista->getId()."</td>";
-						echo "<td><a href='../Controller/processoController.php?action=details&id=".$lista->getId()."' class='link2'>".$lista->getInicio()."</a></td>";
-						echo "<td>".$lista->getFim()."</td>";
+						echo "<td>".$lista->getDescricao()."</td>";
+						echo "<td>".date_to_ptbr($lista->getInicio())."</td>";
+						echo "<td>".date_to_ptbr($lista->getFim())."</td>";
 						echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
 						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
-						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
-						echo "</tr>";
+						
+						if($processo_avaliado == "Avaliado"){
+    						echo "<td style='width: 10%'>&nbsp</td>";    						
+    					}
+    					else{
+    						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+    					}
+    					echo "</tr>";
 					}
                 
 					
@@ -196,7 +210,7 @@ if(isset($_SESSION["action"])){
     </div>
     <div id="footer">
         <hr />
-    	<p>&copy;2011 - Faculdade Unicampo - Todos os direitos reservados</p>
+    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
     </div>
 </div>
 </body>

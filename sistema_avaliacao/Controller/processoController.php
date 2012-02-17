@@ -184,6 +184,7 @@ session_start();
 			
 		$processo = new ProcessoAvaliacao();
 		$processo->setId($id);
+		$processo->setDescricao($descricao);
 		$processo->setInicio($inicio);
 		$processo->setFim($fim);
 		$processo->setDataCriacao(date('Y-m-d H:i:s'));
