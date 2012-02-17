@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "processo_avaliacao"
- * in 2012-02-16
+ * in 2012-02-17
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -13,6 +13,7 @@ class ProcessoAvaliacao extends Lumine_Base {
 
     
     public $id;
+    public $descricao;
     public $inicio;
     public $fim;
     public $dataCriacao;
@@ -34,6 +35,22 @@ class ProcessoAvaliacao extends Lumine_Base {
      */
     public function setId($value) {
     	$this->id = $value;
+    }
+    /**
+     * get descricao
+     *
+     */
+    public function getDescricao() {
+    	return $this->descricao;
+    }
+    
+    /**
+     * set descricao
+     * @param Type $value
+     *
+     */
+    public function setDescricao($value) {
+    	$this->descricao = $value;
     }
     /**
      * get inicio
@@ -113,6 +130,7 @@ class ProcessoAvaliacao extends Lumine_Base {
         # nome_do_membro, nome_da_coluna, tipo, comprimento, opcoes
         
         $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true, 'autoincrement' => true));
+        $this->metadata()->addField('descricao', 'descricao', 'varchar', 255, array());
         $this->metadata()->addField('inicio', 'inicio', 'date', null, array());
         $this->metadata()->addField('fim', 'fim', 'date', null, array());
         $this->metadata()->addField('dataCriacao', 'data_criacao', 'datetime', null, array());
