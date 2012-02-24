@@ -7,6 +7,7 @@ require '../lumine-conf.php';
 $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Questionario.php';
+require_once '../system/application/models/dao/Usuario.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -24,8 +25,16 @@ if(isset($_SESSION["action"])){
 	$_SESSION["action"] = null;
 }
 
+if(isset($_SESSION["s_usuario_logado"])){
+	$str = $_SESSION["s_usuario_logado"];
+	if($str instanceof Usuario){
+		$usuario_logado = $str;
+	}else{
+		$usuario_logado = unserialize($_SESSION["s_usuario_logado"]);
+	}
+}
 
-//$questionarioDAO = new questionarioDAO();
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,8 +67,8 @@ if(isset($_SESSION["action"])){
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, FABIO CEZAR BA&Iacute;A - <a
-				href="#">Sair</a>
+			<li id="username">Ol&aacute;, <?php echo $usuario_logado->getNome();?> - <a
+				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>

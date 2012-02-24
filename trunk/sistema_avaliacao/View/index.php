@@ -27,11 +27,11 @@ if (!isset($_SESSION)) {
 // $ra = "0012.02.10"; //ELIANE DOS SANTOS - Enfermagem
 // $ra = "0025.04.10"; //THIAGO GABRIEL MARCELINO - Tecnologia em Gestão de Cooperativas
 // $ra = "0028.05.10"; //GREYCE DA COSTA VICENTE - TECNOLOGIA EM GESTÃO COMERCIAL
-$ra = "0031.01.10"; //AMANDA INTROVINI DE CASTRO - Psicologia
+// $ra = "0031.01.10"; //AMANDA INTROVINI DE CASTRO - Psicologia
 // $ra = "0100.01.10"; //ELIANE GUADAGNIN RAIS - Psicologia
 
-$aluno = new Aluno();
-$aluno->get($ra);
+// $aluno = new Aluno();
+// $aluno->get($ra);
 
 
 // echo "Aluno: ".$aluno->getNome();
@@ -39,11 +39,23 @@ $aluno->get($ra);
 // echo "RA: ".$aluno->getRa();
 
 //pega dados do processo de avaliacao
-$processo = new ProcessoAvaliacao();
-$processo->get(1);
+// $processo = new ProcessoAvaliacao();
+// $processo->get(1);
 
 //periodo letivo atual pra limitar a listagem de turmas
-$periodo_atual = "2/2011";
+// $periodo_atual = "2/2011";
+
+if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
+	$str = $_SESSION["s_aluno"];
+	if($str instanceof Aluno){
+		$aluno = $str;		
+	}else{
+		$aluno = unserialize($_SESSION["s_aluno"]);		
+	}	
+}else{
+	//sessao expirou, redireciona pro login
+	header("Location: login.php");
+}
 
 
 
@@ -74,7 +86,7 @@ $periodo_atual = "2/2011";
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
 			<li id="username">Ol&aacute;, <?php echo $aluno->getNome();?> - <a
-				href="http://ca.faculdadeunicampo.edu.br/portaldoaluno/login.php?logout=true">Sair</a>
+				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
@@ -222,9 +234,9 @@ $periodo_atual = "2/2011";
 
 <?php 
 
-$_SESSION["aluno"] = serialize($aluno);
-$_SESSION["processo"] = serialize($processo);
-$_SESSION["periodo"] = "2/2011";
+// $_SESSION["aluno"] = serialize($aluno);
+// $_SESSION["processo"] = serialize($processo);
+// $_SESSION["periodo"] = "2/2011";
 
 ?>
 </html>

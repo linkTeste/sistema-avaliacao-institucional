@@ -6,7 +6,6 @@ require '../lumine-conf.php';
 //inicializa a configuracao
 $cfg = new Lumine_Configuration( $lumineConfig );
 
-require_once '../system/application/models/dao/ProcessoAvaliacao.php';
 require_once '../system/application/models/dao/Usuario.php';
 require '../Utils/functions.php';
 
@@ -34,6 +33,7 @@ if(isset($_SESSION["s_usuario_logado"])){
 	}
 }
 
+
 //fazer isso no index do admin
 //pega dados do processo de avaliacao
 // $processo = new ProcessoAvaliacao();
@@ -46,7 +46,7 @@ if(isset($_SESSION["s_usuario_logado"])){
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Sistema de Avaliação Institucional - Questionários</title>
+<title>Sistema de Avaliação Institucional - Usu&aacute;rios</title>
 <link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
@@ -65,11 +65,7 @@ if(isset($_SESSION["s_usuario_logado"])){
 
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
-	
-	
-	
-	
-	
+		
 	
 <?php } ?>
 <div id="menu_usuario">
@@ -92,31 +88,33 @@ if(isset($_SESSION["s_usuario_logado"])){
 		$descricao = "";
       	//if($edit == true){
       	
-      		if(isset($_SESSION["processo"])){
+      		if(isset($_SESSION["s_usuario"])){
         	//$questionario = new questionario;
-        	$processo = unserialize($_SESSION["processo"]);
+        	$usuario = unserialize($_SESSION["s_usuario"]);
         	//debug
         	//print_r($questionario);
-        	$id = $processo->getId();
-        	$descricao = $processo->getDescricao();
-        	$inicio = $processo->getInicio();
-        	$fim = $processo->getFim();
         	
+        	//$usuario = new Usuario();
+        	
+        	$id = $usuario->getId();
+        	$nome = $usuario->getNome();
+        	$login = $usuario->getLogin();
+        	$email = $usuario->getEmail();        	        	
         	
         	}
       	//}
 		?>
-    		<form action="../Controller/processoController.php?action=save" id="form-questionario" method="post">
-        	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
+    		<form action="../Controller/usuarioController.php?action=save" id="form-questionario" method="post">
+        	<input type="hidden" name="id" value="<?php echo $id;?>"/>
         	
-        	<label for="descricao">Descri&ccedil;&atilde;o</label><br />
-        	<input type="text" name="descricao" value="<?php echo $descricao;?>"/><br /><br /><br />
+        	<label for="nome">Nome:</label><br />
+        	<input type="text" name="nome" value="<?php echo $nome;?>"/><br /><br /><br />
             
-            <label for="input-inicio">Data inicial:</label><br />
-			<input type="text" name="input-inicio" value="<?php echo $inicio;?>"/><br /><br /><br />
+            <label for="login">Login:</label><br />
+			<input type="text" name="login" value="<?php echo $login;?>"/><br /><br /><br />
             
-            <label for="input-fim">Data final:</label><br />
-            <input type="text" name="input-fim" value="<?php echo $fim;?>"/><br /><br /><br />
+            <label for="email">Email:</label><br />
+            <input type="text" name="email" value="<?php echo $email;?>"/><br /><br /><br />
             <br /><br />
             
                     
@@ -163,39 +161,39 @@ if(isset($_SESSION["s_usuario_logado"])){
     
     <br />
 
-        <a href="../Controller/processoController.php?action=new"  title="Novo Processo de Avalia&ccedil;&atilde;o" class="botao_right botaoGoogleBlue">Novo Processo</a>
+        <a href="../Controller/usuarioController.php?action=new"  title="Novo Usu&aacute;rio" class="botao_right botaoGoogleBlue">Novo Usu&aacute;rio</a>
 
 		<br />
 		<br />
-        <h3>Processos de Avalia&ccedil;&atilde;o Cadastrados</h3>
+        <h3>Usu&aacute;rios Cadastrados</h3>
         
         <div id="questionarios">
         	<table>
             	<tr>
                 	<th>ID</th>
                     <th>NOME</th>
-                    <th>DATA INICIAL</th>
-                    <th>DATA FINAL</th>
+                    <th>LOGIN</th>
+                    <th>EMAIL</th>
                     <th>MODIFICADO EM</th>
                     <th colspan="2"></th>
                 </tr>
                 <?php
-                	$lista = new ProcessoAvaliacao();
+                	$lista = new Usuario();
                 	$lista->find();
 					while( $lista->fetch()) {
 						echo "<tr>";
 						echo "<td>".$lista->getId()."</td>";
-						echo "<td>".$lista->getDescricao()."</td>";
-						echo "<td>".date_to_ptbr($lista->getInicio())."</td>";
-						echo "<td>".date_to_ptbr($lista->getFim())."</td>";
-						echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
-						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
+						echo "<td>".$lista->getNome()."</td>";
+						echo "<td>".$lista->getLogin()."</td>";
+						echo "<td>".$lista->getEmail()."</td>";
+						//echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
+						echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
 						
 						if($processo_avaliado == "Avaliado"){
     						echo "<td style='width: 10%'>&nbsp</td>";    						
     					}
     					else{
-    						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+    						echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
     					}
     					echo "</tr>";
 					}

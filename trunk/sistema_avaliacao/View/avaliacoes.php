@@ -26,21 +26,32 @@ if(isset($_GET['status'])){
 }
 
 
-$aluno = unserialize($_SESSION["aluno"]);
+// $aluno = unserialize($_SESSION["s_aluno"]);
+if(isset($_SESSION["s_aluno"])){
+	$str = $_SESSION["s_aluno"];
+	if($str instanceof Aluno){
+		$aluno = $str;
+	}else{
+		$aluno = unserialize($_SESSION["s_aluno"]);
+	}
+	
+	//é importante guardar o ra pois a cada nova consulta sql precisaremos de um 'novo' aluno
+	//e para obter o 'novo' aluno precisamos do ra dele
+	$ra = $aluno->getRa();
+}
 
-//é importante guardar o ra pois a cada nova consulta sql precisaremos de um 'novo' aluno
-//e para obter o 'novo' aluno precisamos do ra dele
-$ra = $aluno->getRa();
 
-if(isset($_SESSION["periodo"])){
-	$periodo_atual = $_SESSION["periodo"];
+
+if(isset($_SESSION["s_periodo"])){
+	$periodo_atual = $_SESSION["s_periodo"];
+	echo "periodo: ".$periodo_atual;
 }else{
 	header("Location: index.php");
 }
 
 // //pegar dados ficticios de aluno
 
-// // $ra = "0003.01.10"; //Ilson Gomes Psicologia
+// $ra = "0003.01.10"; //Ilson Gomes Psicologia
 // // $ra = "0011.03.10"; //Dirnei de Fátima Serviço Social
 // $ra = "0245.03.11"; //Camila Larissa
 
@@ -96,7 +107,7 @@ if(isset($_SESSION["periodo"])){
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
 			<li id="username">Ol&aacute;, <?php echo $aluno->getNome();?> - <a
-				href="http://ca.faculdadeunicampo.edu.br/portaldoaluno/login.php?logout=true">Sair</a>
+				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
@@ -148,6 +159,7 @@ if(isset($_SESSION["periodo"])){
 <!--     	        </div> -->
     	        
     	<?php
+    	    	
     	$aluno = new Aluno();
     	$aluno->get($ra);
     	
@@ -158,16 +170,23 @@ if(isset($_SESSION["periodo"])){
     	// une as classes
     	$aluno->join($t,'INNER','t');
     	
-    	$aluno->join($av, 'RIGHT', 'av');
-    	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
-    	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
     	
+    	$aluno->join($av, 'INNER', 'av');
+    	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
+    	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av where av.alunoRa = '".$ra."')");
+    	
+    	//todos alunos
+//     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
+//     	$aluno->where("t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
+    	    	
     	$aluno->groupBy("t.idTurma");
     	 
     	// recupera os registros
     	$aluno->find();
     	
+    	
     	if($aluno->fetch() == ""){
+    	
     		//é necessario pegar dados do aluno NOVAMENTE
     		$aluno = new Aluno();
 			$aluno->get($ra);
@@ -184,22 +203,9 @@ if(isset($_SESSION["periodo"])){
     		$aluno->groupBy("t1.idTurma");
     	}
     	
-    	$aluno->find();
+    	$qtd = $aluno->find();
+//     	echo $qtd;
     	
-    	// seleciona os dados desejados
-    	//$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
-    	
-    	//$aluno->where("t.periodoLetivo = '".$periodo_atual."'");
-    	
-//     	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
-//     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
-//     	$aluno->where("t.periodoLetivo = '".$periodo_atual."'");
-    	
-//     	//agrupamos para não listar as avaliacoes de cada questao
-//     	$aluno->groupBy("t.idTurma");
-    	
-//     	// recupera os registros
-//     	$aluno->find();
     	
     	while( $aluno->fetch() ) {
     		//pega o id do professor
@@ -304,7 +310,7 @@ if(isset($_SESSION["periodo"])){
 </div>
 <?php 
 
-$_SESSION["aluno"] = serialize($aluno);
+//$_SESSION["aluno"] = serialize($aluno);
 // $_SESSION["processo"] = serialize($processo);
 ?>
 </body>

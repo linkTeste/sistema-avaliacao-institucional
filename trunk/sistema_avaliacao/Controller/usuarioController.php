@@ -16,39 +16,35 @@ require '../lumine-conf.php';
 //inicializa a configuracao
 $cfg = new Lumine_Configuration( $lumineConfig );
 
-require_once '../system/application/models/dao/Questionario.php';
-require_once '../system/application/models/dao/Questao.php';
+require_once '../system/application/models/dao/Usuario.php';
 
 //if (!isset($_SESSION)) {
 session_start();
 //}
 
 /**
- * @name questionarioController
+ * @name processoController
  * @author Fabio Baía
  * @since 12/01/2012
  * controller do questionario - responsável por tratar as requisições via get, post ou session.
  * Controla o fluxo da aplicação definindo qual página chamar de acordo com a action recebida.
  **/
-//class questionarioController {
+//class processoController {
 	$action;
 	$page;
 	
 	$default_page = "home.php";
 
-	$questionario;
-	$questionarioDAO;
-
-	
-	questionarioController();
+		
+	usuarioController();
 
 	/**
-	 * @name questionarioController
+	 * @name usuarioController
 	 * @author Fabio Baía
-	 * @since 12/01/2012
+	 * @since 23/02/2012 15:14:49
 	 * função que verifica a action e direciona para a action específica
 	 **/
-	function questionarioController() {
+	function usuarioController() {
 		//fazer o tratamento aqui da codificacao utf-8, iso, etc
 		if(isset($_POST["action"])){
 			$action = $_POST["action"];
@@ -59,15 +55,13 @@ session_start();
 		}
 
 		if($action == "new"){
-			//redireciona para pagina de cadastro
-			//echo "aqui eu coloco um avariável na sessão indicando q é pra mostrar o form de cadastro";
+						
+			$usuario = new Usuario();
 			
-			//como vou tentar fazer tudo em uma view só a action definira quais partes da view devem ser mostradas
+			$_SESSION["action"] = $action;
+			$_SESSION["s_usuario"] = serialize($usuario);
 			
-			$questionario = new questionario();
-			
-			prepareSession($questionario, $action);
-			$page = "questionarios.php";
+			$page = "usuarios.php";
 			redirectTo($page);
 		}
 		if($action == "edit"){
@@ -76,14 +70,14 @@ session_start();
 				$id = $_GET["id"];
 			}
 						
-			$questionario = new Questionario();
-			$questionario->get($id);
+			$usuario = new Usuario();
+			$usuario->get($id);
 			
 						
 			$_SESSION["action"] = $action;
-			$_SESSION["questionario"] = serialize($questionario);
+			$_SESSION["s_usuario"] = serialize($usuario);
 			
-			$page = "questionarios.php";
+			$page = "usuarios.php";
 			redirectTo($page);
 			
 		}
@@ -93,38 +87,16 @@ session_start();
 				$id = $_GET["id"];
 			}
 		
-			$questionario = new Questionario();
-			$questionario->get($id);
-			
-			//primeiro devemos remover as questoes do questionario
-			
-			$questionario->alias('q');
-			$q = new Questao();
-			$questionario->join($q,'INNER','qu');
-			$questionario->select("qu.id, qu.texto, qu.topico");
-			$questionario->find();
-			 
-			$pos = 0;
-			$ids_remover = array();
-			while( $questionario->fetch() ) {
-				$ids_remover[$pos] = $questionario->id;
-				$pos++;			
-			}
-			
-			//criamos aqui um questionario2 pq o questionario agora guarda os 
-			//valores das questoes e por isso nao e mais um questionario
-			
-			$questionario2 = new Questionario();
-			$questionario2->get($id);
-			$questionario2->remove('questoes', $ids_remover);
-			
-			//depois excluimos o questionario			
-			$questionario2->delete();
+			$usuario = new Usuario();
+			$usuario->get($id);
 			
 				
-			//session
+			$usuario->delete();
 			
-			$page = "questionarios.php";
+			//colocar mensagem de sucesso na sessao
+			
+					
+			$page = "usuarios.php";
 			redirectTo($page);
 				
 		}
@@ -134,18 +106,18 @@ session_start();
 				$id = $_GET["id"];
 			}
 		
-			$questionario = new Questionario();
-			$questionario->get($id);
+			$processo = new ProcessoAvaliacao();
+			$processo->get($id);
 						
 			$_SESSION["action"] = $action;
-			$_SESSION["s_questionario"] = serialize($questionario);
+			$_SESSION["processo"] = serialize($processo);
 			//$_SESSION["mensagem"] = $mensagem;
 			
 			//debug
 			//$x = $_SESSION["questionario"];
 			//echo "id: ".$x->getDescricao();
 			
-			$page = "questionario.php";
+			$page = "processo.php";
 			redirectTo($page);		
 		}
 		if($action == "save"){			
@@ -162,9 +134,10 @@ session_start();
 	 **/
 	function save() {
 		$id;
-		$descricao;
-		$instrumento_id;
-		
+		$nome;
+		$login;
+		$email;
+				
 		if(isset($_POST["id"])){
 			if($_POST["id"] == ""){
 				$id = 0;
@@ -173,32 +146,35 @@ session_start();
 			}
 		}
 			
-		if(isset($_POST["description"])){
-			$descricao = $_POST["description"];
+		if(isset($_POST["nome"])){
+			$nome = $_POST["nome"];
 		}
-			
-		if(isset($_POST["instrumento"])){
-			$instrumento_id = $_POST["instrumento"];
-		}
-			
-		$questionario = new Questionario();
-		$questionario->setId($id);
-		$questionario->setDescricao($descricao);
-		$questionario->setInstrumentoId($instrumento_id);
-		$questionario->setDataCreate(date('Y-m-d H:i:s'));
-		$questionario->save();
 		
-// 		$questionarioDAO = new questionarioDAO();
-// 		$status = $questionarioDAO->persiste($questionario);
-// 		$mensagem;	
-// 		if($status = true){
-// 			//cadastrado com sucesso
-// 			//exibir alguma mensagem aqui
-// 			$mensagem = "Cadastrado com Sucesso!";
-// 		}
+		if(isset($_POST["login"])){
+			$login = $_POST["login"];
+		}
 			
-		prepareSession($questionario, $action, $mensagem);
-		$page = "questionarios.php";
+		if(isset($_POST["email"])){
+			$email = $_POST["email"];
+		}
+			
+		$usuario = new Usuario();
+		$usuario->setId($id);
+		$usuario->setNome($nome);
+		$usuario->setLogin($login);
+		$usuario->setEmail($email);
+		
+		//fazer isso depois
+		//$usuario->setDataCriacao(date('Y-m-d H:i:s'));
+		$usuario->save();
+
+			
+		$_SESSION["action"] = $action;
+		$_SESSION["s_processo"] = $processo;
+		$_SESSION["s_mensagem"] = $mensagem;
+		
+		
+		$page = "usuarios.php";
 		redirectTo($page);
 	}
 	

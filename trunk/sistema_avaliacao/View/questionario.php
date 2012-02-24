@@ -10,7 +10,7 @@ $cfg = new Lumine_Configuration( $lumineConfig );
 require_once '../system/application/models/dao/Questionario.php';
 require_once '../system/application/models/dao/Questao.php';
 require_once '../system/application/models/dao/Avaliacao.php';
-// require_once '../system/application/models/dao/QuestionarioHasQuestao.php';
+require_once '../system/application/models/dao/Usuario.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -30,6 +30,28 @@ if(isset($_SESSION["action"])){
 	}
 	
 	$_SESSION["action"] = null;
+}
+
+
+if(isset($_SESSION["s_usuario_logado"])){
+	$str = $_SESSION["s_usuario_logado"];
+	if($str instanceof Usuario){
+		$usuario_logado = $str;
+	}else{
+		$usuario_logado = unserialize($_SESSION["s_usuario_logado"]);
+	}
+}
+
+if(isset($_SESSION["s_questionario"])){
+	$str = $_SESSION["s_questionario"];
+	if($str instanceof Questionario){
+		$questionario = $str;
+	}else{
+		$questionario = unserialize($_SESSION["s_questionario"]);
+	}
+	
+	$questionario_id = $questionario->getId();
+	$questionario_avaliado = $questionario->getAvaliado();
 }
 
 
@@ -72,13 +94,6 @@ $().ready(function() {
 
 <body>
 
-<?php
-    	if(isset($_SESSION["questionario"])){
-    		$questionario = unserialize($_SESSION["questionario"]);
-    		$questionario_id = $questionario->getId();    
-    		$questionario_avaliado = $questionario->getAvaliado();
-    	}
-    ?>
 
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
@@ -93,8 +108,8 @@ $().ready(function() {
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, FABIO CEZAR BA&Iacute;A - <a
-				href="#">Sair</a>
+			<li id="username">Ol&aacute;, <?php echo $usuario_logado->getNome();?> - <a
+				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
