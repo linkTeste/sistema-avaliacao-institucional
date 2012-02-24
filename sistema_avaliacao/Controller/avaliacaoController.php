@@ -78,8 +78,8 @@ session_start();
 			$questionario->get($questionario_id);
 			
 			
-			$_SESSION["turma"] = serialize($turma);
-			$_SESSION["questionario"] = serialize($questionario);
+			$_SESSION["s_turma"] = serialize($turma);
+			$_SESSION["s_questionario"] = serialize($questionario);
 			
 			
 			$page = "avaliacao.php";
@@ -134,11 +134,11 @@ session_start();
 			
 			
 			$questoesNotas = $_SESSION["questoesNotas"];
-			$aluno = unserialize($_SESSION["aluno"]);
+			$aluno = unserialize($_SESSION["s_aluno"]);
 			//print_r($questoesNotas);
 			
-			$processo = unserialize($_SESSION["processo"]);
-			$turma = unserialize($_SESSION["turma"]);
+			$processo = unserialize($_SESSION["s_processo"]);
+			$turma = unserialize($_SESSION["s_turma"]);
 			
 			foreach ($questoesNotas as $qn){
 				$q = $qn[question_id];
@@ -195,7 +195,7 @@ session_start();
 			//zera o array de questoes respondidas da sessao
 			$_SESSION["questoesNotas"] = null;
 			
-			$_SESSION["message"] = "Avaliação realizada com sucesso!";
+			$_SESSION["s_message"] = "Avaliação realizada com sucesso!";
 			$page = "avaliacoes.php";
 			redirectTo($page);
 				
@@ -205,7 +205,50 @@ session_start();
 		
 	}
 
-	
+	/**
+	* @name getAvaliacoes
+	* @author Fabio Baía
+	* @since 23/02/2012 12:23:00
+	* função nao utilizada ate agora
+	**/
+	function getAvaliacoes($ra) {
+			
+		$aluno = new Aluno();
+		$aluno->get($ra);
+		
+		$aluno->getTurmas();
+		 
+// 		$aluno->alias('a');
+		 
+// 		$t = new Turma();
+// 		$av = new Avaliacao();
+// 		// une as classes
+// 		$aluno->join($t,'INNER','t');
+		 
+// 		$aluno->join($av, 'INNER', 'av');
+// 		$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
+// 		$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
+		 
+// 		$aluno->groupBy("t.idTurma");
+		
+// 		// recupera os registros
+// 		$aluno->find();
+
+		while( $aluno->fetch() ) {
+			//pega o id do professor
+		
+// 			$id_professor = $aluno->professor_id;
+		
+// 			//pega o professor
+// 			$professor = new Professor();
+// 			$professor->get($id_professor);
+echo $aluno->getRa();
+		
+			
+		}
+		
+		
+	}
 	
 		
 	/**

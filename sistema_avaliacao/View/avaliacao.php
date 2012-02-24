@@ -18,19 +18,27 @@ if (!isset($_SESSION)) {
 	session_start();
 }
 
-if(isset($_SESSION["questionario"])){
-	$questionario = unserialize($_SESSION["questionario"]);
+if(isset($_SESSION["s_questionario"])){
+	$questionario = unserialize($_SESSION["s_questionario"]);
 	$questionario_id = $questionario->getId();
 }
 
 $id_professor;
-if(isset($_SESSION["turma"])){
-	$turma = unserialize($_SESSION["turma"]);
+if(isset($_SESSION["s_turma"])){
+	$turma = unserialize($_SESSION["s_turma"]);
 	$id_professor = $turma->getProfessorId();
 }
 
-if(isset($_SESSION["aluno"])){
-	$aluno = unserialize($_SESSION["aluno"]);
+// if(isset($_SESSION["aluno"])){
+// 	$aluno = unserialize($_SESSION["aluno"]);
+// }
+if(isset($_SESSION["s_aluno"])){
+	$str = $_SESSION["s_aluno"];
+	if($str instanceof Aluno){
+		$aluno = $str;
+	}else{
+		$aluno = unserialize($_SESSION["s_aluno"]);
+	}
 }
 
 $professor = new Professor();
@@ -63,7 +71,7 @@ $professor->get($id_professor);
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
 			<li id="username">Ol&aacute;, <?php echo $aluno->getNome();?> - <a
-				href="http://ca.faculdadeunicampo.edu.br/portaldoaluno/login.php?logout=true">Sair</a>
+				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>

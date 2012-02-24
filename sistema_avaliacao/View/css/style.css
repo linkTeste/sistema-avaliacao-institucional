@@ -1038,3 +1038,102 @@ table td,table th {
 #menu_usuario ul li#username {
 	float: right;
 }
+
+/*--------------------------- LOGIN ----------------------------------*/
+#content_login {
+margin: 0 auto;
+width: 350px;
+margin-top: 120px;
+}
+
+#content_login img {
+position: relative;
+left: 55px;
+margin-bottom: 10px;
+}
+
+#form_login {
+margin: 0 auto;
+width: 340px;
+padding: 20px;
+background: white;
+border: 1px solid #E5E5E5;
+-moz-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+-webkit-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+-khtml-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+}
+
+#content_login #form_login input[type="text"], #content_login #form_login input[type="password"], #content_login #form_login select {
+font-size: 22px;
+color: #333;
+width: 97%;
+padding: 3px;
+margin-top: 2px;
+margin-right: 6px;
+margin-bottom: 16px;
+border: 1px solid #E5E5E5;
+background: #FBFBFB;
+outline: none;
+-moz-box-shadow: inset 1px 1px 2px rgba(200,200,200,0.2);
+-webkit-box-shadow: inset 1px 1px 2px rgba(200,200,200,0.2);
+box-shadow: inset 1px 1px 2px rgba(200,200,200,0.2);
+}
+
+#content_login #form_login input[type="submit"], #content_login #form_login input[type="reset"] {
+width: 95px;
+height: 30px;
+border: 1px solid #D4D4D4;
+color: #333;
+-moz-box-shadow: inset 1px 1px 2px rgba(200,200,200,0.2);
+-webkit-box-shadow: inset 1px 1px 2px rgba(200,200,200,0.2);
+box-shadow: inset 1px 1px 2px rgba(200,200,200,0.2);
+
+display: inline;
+}
+
+a#recupera_senha {
+color: #900;
+text-decoration: none;
+text-align: center;
+margin-left: 40%;
+}
+
+a#recupera_senha:hover {
+color: #C00;
+text-decoration: underline;
+}
+
+.button_bar {
+width: 200px;
+margin: 0 auto;
+}
+
+/*-------------------- MSGs -------------------------------------------*/
+#msg, #msg_error{
+	margin: 0 auto;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	width: 380px;
+	margin-bottom: 10px;
+	color: #333;
+	font-family: sans-serif;
+	font-size: 12px;
+	
+	padding-top: 15px;
+}
+
+#msg{
+	background: #fffedf;
+	border: 1px solid #d8dc99;	
+}
+#msg_error{
+	background: #ffece8;
+	border: 1px solid #C00;
+}
+
+#msg h3, #msg_error h3{
+	padding-left: 20px;
+	font-weight: normal;
+}
