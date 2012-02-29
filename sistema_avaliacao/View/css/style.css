@@ -113,7 +113,8 @@
 .star_escala ul li {
 	display: block;
 	float: left;
-	height: 50px;
+	/*height: 50px;*/
+	height: 40px;
 	width: 35px;
 	text-align: center;
 	padding: 5px;
@@ -942,6 +943,15 @@ tbody tr:hover {
 
 table td,table th {
 	border-bottom: 1px solid #cdcdcd;
+}
+
+/*------------------TABLE ACCORDION ------------------------------*/
+#accordion table {
+background: #fff;
+}
+#accordion table tbody tr th {
+background: #666;
+color: white;
 }
 
 /*--------------------- SELECT -------------------------------*/
