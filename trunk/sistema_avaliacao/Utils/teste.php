@@ -375,10 +375,11 @@ function importaTurmas2(){
 	//o mesmo q a linha de cima mas de forma otimizada
 	//  $sql = "SELECT TOP 4000 d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC";
     
-		$sql = "SELECT d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 0, 1000";
-// 		$sql = "SELECT d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 1000, 2000";
-// 		$sql = "SELECT d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 2000, 3000";
-// 		$sql = "SELECT d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 3000, 4000";
+		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 0, 500";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 0, 1000";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 1000, 2000";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 2000, 3000";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 3000, 4000";
 	$query = mysql_query($sql,$conexaoAcademico) or die(mysql_error());
 	//Percorre os campos da tabela
 	$i = 0;
@@ -387,12 +388,15 @@ function importaTurmas2(){
 	while ($dados = mysql_fetch_assoc($query)) {
 		$id_turma = $dados["cod_turma"];
 		$ra_aluno = $dados["ra"];
+		$serie_turma = $dados["serie"];
 		echo $id_turma;
 		echo "<br />";
 
 		$turma = new Turma();
 		$turma->get($id_turma);
-
+		
+		//adiciona a serie na turma e atualiza
+		//$turma->set
 		$aluno = new Aluno();
 		$aluno->get($ra_aluno);
 

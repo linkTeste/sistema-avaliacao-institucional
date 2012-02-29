@@ -19,6 +19,7 @@ $cfg = new Lumine_Configuration( $lumineConfig );
 require_once '../system/application/models/dao/Questionario.php';
 require_once '../system/application/models/dao/Questao.php';
 require_once '../system/application/models/dao/Turma.php';
+require_once '../system/application/models/dao/TurmaHasAluno.php';
 require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
@@ -166,6 +167,17 @@ session_start();
 				$questionario->setAvaliado("Avaliado");
 				$questionario->save();
 				
+				
+				//marca a turma como avaliada
+				$tha = new TurmaHasAluno();
+				$tha->turmaIdTurma = $turma->getIdTurma();
+				$tha->alunoRa = $aluno->getRa();
+				
+				$tha->find(true);
+				$tha->setAvaliado("Avaliado");				
+				$tha->save();
+				
+				
 				//marca o processo de avaliacao como avaliado
 				//para que ele não seja excluido por alguem
 				//$processo = new ProcessoAvaliacao();
@@ -175,7 +187,7 @@ session_start();
 			
 			}
 			
-			if(isset($_POST["obs"])){
+			if(isset($_POST["obs"]) && $_POST["obs"] != ""){
 				$comentario_texto = $_POST["obs"];
 				
 				//seta o comentario no banco de dados

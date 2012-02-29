@@ -8,6 +8,7 @@ $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Turma.php';
+require_once '../system/application/models/dao/TurmaHasAluno.php';
 require_once '../system/application/models/dao/Professor.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
@@ -170,10 +171,16 @@ if(isset($_SESSION["s_periodo"])){
     	// une as classes
     	$aluno->join($t,'INNER','t');
     	
+    	$tha = new TurmaHasAluno();
     	
-    	$aluno->join($av, 'INNER', 'av');
-    	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
-    	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av where av.alunoRa = '".$ra."')");
+    	$aluno->join($tha,'INNER','tha');
+    	
+    	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId, t.periodoLetivo, t.curso, tha.avaliado");
+    	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and tha.turmaIdTurma = t.idTurma and tha.avaliado is null");
+    	
+//     	$aluno->join($av, 'INNER', 'av');
+//     	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
+//     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av where av.alunoRa = '".$ra."')");
     	
     	//todos alunos
 //     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
@@ -182,26 +189,31 @@ if(isset($_SESSION["s_periodo"])){
     	$aluno->groupBy("t.idTurma");
     	 
     	// recupera os registros
-    	$aluno->find();
+//     	$aluno->find();
     	
     	
-    	if($aluno->fetch() == ""){
+//     	if($aluno->fetch() == ""){
     	
-    		//È necessario pegar dados do aluno NOVAMENTE
-    		$aluno = new Aluno();
-			$aluno->get($ra);
+//     		//È necessario pegar dados do aluno NOVAMENTE
+//     		$aluno = new Aluno();
+// 			$aluno->get($ra);
     		    		
-    		$t1 = new Turma();
-    		//$av = new Avaliacao();
-    		// une as classes
-    		$aluno->join($t1,'INNER','t1');
+//     		$t1 = new Turma();
+//     		//$av = new Avaliacao();
+//     		// une as classes
+//     		$aluno->join($t1,'INNER','t1');
     		
-    		//faz consulta diferenciada sem o JOIN e sem SUBSELECT no WHERE
-    		$aluno->select("t1.idTurma, t1.nomeDisciplina, t1.professorId");
-    		$aluno->where("t1.periodoLetivo = '".$periodo_atual."'");
+//     		//teste
+// //     		$aluno->join($tha1,'INNER','tha1');    		 
+// //     		$aluno->select("t1.idTurma, t1.nomeDisciplina, t1.professorId, t1.periodoLetivo, t1.curso, tha1.avaliado");
+// //     		$aluno->where("t1.periodoLetivo = '".$periodo_atual."' and tha1.turmaIdTurma = t1.idTurma and tha1.avaliado != 'Avaliado'");
+    		   		
+//     		//faz consulta diferenciada sem o JOIN e sem SUBSELECT no WHERE
+//     		$aluno->select("t1.idTurma, t1.nomeDisciplina, t1.professorId");
+//     		$aluno->where("t1.periodoLetivo = '".$periodo_atual."'");
     		
-    		$aluno->groupBy("t1.idTurma");
-    	}
+//     		$aluno->groupBy("t1.idTurma");
+//     	}
     	
     	$qtd = $aluno->find();
 //     	echo $qtd;
@@ -234,9 +246,13 @@ if(isset($_SESSION["s_periodo"])){
     		<?php 
     
     	}
+    	if($aluno->fetch() == ""){
+    		echo "Nenhuma avalia&ccedil;&atilde;o pendente";
+    	}
+    	
     	
     	?>
-        
+        <br />
         <br />
         <h3>Avalia√ß√µes Realizadas</h3>
         <?php
