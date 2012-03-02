@@ -19,7 +19,7 @@
 ################################################################################
 /**
  * Model generada para a tabela "TurmaHasAluno"
- * in 2012-02-29 17:00:22
+ * in 2012-03-02 15:40:32
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package Lumine
