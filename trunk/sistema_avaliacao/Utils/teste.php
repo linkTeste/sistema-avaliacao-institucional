@@ -141,11 +141,11 @@ require_once '../system/application/models/dao/Turma.php';
 
 //define se é pra mostrar as mensagens de debug ou não
 $debug = true;
-// importaTudo();
+importaTudo();
 // importaAlunos();
 // importaProfessores();
 // importaTurmas();
-importaTurmas2();
+// importaTurmas2();
 
 
 
@@ -320,6 +320,7 @@ function importaTurmas(){
 		$periodo_letivo = $dados["periodo_letivo"];
 		$curso = $dados["curso"];
 		$id_professor = $dados["id_professor"];
+		$id_coordenador = $dados["id_coordenador"];
 
 		$turma = new Turma();
 		$turma->setIdTurma($id_turma);
@@ -327,6 +328,7 @@ function importaTurmas(){
 		$turma->setPeriodoLetivo($periodo_letivo);
 		$turma->setCurso($curso);
 		$turma->setProfessorId($id_professor);
+		$turma->setCoordenadorId($id_coordenador);
 
 
 		$select = "select id_turma from turma where id_turma = '".$id_turma."'";
@@ -361,28 +363,39 @@ function importaTurmas2(){
 	global $conexao;
 	global $conexaoAcademico;
 	global $debug;
+	
+	$qtdRegistros = 500;
 
+// 	$limitInicio = 0;
+// 	$limitFim = $qtdRegistros;
 
-	//importa relacionamentos entre turmas e alunos
-	//a sql abaixo pega todos os registros, mas isso dá problema pq
-	//alguns registros não sao exportados peo sistema interno
-	//$sql = "select * from ca_diario";
+// 	for ($i = 0; $i < 30; $i++) {
+// 		$limitInicio = ($i*1)*$qtdRegistros;
+// 		$limitFim = ($limitFim*1)+$qtdRegistros;
+// 		//importaTurmas2();
+// 		echo "inicio: ".$limitInicio;
+// 		echo "fim: ".$limitFim;
+// 		echo "<br />";
 
-
+	
+	
 	//a sql abaixo pega só os registros q tem registros equivalentes na tabela de turmas
 	//$sql = "select d.cod_turma, d.ra from ca_turmas t, ca_diario d where t.id_turma = d.cod_turma";
 
 	//o mesmo q a linha de cima mas de forma otimizada
 	//  $sql = "SELECT TOP 4000 d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC";
     
-		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 0, 500";
-// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 0, 1000";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '2/2011' ORDER BY d.cod_turma DESC LIMIT ".$limitInicio.", ".$limitFim;
+		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma GROUP BY d.cod_turma ORDER BY d.cod_turma DESC";
+//      $sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 500, 800";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 800, 900";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 900, 1000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 1000, 2000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 2000, 3000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 3000, 4000";
 	$query = mysql_query($sql,$conexaoAcademico) or die(mysql_error());
 	//Percorre os campos da tabela
-	$i = 0;
+	//$i = 0;
 
 
 	while ($dados = mysql_fetch_assoc($query)) {
@@ -396,7 +409,8 @@ function importaTurmas2(){
 		$turma->get($id_turma);
 		
 		//adiciona a serie na turma e atualiza
-		//$turma->set
+		$turma->setSerie($serie_turma);
+		$turma->save();
 		$aluno = new Aluno();
 		$aluno->get($ra_aluno);
 
@@ -438,9 +452,11 @@ function importaTurmas2(){
 
 
 
-		$i++;
+		//$i++;
 
 	}
+	
+// 	} //fecha for
 }
 
 /**

@@ -21,6 +21,7 @@ require_once '../system/application/models/dao/Questao.php';
 require_once '../system/application/models/dao/Turma.php';
 require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Usuario.php';
+require_once '../system/application/models/dao/Professor.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
 require_once '../system/application/models/dao/Comentarios.php';
@@ -83,26 +84,35 @@ function loginController() {
 		//verifica qual o tipo do usuario
 		$usuarioLogado = isAluno($login, $senha);
 		if($usuarioLogado != false){
-				
-// 			echo "Aluno";
-// 			exit;
-				
+
+			// 			echo "Aluno";
+			// 			exit;
+
 			$_SESSION["s_aluno"] = serialize($usuarioLogado);
-			
-			$page = "index.php";
 				
+			$page = "index.php";
+
 		}else {
 			$usuarioLogado = isUsuario($login, $senha);
-				
+
 			if($usuarioLogado != false){
 
-// 				echo "Usuario";
-// 				exit;
+				// 				echo "Usuario";
+				// 				exit;
 					
 				$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
-				
+
 				$page = "usuarios.php";
 					
+			}else{
+				$usuarioLogado = isProfessor($login, $senha);
+				if($usuarioLogado != false){
+
+					$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
+
+					$page = "avaliacoesteste.php";
+						
+				}
 			}
 		}
 
@@ -245,6 +255,49 @@ function isUsuario($login, $senha) {
 	}
 }
 
+/**
+ * @name isProfessor
+ * @author Fabio Baía
+ * @since 02/03/2012 14:44:27
+ * verifica se o usuario é professor
+ **/
+function isProfessor($login, $senha) {
+	$usuarioLogado = new Professor();
+	$usuarioLogado->login = $login;
+	$usuarioLogado->senha = $senha;
+
+	$qtd = $usuarioLogado->find(true);
+	if($qtd == 0){
+		return false;
+	}
+	else{
+		$idProfessor = $usuarioLogado->getId();
+		
+		$turma = new Turma();
+		$turma->alias("turma");
+		$turma->select("turma.curso, turma.coordenadorId");
+		$turma->where("turma.coordenadorId = ".$idProfessor);
+		$turma->group("turma.curso");
+		$qtdCursos = $turma->find();
+		
+		if($qtdCursos != 0){
+			$usuarioLogado->setIscoordenador(true);
+			$usuarioLogado->save;
+		}
+		echo "qtdCursos: ".$qtdCursos;
+		
+		$cursos_coordenados = array();
+		while( $turma->fetch()) {
+			echo $turma->curso." - ".$turma->coordenadorId;
+			echo "<br />";
+			$cursos_coordenados[] = $turma->curso;
+		}
+		print_r($cursos_coordenados);
+		
+		exit();
+		return $usuarioLogado;
+	}
+}
 
 /**
  * @name prepareSession

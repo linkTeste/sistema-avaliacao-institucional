@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "turma"
- * in 2012-02-29
+ * in 2012-03-02
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -19,6 +19,7 @@ class Turma extends Lumine_Base {
     public $curso;
     public $questionarioId;
     public $professorId;
+    public $coordenadorId;
     public $avaliacoes = array();
     public $comentarios = array();
     public $turmahasalunos = array();
@@ -138,6 +139,22 @@ class Turma extends Lumine_Base {
     	$this->professorId = $value;
     }
     /**
+     * get coordenadorId
+     *
+     */
+    public function getCoordenadorId() {
+    	return $this->coordenadorId;
+    }
+    
+    /**
+     * set coordenadorId
+     * @param Type $value
+     *
+     */
+    public function setCoordenadorId($value) {
+    	$this->coordenadorId = $value;
+    }
+    /**
      * get avaliacoes
      *
      */
@@ -217,10 +234,11 @@ class Turma extends Lumine_Base {
         $this->metadata()->addField('idTurma', 'id_turma', 'int', 11, array('primary' => true, 'notnull' => true));
         $this->metadata()->addField('nomeDisciplina', 'nome_disciplina', 'varchar', 255, array('notnull' => true));
         $this->metadata()->addField('periodoLetivo', 'periodo_letivo', 'varchar', 45, array('notnull' => true));
-        $this->metadata()->addField('serie', 'serie', 'varchar', 45, array('notnull' => true));
+        $this->metadata()->addField('serie', 'serie', 'varchar', 45, array());
         $this->metadata()->addField('curso', 'curso', 'varchar', 255, array('notnull' => true));
         $this->metadata()->addField('questionarioId', 'questionario_id', 'int', 11, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Questionario'));
         $this->metadata()->addField('professorId', 'professor_id', 'int', 11, array('notnull' => true, 'foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Professor'));
+        $this->metadata()->addField('coordenadorId', 'coordenador_id', 'int', 11, array('notnull' => true));
 
         
         $this->metadata()->addRelation('avaliacoes', Lumine_Metadata::ONE_TO_MANY, 'Avaliacao', 'turmaIdTurma', null, null, null);
