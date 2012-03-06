@@ -109,7 +109,7 @@ function loginController() {
 				if($usuarioLogado != false){
 
 					$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
-
+					
 					$page = "avaliacoesteste.php";
 						
 				}
@@ -284,17 +284,18 @@ function isProfessor($login, $senha) {
 			$usuarioLogado->setIscoordenador(true);
 			$usuarioLogado->save;
 		}
-		echo "qtdCursos: ".$qtdCursos;
+		//echo "qtdCursos: ".$qtdCursos;
 		
 		$cursos_coordenados = array();
 		while( $turma->fetch()) {
-			echo $turma->curso." - ".$turma->coordenadorId;
-			echo "<br />";
-			$cursos_coordenados[] = $turma->curso;
+			//echo $turma->curso." - ".$turma->coordenadorId;
+			//echo "<br />";
+			$cursos_coordenados[] = $turma->curso;			
 		}
-		print_r($cursos_coordenados);
+		$_SESSION["s_cursos_coordenados"] = $cursos_coordenados;
+		//print_r($cursos_coordenados);
+		//exit();
 		
-		exit();
 		return $usuarioLogado;
 	}
 }
