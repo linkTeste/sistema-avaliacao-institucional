@@ -35,6 +35,8 @@ while($row = mysql_fetch_array($result))
 	} else { $first = false;
 	}
 	$json .= '{"value":"'.utf8_encode($row['texto']).'"}';
+	//teste
+// 	$json .= '{"value":"<b>'.utf8_encode($row['topico']).'</b>'.utf8_encode($row['texto']).'"}';
 }
 $json .= ']';
 

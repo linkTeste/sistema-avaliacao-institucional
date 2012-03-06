@@ -153,6 +153,7 @@ importaTudo();
 function importaTudo(){
 	importaAlunos();
 	importaProfessores();
+	importaCoordenadores();
 	importaTurmas();
 	importaTurmas2();
 }
@@ -302,6 +303,55 @@ function importaProfessores(){
 
 	}
 
+}
+
+//importa coordenadores
+/**
+* @name importaCoordenadores
+* @author Fabio Baía
+* @since 05/03/2012 13:57:50
+* importa os coordenadorwes do sistema academico
+**/
+function importaCoordenadores() {
+	global $conexao;
+	global $conexaoAcademico;
+	global $debug;
+	
+	$sql = "select * from ca_professor where nivel = 2";
+	$query  = mysql_query($sql,$conexaoAcademico) or die(mysql_error());
+	//Percorre os campos da tabela
+	$i = 0;
+	while ($dados = mysql_fetch_assoc($query)) {
+		$nome = $dados["professor"];
+		$id_professor = $dados["id_professor"];
+		$login = $dados["login"];
+		$senha = $dados["senha"];
+	
+		$professor = new Professor();
+		$professor->setId($id_professor);
+		$professor->setNome($nome);
+		$professor->setLogin($login);
+		$professor->setSenha($senha);
+		$professor->setIscoordenador(true);
+	
+		$select = "select id from professor where id = '".$id_professor."'";
+		$resultado = mysql_query($select, $conexao) or die(mysql_error());
+	
+		if (mysql_num_rows($resultado) > 0 ) {
+			//ja existe um cadastrado
+			//atualiza
+			//echo "update";
+			$professor->update();
+			if($debug){
+				echo "UPDATE >> ".$professor->getNome();
+				echo "<br />";
+			}
+		}
+		else {
+			$professor->insert();
+		}
+	
+	}
 }
 
 //importa turmas

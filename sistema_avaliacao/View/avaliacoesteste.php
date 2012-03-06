@@ -57,8 +57,10 @@ if(isset($_SESSION["s_periodo"])){
 	header("Location: index.php");
 }
 
-// $cursos_coordenados[] = "Psicologia";
-$cursos_coordenados = array("Tecnologia em Gestão Comercial", "Tecnologia em Gestão de Cooperativas", "Psicologia", "Enfermagem");
+if(isset($_SESSION["s_periodo"])){
+	$cursos_coordenados = $_SESSION["s_cursos_coordenados"];	
+}
+// $cursos_coordenados = array("Tecnologia em Gestão Comercial", "Tecnologia em Gestão de Cooperativas", "Psicologia", "Enfermagem");
 
 
 

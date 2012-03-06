@@ -93,9 +93,10 @@ if(isset($_SESSION["s_usuario_logado"])){
       	}
 		?>
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
-        	<label for="input-name">Nome do questionário:</label><br />
         	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
-            <input type="text" name="description" value="<?php echo $descricao; ?>"/><br /><br /><br />
+        	<label for="description">Nome do questionário:</label><br />
+        	<input type="text" name="description" value="<?php echo $descricao; ?>"/><br /><br /><br />
+            
             <label for="instrumento">Instrumento:</label><br />
             <select name="instrumento">
             <?php
