@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "avaliacao"
- * in 2012-03-02
+ * in 2012-03-06
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -22,6 +22,10 @@ class Avaliacao extends Lumine_Base {
     public $funcionarioId;
     public $alunoRa;
     public $turmaIdTurma;
+    public $coordenadorId;
+    public $itemAvaliado;
+    public $avaliador;
+    public $tipoAvaliacao;
     
     
     /**
@@ -184,6 +188,70 @@ class Avaliacao extends Lumine_Base {
     public function setTurmaIdTurma($value) {
     	$this->turmaIdTurma = $value;
     }
+    /**
+     * get coordenadorId
+     *
+     */
+    public function getCoordenadorId() {
+    	return $this->coordenadorId;
+    }
+    
+    /**
+     * set coordenadorId
+     * @param Type $value
+     *
+     */
+    public function setCoordenadorId($value) {
+    	$this->coordenadorId = $value;
+    }
+    /**
+     * get itemAvaliado
+     *
+     */
+    public function getItemAvaliado() {
+    	return $this->itemAvaliado;
+    }
+    
+    /**
+     * set itemAvaliado
+     * @param Type $value
+     *
+     */
+    public function setItemAvaliado($value) {
+    	$this->itemAvaliado = $value;
+    }
+    /**
+     * get avaliador
+     *
+     */
+    public function getAvaliador() {
+    	return $this->avaliador;
+    }
+    
+    /**
+     * set avaliador
+     * @param Type $value
+     *
+     */
+    public function setAvaliador($value) {
+    	$this->avaliador = $value;
+    }
+    /**
+     * get tipoAvaliacao
+     *
+     */
+    public function getTipoAvaliacao() {
+    	return $this->tipoAvaliacao;
+    }
+    
+    /**
+     * set tipoAvaliacao
+     * @param Type $value
+     *
+     */
+    public function setTipoAvaliacao($value) {
+    	$this->tipoAvaliacao = $value;
+    }
     
     /**
      * Inicia os valores da classe
@@ -207,6 +275,10 @@ class Avaliacao extends Lumine_Base {
         $this->metadata()->addField('funcionarioId', 'funcionario_id', 'int', 11, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Funcionario'));
         $this->metadata()->addField('alunoRa', 'aluno_ra', 'varchar', 45, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'ra', 'class' => 'Aluno'));
         $this->metadata()->addField('turmaIdTurma', 'turma_id_turma', 'int', 11, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'idTurma', 'class' => 'Turma'));
+        $this->metadata()->addField('coordenadorId', 'coordenador_id', 'int', 11, array());
+        $this->metadata()->addField('itemAvaliado', 'item_avaliado', 'varchar', 45, array());
+        $this->metadata()->addField('avaliador', 'avaliador', 'varchar', 45, array());
+        $this->metadata()->addField('tipoAvaliacao', 'tipo_avaliacao', 'varchar', 45, array());
 
         
     }

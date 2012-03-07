@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "comentarios"
- * in 2012-03-02
+ * in 2012-03-06
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -19,6 +19,7 @@ class Comentarios extends Lumine_Base {
     public $alunoRa;
     public $professorId;
     public $turmaIdTurma;
+    public $coordenadorId;
     
     
     /**
@@ -133,6 +134,22 @@ class Comentarios extends Lumine_Base {
     public function setTurmaIdTurma($value) {
     	$this->turmaIdTurma = $value;
     }
+    /**
+     * get coordenadorId
+     *
+     */
+    public function getCoordenadorId() {
+    	return $this->coordenadorId;
+    }
+    
+    /**
+     * set coordenadorId
+     * @param Type $value
+     *
+     */
+    public function setCoordenadorId($value) {
+    	$this->coordenadorId = $value;
+    }
     
     /**
      * Inicia os valores da classe
@@ -153,6 +170,7 @@ class Comentarios extends Lumine_Base {
         $this->metadata()->addField('alunoRa', 'aluno_ra', 'varchar', 45, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'ra', 'class' => 'Aluno'));
         $this->metadata()->addField('professorId', 'professor_id', 'int', 11, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Professor'));
         $this->metadata()->addField('turmaIdTurma', 'turma_id_turma', 'int', 11, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'idTurma', 'class' => 'Turma'));
+        $this->metadata()->addField('coordenadorId', 'coordenador_id', 'int', 11, array());
 
         
     }

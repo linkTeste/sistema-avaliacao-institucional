@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "instrumento"
- * in 2012-03-02
+ * in 2012-03-06
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -15,7 +15,6 @@ class Instrumento extends Lumine_Base {
     public $id;
     public $nome;
     public $descricao;
-    public $questionarios = array();
     
     
     /**
@@ -66,22 +65,6 @@ class Instrumento extends Lumine_Base {
     public function setDescricao($value) {
     	$this->descricao = $value;
     }
-    /**
-     * get questionarios
-     *
-     */
-    public function getQuestionarios() {
-    	return $this->questionarios;
-    }
-    
-    /**
-     * set questionarios
-     * @param Type $value
-     *
-     */
-    public function setQuestionarios($value) {
-    	$this->questionarios = $value;
-    }
     
     /**
      * Inicia os valores da classe
@@ -100,7 +83,6 @@ class Instrumento extends Lumine_Base {
         $this->metadata()->addField('descricao', 'descricao', 'text', 65535, array());
 
         
-        $this->metadata()->addRelation('questionarios', Lumine_Metadata::ONE_TO_MANY, 'Questionario', 'instrumentoId', null, null, null);
     }
 
     #### END AUTOCODE

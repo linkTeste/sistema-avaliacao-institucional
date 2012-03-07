@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "questionario"
- * in 2012-03-02
+ * in 2012-03-06
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -14,9 +14,10 @@ class Questionario extends Lumine_Base {
     
     public $id;
     public $descricao;
-    public $instrumentoId;
     public $dataCreate;
     public $avaliado;
+    public $tipo;
+    public $subtipo;
     public $questionariohasquestoes = array();
     public $turmas = array();
     public $questoes = array();
@@ -55,22 +56,6 @@ class Questionario extends Lumine_Base {
     	$this->descricao = $value;
     }
     /**
-     * get instrumentoId
-     *
-     */
-    public function getInstrumentoId() {
-    	return $this->instrumentoId;
-    }
-    
-    /**
-     * set instrumentoId
-     * @param Type $value
-     *
-     */
-    public function setInstrumentoId($value) {
-    	$this->instrumentoId = $value;
-    }
-    /**
      * get dataCreate
      *
      */
@@ -101,6 +86,38 @@ class Questionario extends Lumine_Base {
      */
     public function setAvaliado($value) {
     	$this->avaliado = $value;
+    }
+    /**
+     * get tipo
+     *
+     */
+    public function getTipo() {
+    	return $this->tipo;
+    }
+    
+    /**
+     * set tipo
+     * @param Type $value
+     *
+     */
+    public function setTipo($value) {
+    	$this->tipo = $value;
+    }
+    /**
+     * get subtipo
+     *
+     */
+    public function getSubtipo() {
+    	return $this->subtipo;
+    }
+    
+    /**
+     * set subtipo
+     * @param Type $value
+     *
+     */
+    public function setSubtipo($value) {
+    	$this->subtipo = $value;
     }
     /**
      * get questionariohasquestoes
@@ -165,9 +182,10 @@ class Questionario extends Lumine_Base {
         
         $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true, 'autoincrement' => true));
         $this->metadata()->addField('descricao', 'descricao', 'varchar', 255, array());
-        $this->metadata()->addField('instrumentoId', 'instrumento_id', 'int', 11, array('notnull' => true, 'foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Instrumento'));
         $this->metadata()->addField('dataCreate', 'data_create', 'datetime', null, array());
         $this->metadata()->addField('avaliado', 'avaliado', 'varchar', 45, array());
+        $this->metadata()->addField('tipo', 'tipo', 'varchar', 45, array());
+        $this->metadata()->addField('subtipo', 'subtipo', 'varchar', 45, array());
 
         
         $this->metadata()->addRelation('questionariohasquestoes', Lumine_Metadata::ONE_TO_MANY, 'QuestionarioHasQuestao', 'questionarioId', null, null, null);

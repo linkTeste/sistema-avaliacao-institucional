@@ -19,7 +19,7 @@
 ################################################################################
 /**
  * Model generada para a tabela "Turma"
- * in 2012-03-02 15:40:32
+ * in 2012-03-06 19:47:03
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package Lumine

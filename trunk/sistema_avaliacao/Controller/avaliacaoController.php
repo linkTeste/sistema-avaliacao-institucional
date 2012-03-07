@@ -66,21 +66,42 @@ session_start();
 
 		if($action == "avaliar"){
 			//redireciona para pagina de avaliacao
-						
-			//pega a turma
-			if(isset($_GET["turma"])){
-				$id_turma = $_GET["turma"];
+
+			//pega o tipo da avaliacao
+			if(isset($_GET["subtipo"])){
+				$subtipo = $_GET["subtipo"];
 			}
-			$turma = new Turma();
-			$turma->get($id_turma);
-			$questionario_id = $turma->getQuestionarioId();
 			
-			$questionario = new Questionario();
-			$questionario->get($questionario_id);
+			if($subtipo == "DisciplinaProfessor"){
+				//pega a turma
+				if(isset($_GET["turma"])){
+					$id_turma = $_GET["turma"];
+				}
+				$turma = new Turma();
+				$turma->get($id_turma);
+				$questionario_id = $turma->getQuestionarioId();
+					
+				$questionario = new Questionario();
+				$questionario->get($questionario_id);
+					
+					
+				$_SESSION["s_turma"] = serialize($turma);
+				$_SESSION["s_questionario"] = serialize($questionario);
+			}
+			if($subtipo == "CursoCoordenador"){
+				//pega o curso
+				if(isset($_GET["curso"])){
+					$curso = $_GET["curso"];
+				}
+				
+				//criar tabela curso
+				//pegar o questionario do curso
+				
+				//jogar o curso na sessao
+				//jogar questionario na sessao
+			}
 			
 			
-			$_SESSION["s_turma"] = serialize($turma);
-			$_SESSION["s_questionario"] = serialize($questionario);
 			
 			
 			$page = "avaliacao.php";
@@ -153,10 +174,21 @@ session_start();
 				$avaliacao->setProcessoAvaliacaoId($processo->getId());
 				$avaliacao->setQuestionarioHasQuestaoQuestionarioId($questionario_id);
 				$avaliacao->setQuestionarioHasQuestaoQuestaoId($q);
-				$avaliacao->setTurmaIdTurma($turma->getIdTurma());
+				
+				//define o avaliador da avaliacao
+				$avaliacao->setAvaliador($aluno->getRa());
+				
+				//define o objeto da avaliação
+				$avaliacao->setItemAvaliado($turma->getIdTurma());
+				
+				//substituido pelo objeto da avaliacao
+				//$avaliacao->setTurmaIdTurma($turma->getIdTurma());
+				
 				$avaliacao->setNota($nota);
 				$avaliacao->setDataAvaliacao(date('Y-m-d H:i:s'));
-				$avaliacao->setAlunoRa($aluno->getRa());
+				
+				//substituido pelo avaliador
+				//$avaliacao->setAlunoRa($aluno->getRa());
 				
 				$avaliacao->save();
 				
@@ -167,6 +199,7 @@ session_start();
 				$questionario->setAvaliado("Avaliado");
 				$questionario->save();
 				
+				//se for a avaliacao da turma, marca ela
 				
 				//marca a turma como avaliada
 				$tha = new TurmaHasAluno();
@@ -176,6 +209,8 @@ session_start();
 				$tha->find(true);
 				$tha->setAvaliado("Avaliado");				
 				$tha->save();
+				
+				//ate aqui
 				
 				
 				//marca o processo de avaliacao como avaliado
@@ -194,6 +229,11 @@ session_start();
 				$comentario = new Comentarios();
 				$comentario->setComentario($comentario_texto);
 				$comentario->setDataAvaliacao(date('Y-m-d H:i:s'));
+				
+				//define o avaliador
+				//terminar depois, modificar tabela no banco
+				
+				
 				$comentario->setAlunoRa($aluno->getRa());
 				$comentario->setTurmaIdTurma($turma->getIdTurma());
 					
