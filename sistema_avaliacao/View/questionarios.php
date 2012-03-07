@@ -34,12 +34,10 @@ if(isset($_SESSION["s_usuario_logado"])){
 	}
 }
 
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Sistema de Avaliação Institucional - Questionários</title>
 <link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
@@ -49,15 +47,72 @@ if(isset($_SESSION["s_usuario_logado"])){
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
+	
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.selectboxes.js"></script>
+<script type="text/javascript">
 
+    	function teste() {
+			
+            //aqui s� executo se o option for diferente do 'Selecione'
+            if($('#tipo').selectedTexts() != 'Selecione'){
+               
+                    //aqui removo todos <option>, necessario para evitar ficar option quando seleciona algum estado que nao tem cidade
+                    $('#subtipo').removeOption(/./);
+
+                    var tipoAluno = {
+    						"Disciplina/Professor" : "Disciplina/Professor",
+    						"Curso/Coordenação" : "Curso/Coordenação",
+    						"Instituição" : "Instituição"
+    						}
+					
+					var tipoProfessor = {
+    						"Auto-avaliação" : "Auto-avaliação",
+    						"Coordenador" : "Coordenador",
+    						"Instituição" : "Instituição"
+    						}
+                    var tipoCoordenador = {
+    						"Auto-avaliação" : "Auto-avaliação",
+    						"Docente" : "Docente",
+    						"Instituição" : "Instituição"
+    						}
+                    var tipoFuncionario = {
+    						"Instituição" : "Instituição"
+    						}
+					
+                    if($('#tipo').selectedTexts() == 'Aluno'){
+                    	$('#subtipo').addOption(tipoAluno, false);
+                    }
+                    if($('#tipo').selectedTexts() == 'Professor'){
+                    	$('#subtipo').addOption(tipoProfessor, false);
+                    }
+                    if($('#tipo').selectedTexts() == 'Coordenador'){
+                    	$('#subtipo').addOption(tipoCoordenador, false);
+                    }
+                    if($('#tipo').selectedTexts() == 'Funcionário'){
+                    	$('#subtipo').addOption(tipoFuncionario, false);
+                    }                                        
+                                  
+            }
+ 
+    }
+        
+	
+</script>
 </head>
 
 <body>
 
 
 
+
+
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
+	
+	
+	
+	
 	
 	
 <?php } ?>
@@ -88,64 +143,80 @@ if(isset($_SESSION["s_usuario_logado"])){
         	//print_r($questionario);
         	$id = $questionario->getId();
         	$descricao = $questionario->getDescricao();
-        	$instrumento_id = $questionario->getInstrumentoId();
+        	$tipo = $questionario->getTipo();
+        	$subtipo = $questionario->getSubtipo();
         	}
       	}
 		?>
+    		
     		<form action="../Controller/questionarioController.php?action=save" id="form-questionario" method="post">
         	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
         	<label for="description">Nome do questionário:</label><br />
         	<input type="text" name="description" value="<?php echo $descricao; ?>"/><br /><br /><br />
             
-            <label for="instrumento">Instrumento:</label><br />
-            <select name="instrumento">
-            <?php
-				switch ($instrumento_id) {
-					case 1:
-						echo '<option value="1" selected="selected">Instrumento 1 - Auno avalia professor</option>';
-						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
-                		echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
-                		echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
-                		echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
-					break;
-					case 2:
-						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
-						echo '<option value="2" selected="selected">Instrumento 2 - Aluno avalia curso</option>';
-                		echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
-                		echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
-                		echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
-					break;
-					case 3:
-						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
-						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
-                		echo '<option value="3" selected="selected">Instrumento 3 - Funcionário avalia Instituição</option>';
-                		echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
-                		echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
-					break;
-					case 4:
-						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
-						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
-						echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
-						echo '<option value="4" selected="selected">Instrumento 4 - Professor avalia ...</option>';
-						echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
-						break;
-					case 5:
-						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
-						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
-						echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
-						echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
-						echo '<option value="5" selected="selected">Instrumento 5 - Coordenador avalia ...</option>';
-					break;
-					default:
-						echo '<option value="1">Instrumento 1 - Auno avalia professor</option>';
-						echo '<option value="2">Instrumento 2 - Aluno avalia curso</option>';
-						echo '<option value="3">Instrumento 3 - Funcionário avalia Instituição</option>';
-						echo '<option value="4">Instrumento 4 - Professor avalia ...</option>';
-						echo '<option value="5">Instrumento 5 - Coordenador avalia ...</option>';
-					break;
-				}
+            <label for="tipo">Tipo:</label><br />
+            <select name="tipo" id="tipo" onchange="teste()" >
+            <?php 
+            if($tipo != ""){
+            	$selectedA = "";
+            	$selectedP = "";
+            	$selectedC = "";
+            	$selectedF = "";
+            	if($tipo == "Aluno"){
+            		$selectedA = "selected='selected'";
+            	}
+            	if($tipo == "Professor"){
+            		$selectedP = "selected='selected'";
+            	}
+            	if($tipo == "Coordenador"){
+            		$selectedC = "selected='selected'";
+            	}
+            	if($tipo == "Funcion�rio"){
+            		$selectedF = "selected='selected'";
+            	}
+            }
+            if($subtipo != ""){
+            	$selectedA = "";
+            	$selectedP = "";
+            	$selectedC = "";
+            	$selectedF = "";
+            	if($tipo == "Aluno"){
+            		$selectedA = "selected='selected'";
+            	}
+            	if($tipo == "Professor"){
+            		$selectedP = "selected='selected'";
+            	}
+            	if($tipo == "Coordenador"){
+            		$selectedC = "selected='selected'";
+            	}
+            	if($tipo == "Funcion�rio"){
+            		$selectedF = "selected='selected'";
+            	}
+            }
             ?>
-            </select><br /><br />
+            	<option value="-1">Selecione</option>
+            	<option value="Aluno" <?php echo $selectedA?>>Aluno</option>
+            	<option value="Professor" <?php echo $selectedP?>>Professor</option>
+            	<option value="Coordenador" <?php echo $selectedC?>>Coordenador</option>
+            	<option value="Funcionário" <?php echo $selectedF?>>Funcionário</option>
+            </select>
+            <br />
+			<br />
+            
+            <label for="subtipo">Subtipo:</label><br />
+            <select name="subtipo" id="subtipo">
+            	
+            	<?php
+            	if($subtipo != ""){
+            		echo "<option value='".$subtipo."'>".$subtipo."</option>";
+            	}else{
+            		echo "<option value='-1'>Selecione</option>";
+            	}
+            	?>
+            	
+            </select>
+            <br />
+			<br />
             
                     
         	
@@ -202,7 +273,8 @@ if(isset($_SESSION["s_usuario_logado"])){
             	<tr>
                 	<th>ID</th>
                     <th>NOME</th>
-                    <th>INSTRUMENTO</th>
+                    <th>TIPO</th>
+                    <th>SUBTIPO</th>
                     <th>MODIFICADO EM</th>
                     <th colspan="2"></th>
                 </tr>
@@ -213,7 +285,8 @@ if(isset($_SESSION["s_usuario_logado"])){
 						echo "<tr>";
 						echo "<td>".$lista->getId()."</td>";
 						echo "<td><a href='../Controller/questionarioController.php?action=details&id=".$lista->getId()."' class='link2'>".$lista->getDescricao()."</a></td>";
-						echo "<td>".$lista->getInstrumentoId()."</td>";
+						echo "<td>".$lista->getTipo()."</td>";
+						echo "<td>".$lista->getSubtipo()."</td>";
 						echo "<td>".datetime_to_ptbr($lista->getDataCreate())."</td>";
 												
 						if($lista->getAvaliado() == "Avaliado"){

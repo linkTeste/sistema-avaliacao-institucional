@@ -19,7 +19,7 @@
 ################################################################################
 /**
  * Model generada para a tabela "Curso"
- * in 2012-02-29 16:48:27
+ * in 2012-03-06 19:39:26
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package Lumine

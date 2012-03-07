@@ -160,6 +160,56 @@ if(isset($_SESSION["s_periodo"])){
 <!--     	        </div> -->
     	        
     	<?php
+    	
+    	//pega a avaliacao do curso
+    	$aluno = new Aluno();
+    	$aluno->get($ra);
+    	 
+    	$aluno->alias('a');
+    	$t = new Turma();
+    	$av = new Avaliacao();
+    	    	
+    	$aluno->join($t,'INNER','t');
+    	$aluno->join($av,'INNER','av', 'ra', 'avaliador');
+    	
+    	$aluno->select("t.periodoLetivo, t.curso, t.coordenadorId, av.itemAvaliado");
+    	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.curso not in(SELECT av.itemAvaliado FROM avaliacao av)");
+//     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and tha.turmaIdTurma = t.idTurma and tha.avaliado is null");
+    	
+    	$aluno->groupBy("t.curso");
+    	
+    	$qtd = $aluno->find();
+    	echo "cursos encontrados: ".$qtd;
+
+    	while( $aluno->fetch() ) {
+    		//pega o id do professor
+    	
+    		$id_coordenador = $aluno->coordenador_id;
+    	
+    		//pega o professor
+    		$professor = new Professor();
+    		$professor->get($id_coordenador);
+    	
+    		?>
+    	    		<div id="avaliacao_box">
+    	    		<div class="div1">
+    	    		<div class="photo">
+    	    		<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="<?php echo utf8_encode($professor->getNome())?>" />
+    	    		</div>
+    	    		<div class="description">
+    	    		<h4><span>Curso: </span><?php echo $aluno->curso; ?></h4>
+    	    		<h4><span>Coordenador: </span><?php echo strtoupper(utf8_encode($professor->getNome())); ?></h4>
+    	    		</div>
+    	    		</div>
+    	
+    	    		<a href="../Controller/avaliacaoController.php?action=avaliar&turma=<?php echo $aluno->id_turma ?>"  title="Avaliar o professor" class="botao_right btn_avaliacao botaoGoogleBlue">Avaliar</a>
+    	
+    	    		</div>
+    	    		<?php 
+    	    
+    	    	}
+    	
+		//fecha avaliacao do curso
     	    	
     	$aluno = new Aluno();
     	$aluno->get($ra);
@@ -192,9 +242,8 @@ if(isset($_SESSION["s_periodo"])){
 //     	$aluno->find();
     	
     	
-//     	if($aluno->fetch() == ""){
-    	
-//     		//é necessario pegar dados do aluno NOVAMENTE
+//     	if($aluno->fetch() == 0){
+//     	  		//é necessario pegar dados do aluno NOVAMENTE
 //     		$aluno = new Aluno();
 // 			$aluno->get($ra);
     		    		
@@ -267,15 +316,22 @@ if(isset($_SESSION["s_periodo"])){
     	$av2 = new Avaliacao();
     	// une as classes
     	$aluno2->join($t,'INNER','t');
-    	$aluno2->join($av2, 'INNER', 'av2');
+    	
+    	//ra = id na tabela aluno
+    	//avaliador = correspondente na tabela avaliacao
+    	$aluno2->join($av2, 'INNER', 'av2', "ra", "avaliador");
     	
     	// seleciona os dados desejados
-    	$aluno2->select("t.idTurma, t.nomeDisciplina, t.professorId, av2.dataAvaliacao");
+    	$aluno2->select("t.idTurma, t.nomeDisciplina, t.professorId, av2.dataAvaliacao, a.ra, av2.avaliador");
     	
-    	$aluno2->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma = av2.turmaIdTurma");
+    	//modificado pra suportar todas os tipos de avaliacao
+//     	$aluno2->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma = av2.turmaIdTurma");
+    	$aluno2->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma = av2.itemAvaliado and a.ra = av2.avaliador");
     	
     	//agrupamos para não listar as avaliacoes de cada questao
-    	$aluno2->groupBy("av2.turmaIdTurma");
+//     	$aluno2->groupBy("av2.turmaIdTurma");
+    	$aluno2->groupBy("av2.itemAvaliado");
+    	
     	// recupera os registros
     	$aluno2->find();
     	

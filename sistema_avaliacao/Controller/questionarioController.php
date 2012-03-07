@@ -180,11 +180,24 @@ session_start();
 		if(isset($_POST["instrumento"])){
 			$instrumento_id = $_POST["instrumento"];
 		}
+		
+		if(isset($_POST["tipo"])){
+			$tipo = $_POST["tipo"];
+		}
+		
+		if(isset($_POST["subtipo"])){
+			$subtipo = $_POST["subtipo"];
+		}
 			
 		$questionario = new Questionario();
 		$questionario->setId($id);
 		$questionario->setDescricao($descricao);
-		$questionario->setInstrumentoId($instrumento_id);
+		
+		$questionario->setTipo($tipo);
+		$questionario->setSubtipo($subtipo);
+		
+// 		$questionario->setInstrumentoId($instrumento_id);
+		
 		$questionario->setDataCreate(date('Y-m-d H:i:s'));
 		$questionario->save();
 		
