@@ -17,6 +17,8 @@ require '../lumine-conf.php';
 $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Usuario.php';
+require_once '../system/application/models/dao/Permissao.php';
+require_once '../system/application/models/dao/UsuarioHasPermissao.php';
 
 //if (!isset($_SESSION)) {
 session_start();
@@ -60,6 +62,7 @@ session_start();
 			
 			$_SESSION["action"] = $action;
 			$_SESSION["s_usuario"] = serialize($usuario);
+			$_SESSION["s_permissoes"] = array();
 			
 			$page = "usuarios.php";
 			redirectTo($page);
@@ -73,9 +76,20 @@ session_start();
 			$usuario = new Usuario();
 			$usuario->get($id);
 			
+			//obter as permissoes atuais do usuario
+			$permissoes = array();
+			$permissoes_atuais = new UsuarioHasPermissao();
+			$permissoes_atuais->usuarioId = $id;
+			
+			$permissoes_atuais->find();
+			while ($permissoes_atuais->fetch()) {
+				$permissoes[] = $permissoes_atuais->getPermissaoId();
+			}
+			
 						
 			$_SESSION["action"] = $action;
 			$_SESSION["s_usuario"] = serialize($usuario);
+			$_SESSION["s_permissoes"] = $permissoes;
 			
 			$page = "usuarios.php";
 			redirectTo($page);
@@ -90,6 +104,17 @@ session_start();
 			$usuario = new Usuario();
 			$usuario->get($id);
 			
+			//primeiro deletamos as permissoes do usuario
+			$permissoes_atuais = new UsuarioHasPermissao();
+			$permissoes_atuais->usuarioId = $id;
+				
+			$permissoes_atuais->find();
+			while ($permissoes_atuais->fetch()) {
+				$permissoes_atuais->delete();
+			}
+			
+			//deletamos as permissoes da sessao
+			$_SESSION["s_permissoes"] = null;
 				
 			$usuario->delete();
 			
@@ -157,6 +182,16 @@ session_start();
 		if(isset($_POST["email"])){
 			$email = $_POST["email"];
 		}
+		
+		$permissoes = array();
+		if(isset($_POST["permissoes"])){
+			foreach($_POST["permissoes"] as $key => $value) {
+				$permissoes[] = $value;	
+			}
+			//print_r($permissoes);			
+		}
+		
+		
 			
 		$usuario = new Usuario();
 		$usuario->setId($id);
@@ -164,13 +199,29 @@ session_start();
 		$usuario->setLogin($login);
 		$usuario->setEmail($email);
 		
-		//fazer isso depois
-		//$usuario->setDataCriacao(date('Y-m-d H:i:s'));
+		
+		//obter as permissoes atuais do usuario e remove-las pra depois inserir novas
+		$permissoes_atuais = new UsuarioHasPermissao();
+		$permissoes_atuais->usuarioId = $id;
+		
+		$permissoes_atuais->find();
+		while ($permissoes_atuais->fetch()) {
+			$permissoes_atuais->delete();
+		}
+		
+				
+		//define as novas permissoes do usuario
+		$usuario->setPermissoes($permissoes);
+	
+		
+		
+		$usuario->setDataCriacao(date('Y-m-d H:i:s'));
 		$usuario->save();
 
 			
 		$_SESSION["action"] = $action;
 		$_SESSION["s_processo"] = $processo;
+		$_SESSION["s_permissoes"] = $permissoes;
 		$_SESSION["s_mensagem"] = $mensagem;
 		
 		

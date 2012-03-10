@@ -205,6 +205,7 @@ if(isset($_SESSION["s_periodo"])){
     	    		<a href="../Controller/avaliacaoController.php?action=avaliar&turma=<?php echo $aluno->id_turma ?>"  title="Avaliar o professor" class="botao_right btn_avaliacao botaoGoogleBlue">Avaliar</a>
     	
     	    		</div>
+    	    		
     	    		<?php 
     	    
     	    	}

@@ -354,6 +354,7 @@ function importaCoordenadores() {
 	}
 }
 
+
 //importa turmas
 function importaTurmas(){
 	global $conexao;
@@ -436,9 +437,9 @@ function importaTurmas2(){
 	//  $sql = "SELECT TOP 4000 d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC";
     
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '2/2011' ORDER BY d.cod_turma DESC LIMIT ".$limitInicio.", ".$limitFim;
-		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '2/2011' GROUP BY d.cod_turma ORDER BY d.cod_turma DESC";
+		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '2/2011' ORDER BY d.cod_turma DESC";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma GROUP BY d.cod_turma ORDER BY d.cod_turma DESC";
-//      $sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 500, 800";
+//      $sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 0, 500";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 800, 900";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 900, 1000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 1000, 2000";
