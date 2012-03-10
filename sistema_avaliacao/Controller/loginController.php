@@ -21,6 +21,7 @@ require_once '../system/application/models/dao/Questao.php';
 require_once '../system/application/models/dao/Turma.php';
 require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Usuario.php';
+require_once '../system/application/models/dao/UsuarioHasPermissao.php';
 require_once '../system/application/models/dao/Professor.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
@@ -84,24 +85,30 @@ function loginController() {
 		//verifica qual o tipo do usuario
 		$usuarioLogado = isAluno($login, $senha);
 		if($usuarioLogado != false){
-
-			// 			echo "Aluno";
-			// 			exit;
-
+			
 			$_SESSION["s_aluno"] = serialize($usuarioLogado);
 				
 			$page = "index.php";
 
 		}else {
 			$usuarioLogado = isUsuario($login, $senha);
-
+			
 			if($usuarioLogado != false){
 
-				// 				echo "Usuario";
-				// 				exit;
-					
 				$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
 
+				//obtem as permissoes do usuario logado e joga na sessao
+				$permissoes = array();
+				$permissoes_atuais = new UsuarioHasPermissao();
+				$permissoes_atuais->usuarioId = $usuarioLogado->getId();
+			
+				$permissoes_atuais->find();
+				while ($permissoes_atuais->fetch()) {
+					$permissoes[] = $permissoes_atuais->getPermissaoId();
+				}
+			
+				$_SESSION["s_usuario_logado_permissoes"] = $permissoes;
+				
 				$page = "usuarios.php";
 					
 			}else{

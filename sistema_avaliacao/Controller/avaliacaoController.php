@@ -17,6 +17,7 @@ require '../lumine-conf.php';
 $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Questionario.php';
+require_once '../system/application/models/dao/QuestionarioUsado.php';
 require_once '../system/application/models/dao/Questao.php';
 require_once '../system/application/models/dao/Turma.php';
 require_once '../system/application/models/dao/TurmaHasAluno.php';
@@ -42,8 +43,8 @@ session_start();
 	
 	$default_page = "home.php";
 
-	$questionario;
-	$questionarioDAO;
+// 	$questionario;
+// 	$questionarioDAO;
 
 	
 	avaliacaoController();
@@ -72,22 +73,34 @@ session_start();
 				$subtipo = $_GET["subtipo"];
 			}
 			
-			if($subtipo == "DisciplinaProfessor"){
+// 			if($subtipo == "DisciplinaProfessor"){
 				//pega a turma
 				if(isset($_GET["turma"])){
 					$id_turma = $_GET["turma"];
 				}
 				$turma = new Turma();
 				$turma->get($id_turma);
-				$questionario_id = $turma->getQuestionarioId();
-					
+				
+				$processo = unserialize($_SESSION["s_processo"]);
+				
+				//$questionario_id = $turma->getQuestionarioId();
+				
+				//pegamos o questionario id agora da tabela questionario_usado
+				$questionarioUsado = new QuestionarioUsado();
+				$questionarioUsado->processoAvaliacaoId = $processo->getId();
+				$questionarioUsado->tipo ="Aluno";
+				$questionarioUsado->subtipo ="Disciplina/Professor";
+				$questionarioUsado->find(true);
+
+				$questionario_id = $questionarioUsado->getQuestionarioId();
 				$questionario = new Questionario();
 				$questionario->get($questionario_id);
 					
 					
 				$_SESSION["s_turma"] = serialize($turma);
 				$_SESSION["s_questionario"] = serialize($questionario);
-			}
+				
+// 			}
 			if($subtipo == "CursoCoordenador"){
 				//pega o curso
 				if(isset($_GET["curso"])){

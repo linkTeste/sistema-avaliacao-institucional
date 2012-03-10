@@ -1147,3 +1147,10 @@ margin: 0 auto;
 	padding-left: 20px;
 	font-weight: normal;
 }
+
+/*----------------------------- TABS PANEL -----------------------------------*/
+.ui-tabs-panel label{
+	position: relative;
+	top: 30px;
+}
+}

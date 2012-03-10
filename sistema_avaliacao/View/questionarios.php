@@ -8,6 +8,7 @@ $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Questionario.php';
 require_once '../system/application/models/dao/Usuario.php';
+require_once '../system/application/models/dao/Permissao.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -32,6 +33,9 @@ if(isset($_SESSION["s_usuario_logado"])){
 	}else{
 		$usuario_logado = unserialize($_SESSION["s_usuario_logado"]);
 	}
+}
+if(isset($_SESSION["s_usuario_logado_permissoes"])){
+	$usuario_logado_permissoes = $_SESSION["s_usuario_logado_permissoes"];
 }
 
 ?>
@@ -250,13 +254,15 @@ if(isset($_SESSION["s_usuario_logado"])){
     <div id="content">
     <div id="menu">
     <ul>
-    	<li><a href="#"  title="Usu&aacute;rios" class="botao_left botaoGoogleGrey">Usu&aacute;rios</a></li>
-    	<li><a href="../View/processos.php"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
-    	<li><a href="../View/questionarios.php"  title="Question&aacute;rios" class="botao_left botaoGoogleGrey">Question&aacute;rios</a></li>
-    	<li><a href="#"  title="Cursos e Turmas" class="botao_left botaoGoogleGrey">Cursos e Turmas</a></li>
-    	<li><a href="#"  title="Relat&oacute;rios" class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
-    	<li><a href="#"  title="Configura&ccedil;&otilde;es" class="botao_left botaoGoogleGrey">Configura&ccedil;&otilde;es</a></li>
-    	
+    <?php 
+    	foreach ($usuario_logado_permissoes as $value) {
+    		$permissao = new Permissao();
+    		$permissao->get($value);
+    ?>
+    <li><a href="<?php echo $permissao->getLink();?>"  title="<?php echo $permissao->getNome();?>" class="botao_left botaoGoogleGrey"><?php echo $permissao->getNome();?></a></li>
+    <?php		
+    	}    
+    ?>	
     </ul>    
     </div>       
     

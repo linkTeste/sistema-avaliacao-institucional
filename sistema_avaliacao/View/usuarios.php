@@ -7,6 +7,7 @@ require '../lumine-conf.php';
 $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Usuario.php';
+require_once '../system/application/models/dao/Permissao.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -31,6 +32,9 @@ if(isset($_SESSION["s_usuario_logado"])){
 	}else{
 		$usuario_logado = unserialize($_SESSION["s_usuario_logado"]);
 	}
+}
+if(isset($_SESSION["s_usuario_logado_permissoes"])){
+	$usuario_logado_permissoes = $_SESSION["s_usuario_logado_permissoes"];
 }
 
 
@@ -102,6 +106,11 @@ if(isset($_SESSION["s_usuario_logado"])){
         	$email = $usuario->getEmail();        	        	
         	
         	}
+        	if(isset($_SESSION["s_permissoes"])){
+        		$permissoes_atuais = $_SESSION["s_permissoes"];
+        		//print_r($permissoes_atuais);
+        	}
+        	
       	//}
 		?>
     		<form action="../Controller/usuarioController.php?action=save" id="form-questionario" method="post">
@@ -115,6 +124,30 @@ if(isset($_SESSION["s_usuario_logado"])){
             
             <label for="email">Email:</label><br />
             <input type="text" name="email" value="<?php echo $email;?>"/><br /><br /><br />
+            
+            <fieldset id="user_permissoes">
+            <?php 
+            $permissoes = new Permissao();
+            $permissoes->find();
+            
+            while( $permissoes->fetch()) {
+            	$checked = "";
+            	foreach ($permissoes_atuais as $value) {
+            		if($value == $permissoes->id){
+            			$checked = "checked='checked'";
+            		}
+            	}
+
+            	?>
+            	<label>
+            	<input type="checkbox" value="<?php echo $permissoes->id;?>" name="permissoes[]" <?php echo $checked;?>/><?php echo $permissoes->nome;?>
+            	</label><br />
+            	
+            <?php 	
+            }
+            ?>
+            
+            </fieldset>
             <br /><br />
             
                     
@@ -149,13 +182,15 @@ if(isset($_SESSION["s_usuario_logado"])){
     <div id="content">
     <div id="menu">
     <ul>
-    	<li><a href="#"  title="Usu&aacute;rios" class="botao_left botaoGoogleGrey">Usu&aacute;rios</a></li>
-    	<li><a href="../View/processos.php"  title="Processos de Avalia&ccedil;&atilde;o" class="botao_left botaoGoogleGrey">Processo de Avalia&ccedil;&atilde;o</a></li>
-    	<li><a href="../View/questionarios.php"  title="Question&aacute;rios" class="botao_left botaoGoogleGrey">Question&aacute;rios</a></li>
-    	<li><a href="#"  title="Cursos e Turmas" class="botao_left botaoGoogleGrey">Cursos e Turmas</a></li>
-    	<li><a href="#"  title="Relat&oacute;rios" class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
-    	<li><a href="#"  title="Configura&ccedil;&otilde;es" class="botao_left botaoGoogleGrey">Configura&ccedil;&otilde;es</a></li>
-    	
+    <?php 
+    	foreach ($usuario_logado_permissoes as $value) {
+    		$permissao = new Permissao();
+    		$permissao->get($value);
+    ?>
+    <li><a href="<?php echo $permissao->getLink();?>"  title="<?php echo $permissao->getNome();?>" class="botao_left botaoGoogleGrey"><?php echo $permissao->getNome();?></a></li>
+    <?php		
+    	}    
+    ?>	
     </ul>    
     </div>       
     
@@ -186,7 +221,7 @@ if(isset($_SESSION["s_usuario_logado"])){
 						echo "<td>".$lista->getNome()."</td>";
 						echo "<td>".$lista->getLogin()."</td>";
 						echo "<td>".$lista->getEmail()."</td>";
-						//echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
+						echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
 						echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
 						
 						if($processo_avaliado == "Avaliado"){
