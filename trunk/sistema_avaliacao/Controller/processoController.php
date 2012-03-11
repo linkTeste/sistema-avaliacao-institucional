@@ -17,6 +17,7 @@ require '../lumine-conf.php';
 $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
+require '../Utils/functions.php';
 
 //if (!isset($_SESSION)) {
 session_start();
@@ -60,9 +61,9 @@ session_start();
 		if($action == "new"){
 						
 			$processo = new ProcessoAvaliacao();
-			
+						
 			$_SESSION["action"] = $action;
-			$_SESSION["processo"] = serialize($processo);
+			$_SESSION["s_processo"] = serialize($processo);
 			
 			$page = "processos.php";
 			redirectTo($page);
@@ -78,7 +79,7 @@ session_start();
 			
 						
 			$_SESSION["action"] = $action;
-			$_SESSION["processo"] = serialize($processo);
+			$_SESSION["s_processo"] = serialize($processo);
 			
 			$page = "processos.php";
 			redirectTo($page);
@@ -185,8 +186,10 @@ session_start();
 		$processo = new ProcessoAvaliacao();
 		$processo->setId($id);
 		$processo->setDescricao($descricao);
-		$processo->setInicio($inicio);
-		$processo->setFim($fim);
+		
+				
+		$processo->setInicio(ptbr_to_datetime($inicio));
+		$processo->setFim(ptbr_to_datetime($fim));
 		$processo->setDataCriacao(date('Y-m-d H:i:s'));
 		$processo->save();
 		
@@ -200,7 +203,7 @@ session_start();
 // 		}
 			
 		$_SESSION["action"] = $action;
-		$_SESSION["processo"] = $processo;
+		$_SESSION["s_processo"] = $processo;
 		$_SESSION["mensagem"] = $mensagem;
 		
 		

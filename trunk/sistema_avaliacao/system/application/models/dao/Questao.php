@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "questao"
- * in 2012-03-06
+ * in 2012-03-10
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -16,6 +16,7 @@ class Questao extends Lumine_Base {
     public $texto;
     public $topico;
     public $opcional;
+    public $dataCriacao;
     public $questionariohasquestoes = array();
     public $questionarios = array();
     
@@ -85,6 +86,22 @@ class Questao extends Lumine_Base {
     	$this->opcional = $value;
     }
     /**
+     * get dataCriacao
+     *
+     */
+    public function getDataCriacao() {
+    	return $this->dataCriacao;
+    }
+    
+    /**
+     * set dataCriacao
+     * @param Type $value
+     *
+     */
+    public function setDataCriacao($value) {
+    	$this->dataCriacao = $value;
+    }
+    /**
      * get questionariohasquestoes
      *
      */
@@ -133,6 +150,7 @@ class Questao extends Lumine_Base {
         $this->metadata()->addField('texto', 'texto', 'varchar', 255, array());
         $this->metadata()->addField('topico', 'topico', 'varchar', 45, array());
         $this->metadata()->addField('opcional', 'opcional', 'varchar', 45, array());
+        $this->metadata()->addField('dataCriacao', 'data_criacao', 'datetime', null, array());
 
         
         $this->metadata()->addRelation('questionariohasquestoes', Lumine_Metadata::ONE_TO_MANY, 'QuestionarioHasQuestao', 'questaoId', null, null, null);

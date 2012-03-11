@@ -10,15 +10,32 @@ function datetime_to_ptbr($datetime) {
 	$yr=strval(substr($datetime,0,4));
 	$mo=strval(substr($datetime,5,2));
 	$da=strval(substr($datetime,8,2));
+	
 	$hr=strval(substr($datetime,11,2));
 	$mi=strval(substr($datetime,14,2));
-
 	$sg=strval(substr($datetime,17,2));
 
 	//return date("d/m/Y H:i:s", mktime ($hr,$mi,0,$mo,$da,$yr));
 	return date("d/m/Y H:i:s", mktime ($hr,$mi,$sg,$mo,$da,$yr));
 }
 
+/**
+* @name ptbr_to_datetime
+* @author Fabio Baía
+* @since 10/03/2012 21:52:42
+* Converte uma string do formato(dd/mm/yy h:m:s) no formato formato(Y/m/d H:i:s)
+**/
+function ptbr_to_datetime($datetime) {
+	$da = strval(substr($datetime,0,2));
+	$mo = strval(substr($datetime,3,2));
+	$yr = strval(substr($datetime,6,4));
+	
+	$hr = strval(substr($datetime,11,2));
+	$mi = strval(substr($datetime,14,2));
+	$sg = strval(substr($datetime,17,2));
+	
+	return date("Y-m-d H:i:s", mktime ($hr,$mi,$sg,$mo,$da,$yr));
+}
 
 /**
 * @name date_to_ptbr

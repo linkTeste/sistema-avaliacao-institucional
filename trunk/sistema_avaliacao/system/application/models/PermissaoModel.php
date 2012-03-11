@@ -18,18 +18,18 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 ################################################################################
 /**
- * Model generada para a tabela "Questionario"
+ * Model generada para a tabela "Permissao"
  * in 2012-03-10 21:31:53
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package Lumine
  *
  */
-class QuestionarioModel extends Lumine_Model {
+class PermissaoModel extends Lumine_Model {
 	
 	/**
 	 * 
-	 * @var QuestionarioModel
+	 * @var PermissaoModel
 	 */
 	private static $instance;
 	
@@ -41,7 +41,7 @@ class QuestionarioModel extends Lumine_Model {
 	 */
 	function __construct(){
 		if(!$this->obj){
-			$this->obj = new Questionario;
+			$this->obj = new Permissao;
 		}
 		parent::__construct();
 	}
@@ -51,11 +51,11 @@ class QuestionarioModel extends Lumine_Model {
 	 * 
 	 * @author Hugo Ferreira da Silva
 	 * @link http://www.hufersil.com.br/lumine
-	 * @return QuestionarioModel
+	 * @return PermissaoModel
 	 */
 	public static function getInstance(){
 		if(!self::$instance){
-			self::$instance = new QuestionarioModel();
+			self::$instance = new PermissaoModel();
 		}
 		
 		return self::$instance;

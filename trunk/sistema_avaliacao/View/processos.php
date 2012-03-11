@@ -38,6 +38,27 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 	$usuario_logado_permissoes = $_SESSION["s_usuario_logado_permissoes"];
 }
 
+$descricao = "";
+ 
+if(isset($_SESSION["s_processo"])){
+	$processo = unserialize($_SESSION["s_processo"]);
+	//debug
+	//print_r($questionario);
+	$id = $processo->getId();
+	$descricao = $processo->getDescricao();
+	
+	if($edit == true){
+		$inicio = datetime_to_ptbr($processo->getInicio());
+		$fim = datetime_to_ptbr($processo->getFim());
+	}else{
+		$inicio = "";
+		$fim = "";
+	}	
+	
+	
+}
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -52,7 +73,39 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
-
+<link type="text/css"
+	href="css/unicampo-theme/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+<script>
+	$(function() {
+		
+		//adiciona o timepicker
+		$("#input-inicio").datetimepicker({
+			monthNames: ['Janeiro','Fevereiro','Mar&ccedil;o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+			dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+			timeText: 'Hora',
+			hourText: 'Hora',
+			minuteText: 'Minuto',
+			currentText: 'Agora',
+			closeText: 'Pronto',
+			dateFormat: 'dd/mm/yy',
+			timeFormat: 'hh:mm:ss'}
+			);
+		$("#input-fim").datetimepicker({
+			monthNames: ['Janeiro','Fevereiro','Mar&ccedil;o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+			dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+			timeText: 'Hora',
+			hourText: 'Hora',
+			minuteText: 'Minuto',
+			currentText: 'Agora',
+			closeText: 'Pronto',
+			dateFormat: 'dd/mm/yy',
+			timeFormat: 'hh:mm:ss'}
+			);
+	});
+	</script>
 </head>
 
 <body>
@@ -87,22 +140,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
     <div id="box">
     	<div id="box_inside">
         <?php
-		$descricao = "";
-      	//if($edit == true){
-      	
-      		if(isset($_SESSION["processo"])){
-        	//$questionario = new questionario;
-        	$processo = unserialize($_SESSION["processo"]);
-        	//debug
-        	//print_r($questionario);
-        	$id = $processo->getId();
-        	$descricao = $processo->getDescricao();
-        	$inicio = $processo->getInicio();
-        	$fim = $processo->getFim();
-        	
-        	
-        	}
-      	//}
+		
 		?>
     		<form action="../Controller/processoController.php?action=save" id="form-questionario" method="post">
         	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
@@ -111,10 +149,10 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
         	<input type="text" name="descricao" value="<?php echo $descricao;?>"/><br /><br /><br />
             
             <label for="input-inicio">Data inicial:</label><br />
-			<input type="text" name="input-inicio" value="<?php echo $inicio;?>"/><br /><br /><br />
+			<input type="text" name="input-inicio" id="input-inicio" value="<?php echo $inicio;?>"/><br /><br /><br />
             
             <label for="input-fim">Data final:</label><br />
-            <input type="text" name="input-fim" value="<?php echo $fim;?>"/><br /><br /><br />
+            <input type="text" name="input-fim" id="input-fim" value="<?php echo $fim;?>"/><br /><br /><br />
             <br /><br />
             
                     
@@ -186,17 +224,23 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 						echo "<tr>";
 						echo "<td>".$lista->getId()."</td>";
 						echo "<td>".$lista->getDescricao()."</td>";
-						echo "<td>".date_to_ptbr($lista->getInicio())."</td>";
-						echo "<td>".date_to_ptbr($lista->getFim())."</td>";
+						echo "<td>".datetime_to_ptbr($lista->getInicio())."</td>";
+						echo "<td>".datetime_to_ptbr($lista->getFim())."</td>";
 						echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
 						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
 						
-						if($processo_avaliado == "Avaliado"){
-    						echo "<td style='width: 10%'>&nbsp</td>";    						
-    					}
-    					else{
-    						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
-    					}
+						if($lista->getAvaliado() == "Avaliado"){
+							echo "<td style='width: 10%'>&nbsp</td>";
+						}else{
+							echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+						}
+						
+// 						if($processo_avaliado == "Avaliado"){
+//     						echo "<td style='width: 10%'>&nbsp</td>";    						
+//     					}
+//     					else{
+//     						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+//     					}
     					echo "</tr>";
 					}
                 
