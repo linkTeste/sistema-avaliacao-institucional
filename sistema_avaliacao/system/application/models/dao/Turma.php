@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "turma"
- * in 2012-03-06
+ * in 2012-03-10
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -20,6 +20,9 @@ class Turma extends Lumine_Base {
     public $questionarioId;
     public $professorId;
     public $coordenadorId;
+    public $questionarioa;
+    public $questionariob;
+    public $questionarioc;
     public $avaliacoes = array();
     public $comentarios = array();
     public $turmahasalunos = array();
@@ -155,6 +158,54 @@ class Turma extends Lumine_Base {
     	$this->coordenadorId = $value;
     }
     /**
+     * get questionarioa
+     *
+     */
+    public function getQuestionarioa() {
+    	return $this->questionarioa;
+    }
+    
+    /**
+     * set questionarioa
+     * @param Type $value
+     *
+     */
+    public function setQuestionarioa($value) {
+    	$this->questionarioa = $value;
+    }
+    /**
+     * get questionariob
+     *
+     */
+    public function getQuestionariob() {
+    	return $this->questionariob;
+    }
+    
+    /**
+     * set questionariob
+     * @param Type $value
+     *
+     */
+    public function setQuestionariob($value) {
+    	$this->questionariob = $value;
+    }
+    /**
+     * get questionarioc
+     *
+     */
+    public function getQuestionarioc() {
+    	return $this->questionarioc;
+    }
+    
+    /**
+     * set questionarioc
+     * @param Type $value
+     *
+     */
+    public function setQuestionarioc($value) {
+    	$this->questionarioc = $value;
+    }
+    /**
      * get avaliacoes
      *
      */
@@ -235,10 +286,13 @@ class Turma extends Lumine_Base {
         $this->metadata()->addField('nomeDisciplina', 'nome_disciplina', 'varchar', 255, array('notnull' => true));
         $this->metadata()->addField('periodoLetivo', 'periodo_letivo', 'varchar', 45, array('notnull' => true));
         $this->metadata()->addField('serie', 'serie', 'varchar', 45, array());
-        $this->metadata()->addField('curso', 'curso', 'varchar', 255, array('notnull' => true));
+        $this->metadata()->addField('curso', 'curso', 'varchar', 255, array());
         $this->metadata()->addField('questionarioId', 'questionario_id', 'int', 11, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Questionario'));
         $this->metadata()->addField('professorId', 'professor_id', 'int', 11, array('notnull' => true, 'foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Professor'));
         $this->metadata()->addField('coordenadorId', 'coordenador_id', 'int', 11, array());
+        $this->metadata()->addField('questionarioa', 'questionarioA', 'int', 11, array());
+        $this->metadata()->addField('questionariob', 'questionarioB', 'int', 11, array());
+        $this->metadata()->addField('questionarioc', 'questionarioC', 'int', 11, array());
 
         
         $this->metadata()->addRelation('avaliacoes', Lumine_Metadata::ONE_TO_MANY, 'Avaliacao', 'turmaIdTurma', null, null, null);

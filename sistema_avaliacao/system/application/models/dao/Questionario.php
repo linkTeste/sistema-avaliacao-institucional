@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "questionario"
- * in 2012-03-06
+ * in 2012-03-10
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -184,8 +184,8 @@ class Questionario extends Lumine_Base {
         $this->metadata()->addField('descricao', 'descricao', 'varchar', 255, array());
         $this->metadata()->addField('dataCreate', 'data_create', 'datetime', null, array());
         $this->metadata()->addField('avaliado', 'avaliado', 'varchar', 45, array());
-        $this->metadata()->addField('tipo', 'tipo', 'varchar', 45, array());
-        $this->metadata()->addField('subtipo', 'subtipo', 'varchar', 45, array());
+        $this->metadata()->addField('tipo', 'tipo', 'varchar', 45, array('notnull' => true));
+        $this->metadata()->addField('subtipo', 'subtipo', 'varchar', 45, array('notnull' => true));
 
         
         $this->metadata()->addRelation('questionariohasquestoes', Lumine_Metadata::ONE_TO_MANY, 'QuestionarioHasQuestao', 'questionarioId', null, null, null);

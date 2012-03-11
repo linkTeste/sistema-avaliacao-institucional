@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "processo_avaliacao"
- * in 2012-03-06
+ * in 2012-03-10
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -19,6 +19,7 @@ class ProcessoAvaliacao extends Lumine_Base {
     public $dataCriacao;
     public $avaliado;
     public $avaliacoes = array();
+    public $questionariousados = array();
     
     
     /**
@@ -133,6 +134,22 @@ class ProcessoAvaliacao extends Lumine_Base {
     public function setAvaliacoes($value) {
     	$this->avaliacoes = $value;
     }
+    /**
+     * get questionariousados
+     *
+     */
+    public function getQuestionariousados() {
+    	return $this->questionariousados;
+    }
+    
+    /**
+     * set questionariousados
+     * @param Type $value
+     *
+     */
+    public function setQuestionariousados($value) {
+    	$this->questionariousados = $value;
+    }
     
     /**
      * Inicia os valores da classe
@@ -148,13 +165,14 @@ class ProcessoAvaliacao extends Lumine_Base {
         
         $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true, 'autoincrement' => true));
         $this->metadata()->addField('descricao', 'descricao', 'varchar', 255, array());
-        $this->metadata()->addField('inicio', 'inicio', 'date', null, array());
-        $this->metadata()->addField('fim', 'fim', 'date', null, array());
+        $this->metadata()->addField('inicio', 'inicio', 'datetime', null, array());
+        $this->metadata()->addField('fim', 'fim', 'datetime', null, array());
         $this->metadata()->addField('dataCriacao', 'data_criacao', 'datetime', null, array());
         $this->metadata()->addField('avaliado', 'avaliado', 'varchar', 45, array());
 
         
         $this->metadata()->addRelation('avaliacoes', Lumine_Metadata::ONE_TO_MANY, 'Avaliacao', 'processoAvaliacaoId', null, null, null);
+        $this->metadata()->addRelation('questionariousados', Lumine_Metadata::ONE_TO_MANY, 'QuestionarioUsado', 'processoAvaliacaoId', null, null, null);
     }
 
     #### END AUTOCODE
