@@ -148,12 +148,12 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o de Disciplinas e Professores:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Aluno"/>
-				<input type="hidden" name="subtipo[]" value="Disciplina/Professor"/>
+				<input type="hidden" name="subtipo[]" value="Professor/Disciplina"/>
 				<select name="quest[]">
 				<?php 
     			$lista_questionarios = new Questionario(); 
     			$lista_questionarios->tipo = "Aluno";
-    			$lista_questionarios->subtipo ="Disciplina/Professor";
+    			$lista_questionarios->subtipo ="Professor/Disciplina";
     			$lista_questionarios->find();    			 
     			while( $lista_questionarios->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
@@ -171,12 +171,12 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o de Curso e Coordena&ccedil;&atilde;o:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Aluno"/>
-				<input type="hidden" name="subtipo[]" value="Curso/Coordenação"/>
+				<input type="hidden" name="subtipo[]" value="Curso/Coordenador"/>
 				<select name="quest[]">
 				<?php 
     			$lista_questionarios = new Questionario(); 
     			$lista_questionarios->tipo = "Aluno";
-    			$lista_questionarios->subtipo ="Curso/Coordenação";
+    			$lista_questionarios->subtipo ="Curso/Coordenador";
     			$lista_questionarios->find();    			 
     			while( $lista_questionarios->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
@@ -391,7 +391,9 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 		
 	</div>
 </div>
-<input type="submit" value="Salvar" name="enviar" />
+<br />
+<input type="submit" value="Salvar" name="enviar" class="botaoGoogleBlue" style="/*margin-left: 440px;*/margin-left: 47%;" />
+<br />
 </form>	
 
 

@@ -1,4 +1,6 @@
 <?php
+// ini_set('memory_limit', '-1'); //nao funcionou
+
 //conexao ao banco academico pra atualizar os dados
 $hostAcademico="mysql01-farm26.kinghost.net";
 $userAcademico="faculdadeunica";
@@ -370,6 +372,7 @@ function importaTurmas(){
 		$nome_disciplina = $dados["nome_disciplina"];
 		$periodo_letivo = $dados["periodo_letivo"];
 		$curso = $dados["curso"];
+		$turma_ca = $dados["turma"];
 		$id_professor = $dados["id_professor"];
 		$id_coordenador = $dados["id_coordenador"];
 
@@ -378,6 +381,7 @@ function importaTurmas(){
 		$turma->setNomeDisciplina($nome_disciplina);
 		$turma->setPeriodoLetivo($periodo_letivo);
 		$turma->setCurso($curso);
+		$turma->setTurma($turma_ca);
 		$turma->setProfessorId($id_professor);
 		$turma->setCoordenadorId($id_coordenador);
 
@@ -415,10 +419,10 @@ function importaTurmas2(){
 	global $conexaoAcademico;
 	global $debug;
 	
-	$qtdRegistros = 500;
+// 	$qtdRegistros = 500;
 
-// 	$limitInicio = 0;
-// 	$limitFim = $qtdRegistros;
+// 	$limitInicio = 500;
+// 	$limitFim = $limitInicio+$qtdRegistros;
 
 // 	for ($i = 0; $i < 30; $i++) {
 // 		$limitInicio = ($i*1)*$qtdRegistros;
@@ -434,12 +438,14 @@ function importaTurmas2(){
 	//$sql = "select d.cod_turma, d.ra from ca_turmas t, ca_diario d where t.id_turma = d.cod_turma";
 
 	//o mesmo q a linha de cima mas de forma otimizada
-	//  $sql = "SELECT TOP 4000 d.cod_turma, d.ra FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC";
+// 	 $sql = "SELECT TOP 4000 d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC";
     
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '2/2011' ORDER BY d.cod_turma DESC LIMIT ".$limitInicio.", ".$limitFim;
-		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '2/2011' ORDER BY d.cod_turma DESC";
-// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma GROUP BY d.cod_turma ORDER BY d.cod_turma DESC";
-//      $sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 0, 500";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT ".$limitInicio.", ".$limitFim;
+
+		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '1/2012' ORDER BY d.cod_turma ASC LIMIT 0, 1000";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC";
+//      $sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 500, 1000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 800, 900";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 900, 1000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 1000, 2000";
@@ -471,36 +477,38 @@ function importaTurmas2(){
 		array_push($turmas, $turma);
 		$aluno->setTurmas($turmas);
 
+		//faz update
+		$aluno->save();
 
-		// 	$select = "select id_turma from turma where id_turma = '".$id_turma."'";
-		$select = "select ra from aluno where ra = '".$ra_aluno."'";
-		$resultado = mysql_query($select, $conexao) or die(mysql_error());
+// 		// 	$select = "select id_turma from turma where id_turma = '".$id_turma."'";
+// 		$select = "select ra from aluno where ra = '".$ra_aluno."'";
+// 		$resultado = mysql_query($select, $conexao) or die(mysql_error());
 
-		if (mysql_num_rows($resultado) > 0 ) {
-			//ja existe um cadastrado
-			//atualiza
-			//echo "update";
-			//$turma->update();
-			$aluno->update();
-			if($debug){
-				echo "UPDATE >> ".$aluno->getNome();
-				echo "<br />";
-			}
+// 		if (mysql_num_rows($resultado) > 0 ) {
+// 			//ja existe um cadastrado
+// 			//atualiza
+// 			//echo "update";
+// 			//$turma->update();
+// 			$aluno->update();
+// 			if($debug){
+// 				echo "UPDATE >> ".$aluno->getNome();
+// 				echo "<br />";
+// 			}
 
-		}
-		else {
-			//echo "insere";
-			//ainda nao foi cadastrado
-			//insere
-			//$turma->insert();
-			$aluno->insert();
-			if($debug){
-				echo "	INSERT >> ".$aluno->getNome();
-				echo "<br />";
-			}
+// 		}
+// 		else {
+// 			//echo "insere";
+// 			//ainda nao foi cadastrado
+// 			//insere
+// 			//$turma->insert();
+// 			$aluno->insert();
+// 			if($debug){
+// 				echo "	INSERT >> ".$aluno->getNome();
+// 				echo "<br />";
+// 			}
 
 
-		}
+// 		}
 
 
 
@@ -518,7 +526,7 @@ function importaTurmas2(){
 * cria as avaliacoes com base nos dados dos alunos
 **/
 function criaAvaliacoes($param) {
-	$periodo_atual = "2/1011";
+	//$periodo_atual = "2/1011";
 	
 		
 }

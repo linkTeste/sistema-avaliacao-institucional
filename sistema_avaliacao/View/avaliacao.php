@@ -23,11 +23,40 @@ if(isset($_SESSION["s_questionario"])){
 	$questionario_id = $questionario->getId();
 }
 
-$id_professor;
-if(isset($_SESSION["s_turma"])){
-	$turma = unserialize($_SESSION["s_turma"]);
-	$id_professor = $turma->getProfessorId();
+//verifica o tipo e subtipo
+if(isset($_SESSION["tipo"])){
+	$tipo = $_SESSION["tipo"];
+	if(isset($_SESSION["subtipo"])){
+		$subtipo = $_SESSION["subtipo"];
+		
+	}
+
 }
+
+echo "tipo: ".$tipo;
+echo "<br />";
+echo "subtipo: ".$subtipo;
+
+if($subtipo == "Professor/Disciplina"){
+	$id_professor;
+	if(isset($_SESSION["s_turma"])){
+		$turma = unserialize($_SESSION["s_turma"]);
+		$id_professor = $turma->getProfessorId();
+	}	
+}
+
+if($subtipo == "Curso/Coordenador"){
+	$id_professor;
+	if(isset($_SESSION["s_curso"])){
+		$curso = $_SESSION["s_curso"];
+	}
+	if(isset($_SESSION["s_coordenador"])){
+		$coordenador = unserialize($_SESSION["s_coordenador"]);
+		//$id_coordenador = $coordenador->getId();
+	}
+}
+
+
 
 // if(isset($_SESSION["aluno"])){
 // 	$aluno = unserialize($_SESSION["aluno"]);
@@ -101,16 +130,40 @@ $professor->get($id_professor);
             	<div class="photo">
                 	<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="Foto do Professor" />
             	</div>
+            	<?php
+            	if($tipo == "Aluno" && $subtipo == "Professor/Disciplina" ){
+            	?>
             	<div class="description">                	
             		<h4><span>Professor: </span><?php echo utf8_encode($professor->getNome()); ?></h4>
             		<h4><span>Disciplina: </span><?php echo utf8_encode($turma->getNomeDisciplina()); ?></h4>                
             	</div>
+            	<?php 
+				}
+            	if($tipo == "Aluno" && $subtipo == "Curso/Coordenador" ){
+            	?>
+            	<div class="description">                	
+            		<h4><span>Curso: </span><?php echo $curso; ?></h4>
+            		<h4><span>Coordenador: </span><?php echo "tste".$coordenador->getNome(); ?></h4>                
+            	</div>
+            	<?php 
+				}
+				if($tipo == "Aluno" && $subtipo == "Instituição" ){
+            	?>
+            	<div class="description">
+<!--             	<h4><span>Curso: </span></h4> -->
+            	<h4>Instituição</h4>                
+            	</div>
+            	<?php 
+				}
+            	?>
             </div>
         </div>
         
         <form name="form" method="post" action="../Controller/avaliacaoController.php" onsubmit="return verifica()">
         	<input  type="hidden" name="action" value="saveInDatabase"/>
         	<input  type="hidden" name="questionario_id" value="<?php echo $questionario_id;?>"/>
+        	<input  type="hidden" name="tipo" value="<?php echo $tipo;?>"/>
+        	<input  type="hidden" name="subtipo" value="<?php echo $subtipo;?>"/>
         	
         <div id="escala_conceitos">
         	<h3>Questões</h3>

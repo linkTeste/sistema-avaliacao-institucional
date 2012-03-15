@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "turma"
- * in 2012-03-10
+ * in 2012-03-13
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -20,11 +20,7 @@ class Turma extends Lumine_Base {
     public $questionarioId;
     public $professorId;
     public $coordenadorId;
-    public $questionarioa;
-    public $questionariob;
-    public $questionarioc;
-    public $avaliacoes = array();
-    public $comentarios = array();
+    public $turma;
     public $turmahasalunos = array();
     public $alunos = array();
     
@@ -158,84 +154,20 @@ class Turma extends Lumine_Base {
     	$this->coordenadorId = $value;
     }
     /**
-     * get questionarioa
+     * get turma
      *
      */
-    public function getQuestionarioa() {
-    	return $this->questionarioa;
+    public function getTurma() {
+    	return $this->turma;
     }
     
     /**
-     * set questionarioa
+     * set turma
      * @param Type $value
      *
      */
-    public function setQuestionarioa($value) {
-    	$this->questionarioa = $value;
-    }
-    /**
-     * get questionariob
-     *
-     */
-    public function getQuestionariob() {
-    	return $this->questionariob;
-    }
-    
-    /**
-     * set questionariob
-     * @param Type $value
-     *
-     */
-    public function setQuestionariob($value) {
-    	$this->questionariob = $value;
-    }
-    /**
-     * get questionarioc
-     *
-     */
-    public function getQuestionarioc() {
-    	return $this->questionarioc;
-    }
-    
-    /**
-     * set questionarioc
-     * @param Type $value
-     *
-     */
-    public function setQuestionarioc($value) {
-    	$this->questionarioc = $value;
-    }
-    /**
-     * get avaliacoes
-     *
-     */
-    public function getAvaliacoes() {
-    	return $this->avaliacoes;
-    }
-    
-    /**
-     * set avaliacoes
-     * @param Type $value
-     *
-     */
-    public function setAvaliacoes($value) {
-    	$this->avaliacoes = $value;
-    }
-    /**
-     * get comentarios
-     *
-     */
-    public function getComentarios() {
-    	return $this->comentarios;
-    }
-    
-    /**
-     * set comentarios
-     * @param Type $value
-     *
-     */
-    public function setComentarios($value) {
-    	$this->comentarios = $value;
+    public function setTurma($value) {
+    	$this->turma = $value;
     }
     /**
      * get turmahasalunos
@@ -290,13 +222,9 @@ class Turma extends Lumine_Base {
         $this->metadata()->addField('questionarioId', 'questionario_id', 'int', 11, array('foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Questionario'));
         $this->metadata()->addField('professorId', 'professor_id', 'int', 11, array('notnull' => true, 'foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'Professor'));
         $this->metadata()->addField('coordenadorId', 'coordenador_id', 'int', 11, array());
-        $this->metadata()->addField('questionarioa', 'questionarioA', 'int', 11, array());
-        $this->metadata()->addField('questionariob', 'questionarioB', 'int', 11, array());
-        $this->metadata()->addField('questionarioc', 'questionarioC', 'int', 11, array());
+        $this->metadata()->addField('turma', 'turma', 'varchar', 45, array());
 
         
-        $this->metadata()->addRelation('avaliacoes', Lumine_Metadata::ONE_TO_MANY, 'Avaliacao', 'turmaIdTurma', null, null, null);
-        $this->metadata()->addRelation('comentarios', Lumine_Metadata::ONE_TO_MANY, 'Comentarios', 'turmaIdTurma', null, null, null);
         $this->metadata()->addRelation('turmahasalunos', Lumine_Metadata::ONE_TO_MANY, 'TurmaHasAluno', 'turmaIdTurma', null, null, null);
         $this->metadata()->addRelation('alunos', Lumine_Metadata::MANY_TO_MANY, 'Aluno', 'idTurma', 'turma_has_aluno', 'turma_id_turma', null);
     }

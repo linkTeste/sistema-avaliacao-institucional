@@ -846,7 +846,7 @@ a.botaoGoogleRed:hover {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
 }
 
-a.botaoGoogleGrey,#select.botaoGoogleGrey {
+a.botaoGoogleGrey,#select.botaoGoogleGrey, .selectFiltro.botaoGoogleGrey {
 	background-color: transparent;
 	background-image: linear-gradient(top, #f5f5f5, #f1f1f1);
 	background-image: -moz-linear-gradient(top, #f5f5f5, #f1f1f1);
@@ -872,7 +872,7 @@ text-align: center;
 */
 }
 
-a.botaoGoogleGrey:hover,#select.botaoGoogleGrey:hover {
+a.botaoGoogleGrey:hover,#select.botaoGoogleGrey:hover, .selectFiltro.botaoGoogleGrey:hover {
 	border: 1px solid #c6c6c6;
 	color: #333;
 	background-color: transparent;
@@ -965,8 +965,15 @@ color: white;
 	top: 20px;
 	width: 200px;
 }
+.selectFiltro{
+	position: relative;
+	float: left;
+	margin-left: 20px;
+	/*top: 20px;*/
+	width: auto;
+}
 
-#select select {
+#select select, .selectFiltro select {
 	/*background-color: transparent;*/
 	background: #f5f5f5;
 		
@@ -978,7 +985,7 @@ color: white;
 	color: #333;
 	width: 100%;
 }
-#select select:hover {
+#select select:hover, .selectFiltro select:hover {
 	background: #f8f8f8;
 }
 

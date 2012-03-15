@@ -8,7 +8,7 @@
 <link href="blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="style.css" rel="stylesheet" type="text/css" />
-<link href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth' rel='stylesheet' type='text/css' />
 
 </head>
 
