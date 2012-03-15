@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "funcionario"
- * in 2012-03-10
+ * in 2012-03-13
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -18,8 +18,6 @@ class Funcionario extends Lumine_Base {
     public $senha;
     public $email;
     public $lotacao;
-    public $avaliacoes = array();
-    public $comentarios = array();
     
     
     /**
@@ -118,38 +116,6 @@ class Funcionario extends Lumine_Base {
     public function setLotacao($value) {
     	$this->lotacao = $value;
     }
-    /**
-     * get avaliacoes
-     *
-     */
-    public function getAvaliacoes() {
-    	return $this->avaliacoes;
-    }
-    
-    /**
-     * set avaliacoes
-     * @param Type $value
-     *
-     */
-    public function setAvaliacoes($value) {
-    	$this->avaliacoes = $value;
-    }
-    /**
-     * get comentarios
-     *
-     */
-    public function getComentarios() {
-    	return $this->comentarios;
-    }
-    
-    /**
-     * set comentarios
-     * @param Type $value
-     *
-     */
-    public function setComentarios($value) {
-    	$this->comentarios = $value;
-    }
     
     /**
      * Inicia os valores da classe
@@ -171,8 +137,6 @@ class Funcionario extends Lumine_Base {
         $this->metadata()->addField('lotacao', 'lotacao', 'varchar', 45, array());
 
         
-        $this->metadata()->addRelation('avaliacoes', Lumine_Metadata::ONE_TO_MANY, 'Avaliacao', 'funcionarioId', null, null, null);
-        $this->metadata()->addRelation('comentarios', Lumine_Metadata::ONE_TO_MANY, 'Comentarios', 'funcionarioId', null, null, null);
     }
 
     #### END AUTOCODE

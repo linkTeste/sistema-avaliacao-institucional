@@ -93,6 +93,41 @@ $().ready(function() {
 		});
 	});
 	</script>
+	
+	<style>
+	#sortable { list-style-type: none; margin: 5px; padding: 0; width: 100%; }
+	tr.highlight { height: 100px;}
+	/*#sortable tr:hover {cursor:move;}*/
+	</style>
+	<script>
+	$(function() {
+		$( "#sortable" ).sortable({
+			placeholder: "highlight",
+			items: "tr",
+			cursor: "move",
+			axis: 'y',
+			containment: 'parent',
+			tolerance: 'pointer',
+			handle: 'span',
+			update: function() {
+				var idDrag = this.id;
+				//alert("id: "+idDrag);
+
+				if(idDrag == "sortable"){						
+					var order = $(this).sortable("serialize") + '&action=updateRecordsListings';
+					//alert("ordem: "+order); 
+					$.post("../Controller/questaoController.php", order, function(theResponse){
+						$("#teste").html(theResponse);
+					});
+				}
+				},								  
+			stop: function( e, ui ) {
+				//salvaCookie();
+			}
+		});
+		$( "#sortable" ).disableSelection();
+	});
+	</script>
 
 </head>
 
@@ -118,6 +153,9 @@ $().ready(function() {
 			
 		</ul>
 	</div>
+	
+	<div id="teste"></div>
+	
 <div id="wrapper" class="container">
 <?php if(($new == true) || $edit == true){	?>
     <div id="box">
@@ -210,13 +248,20 @@ $().ready(function() {
 
         <h3>Questões Cadastradas</h3>
         
+                
         <div id="questionarios">
         	<table>
+        	<thead>
             	<tr>
+<!--             		<th>&nbsp;</th> -->
                 	<th>ID</th>
                 	<th>QUEST&Atilde;O</th>
+                	<th>MODIFICADO EM</th>
                     <th>&nbsp;</th>
                 </tr>
+                </thead>
+                <tbody id="sortable">
+                
                 <?php 
     
     	
@@ -233,9 +278,12 @@ $().ready(function() {
     	// recupera os registros
     	$questionario->find();
     	
+    	
+    	
     	while( $questionario->fetch() ) {
-    		echo "<tr>";
-    		echo "<td>".$questionario->id."</td>";
+    		echo "<tr id=recordsArray_".$questionario->id.">";
+    		//echo "<td style='width: 5%'>".$questionario->id."</td>";
+    		echo "<td style='width: 5%'><span>:: </span>".$questionario->id."</td>";
     		
 //     		if($questionario->opcional == "opcional"){
 //     			echo "<td><img src='css/images/opcional.png' alt='Opcional'/></td>";
@@ -244,10 +292,12 @@ $().ready(function() {
 //     		}
     		
     		if($questionario->opcional == "opcional"){
-    			echo "<td>".utf8_encode($questionario->texto)."<span class='span_opcional'>Questão Opcional</span></td>";
+    			echo "<td style='width: 70%'>".utf8_encode($questionario->texto)."<span class='span_opcional'>Questão Opcional</span></td>";
     		}else{
-    			echo "<td>".utf8_encode($questionario->texto)."</td>";
+    			echo "<td style='width: 70%'>".utf8_encode($questionario->texto)."</td>";
     		}
+    		
+    		echo "<td style='width: 20%'>".datetime_to_ptbr($questionario->dataCreate)."</td>";
     		
     		if($questionario_avaliado == "Avaliado"){
     			echo "<td style='width: 10%'>&nbsp</td>";
@@ -258,15 +308,17 @@ $().ready(function() {
     		echo "</tr>";
     		
     	}
+    	
     
     ?>
-               
+           </tbody>    
             
             </table>
         
         </div>
         
     </div>
+    
     <div id="footer">
         <hr />
     	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>

@@ -19,7 +19,7 @@
 ################################################################################
 /**
  * Model generada para a tabela "Comentarios"
- * in 2012-03-10 21:31:52
+ * in 2012-03-13 15:38:41
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package Lumine

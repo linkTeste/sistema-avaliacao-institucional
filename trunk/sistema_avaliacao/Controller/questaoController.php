@@ -7,6 +7,7 @@ $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Questionario.php';
 require_once '../system/application/models/dao/Questao.php';
+require_once '../system/application/models/dao/QuestionarioHasQuestao.php';
 
 //if (!isset($_SESSION)) {
 session_start();
@@ -155,6 +156,55 @@ function questaoController() {
 	if($action == "save"){
 		save();
 	}
+	if($action == "updateRecordsListings"){
+		$updateRecordsArray = $_POST['recordsArray'];
+		
+		$questionario = unserialize($_SESSION["s_questionario"]);
+		
+// 		$qhq = new QuestionarioHasQuestao();
+// 		$qhq->questionarioId = $questionario->getId();
+// 		$qhq->find();
+		
+		//guarda o id das questoes
+// 		$id_array = array();
+// 		$i = 0;
+// 		while ($qhq->fetch()) {
+// 			$id_array[$i] = $qhq->questaoId;
+// 			$i++;	
+			
+// 		}
+		
+		
+		$ordem = 1;		
+		foreach ($updateRecordsArray as $value) {
+			echo "ID: ".$value;
+			echo " - ";
+			echo $ordem;
+			echo "<br />";
+			
+			$qhq = new QuestionarioHasQuestao();
+			$qhq->questionarioId = $questionario->getId();
+			$qhq->questaoId = $value;
+			$qhq->find(true);
+			
+			$qhq->setOrdem($ordem);
+			$qhq->save();
+			
+			$ordem = $ordem + 1;
+		}	
+		
+		
+	}
+}
+
+/**
+* @name updateRecordsOrder
+* @author Fabio Baía
+* @since 14/03/2012 23:12:02
+* atualiza a ordem de exiobição das questões
+**/
+function updateRecordsOrder($param) {
+	;
 }
 
 

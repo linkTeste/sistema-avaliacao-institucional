@@ -52,7 +52,7 @@ if(isset($_SESSION["s_usuario_logado"])){
 
 if(isset($_SESSION["s_periodo"])){
 	$periodo_atual = $_SESSION["s_periodo"];
-	echo "periodo: ".$periodo_atual;
+// 	echo "periodo: ".$periodo_atual;
 }else{
 	header("Location: index.php");
 }
@@ -157,8 +157,10 @@ if(isset($_SESSION["s_periodo"])){
 				<ul>
 					<li><a href="index.php" title="P&aacute;gina Inicial"
 						class="botao_left botaoGoogleGrey">P&aacute;gina Inicial</a></li>
-					<li><a href="avaliacoes.php" title="Avalia&ccedil;&otilde;es"
-						class="botao_left botaoGoogleGrey">Avalia&ccedil;&otilde;es</a></li>
+<!-- 					<li><a href="avaliacoes.php" title="Avalia&ccedil;&otilde;es" -->
+<!-- 						class="botao_left botaoGoogleGrey">Avalia&ccedil;&otilde;es</a></li> -->
+					<li><a href="alunospendentes.php" title="Alunos Pendentes"
+						class="botao_left botaoGoogleGrey">Alunos Pendentes</a></li>
 					<li><a href="#" title="Relat&oacute;rios"
 						class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
 					
@@ -173,6 +175,7 @@ if(isset($_SESSION["s_periodo"])){
     		//filtro por semestre
     		$ss = $_POST["semestre-selecionado"];    		
     		$semestre_escolhido = $ss."º SEMESTRE";
+//     		$semestre_escolhido = $ss;
     		$where_semestre = "and turma.serie = '".$semestre_escolhido."'";
     		$where_semestre2 = "and t.serie = '".$semestre_escolhido."'";
     		
@@ -189,27 +192,27 @@ if(isset($_SESSION["s_periodo"])){
     		$where_curso = "and turma.curso='".utf8_decode($curso_escolhido)."'";  		
     	}
     	else{
-    		//lista os registros de todos os cursos coordenados pelo usuario 
-//     		$where_curso = "and (turma.curso='";
-//     		echo sizeof($cursos_coordenados);
-// 			$i = 1;
-//     		foreach ($cursos_coordenados as $curso) {
-//     			$where_curso .= utf8_encode($curso);
-//     			if($i < sizeof($cursos_coordenados)){
-//     				$where_curso .= "' OR turma.curso='";
-//     			}
-//     			$i++;
-    			    			
-//     		}
-//     		$where_curso .="')";
-//     		echo "where curso: ".$where_curso;
-
     		//pega o primeiro curso como sendo o default
     		$where_curso = "and turma.curso='".$cursos_coordenados[0]."'";
     	}
     	
+    	if(isset($_POST["turma-selecionada"]) && $_POST["turma-selecionada"] != ""){
+    		$ts = $_POST["turma-selecionada"];
+    		$turma_escolhida = $ts;
+    		$where_turma = "and turma.turma='".utf8_decode($turma_escolhida)."'";
+    		$where_turma2 = "and t.turma = '".$turma_escolhida."'";
+    	}
+    	else{
+    		//pega o primeiro curso como sendo o default
+    		$where_turma = "";
+    	}
+    	
     	?>
     	<form action="" method="post" style="float: right;">
+    	<?php
+    		if(sizeof($cursos_coordenados) >1) {   	
+    	?>
+    	<div class="selectFiltro botaoGoogleGrey">
     	<select name="curso-selecionado">
     		<option value="">Escolha o curso</option>
     		<?php 
@@ -219,29 +222,85 @@ if(isset($_SESSION["s_periodo"])){
     		}
     		
     		?>
-<!--     		<option value="1">1&deg; SEMESTRE</option> -->
-<!--     		<option value="2">2&deg; SEMESTRE</option> -->
-<!--     		<option value="3">3&deg; SEMESTRE</option> -->
-<!--     		<option value="4">4&deg; SEMESTRE</option> -->
     	</select>
-    	<select name="semestre-selecionado">
-    		<option value="">Escolha o semestre</option>
-    		<?php 
-//     		foreach ($cursos_coordenados as $curso) {
-//     			//select serie from turma where (curso="Serviço Social"  or curso = "Psicologia") and periodo_letivo = '2/2011' group by serie ;
-//     			echo "<option value='".utf8_encode($curso)."'>".utf8_encode($curso)."</option>";
-//     		}
+    	</div>
+    	
+    	
+    		<?php
     		
+			}//fecha if(sizeof)
+    		
+    		$turmaA = new Turma();
+    		$turmaA->alias("turma");
+    		$turmaA->select("turma.curso, turma.coordenadorId, turma.turma");
+    		$turmaA->where("turma.curso = '".$cursos_coordenados[0]."'");
+    		//$turmaA->group("turma.curso");
+    		$turmaA->group("turma.turma");
+    		$qtdTurmas = $turmaA->find();
+    		
+    		if($qtdTurmas >1){
     		?>
-    		<option value="1">1&deg; SEMESTRE</option>
-    		<option value="2">2&deg; SEMESTRE</option>
-    		<option value="3">3&deg; SEMESTRE</option>
-    		<option value="4">4&deg; SEMESTRE</option>
+    		
+    	<div class="selectFiltro botaoGoogleGrey">
+    	<select name="turma-selecionada">
+    	<option value="">Escolha a turma</option>
+    		
+    		<?php
+    		while($turmaA->fetch()) {
+				if($turmaA->turma != ""){
+    		?>
+    		<option value="<?php echo $turmaA->turma;?>"><?php echo $turmaA->turma;?></option>
+    		<?php
+				}//fecha if
+			}//fecha while
+			?>
     	</select>
+    	</div>
+    	<?php 
+    		}//fecha if
+    	?>
+    	
+    	
+    	
+    		<?php
+    		
+    		$turmaA = new Turma();
+    		$turmaA->alias("turma");
+    		$turmaA->select("turma.curso, turma.coordenadorId, turma.turma, turma.serie");
+    		$turmaA->where("turma.curso = '".$cursos_coordenados[0]."'");
+    		//$turmaA->group("turma.curso");
+    		$turmaA->group("turma.serie");
+    		$qtdSemestres = $turmaA->find();
+    		
+    		if($qtdSemestres >1){
+    		?>    		
+    	<div class="selectFiltro botaoGoogleGrey">
+    	<select name="semestre-selecionado">
+    	<option value="">Escolha o semestre</option>
+    		
+    		<?php
+    		 		
+    		while($turmaA->fetch()) {
+    			$value = explode("º", $turmaA->serie);
+    			if($turmaA->serie != ""){
+    		?>
+    		<option value="<?php echo $value[0];?>"><?php echo utf8_encode($turmaA->serie);?></option>
+    		<?php 
+				}//fecha if
+    		}//fecha while
+			?>
+
+    	</select>
+    	</div>
+    	<?php 
+    		}//fecha if
+    	?>
     	
     	<button class="botaoGoogleBlue float-right" type="submit" name="enviar" >Carregar</button>
     	
     	</form>
+    	<br />
+    	<br />
     	<br />
     	<br />
     	<?php
@@ -282,7 +341,7 @@ if(isset($_SESSION["s_periodo"])){
     	
     	$alunos->where("turma.periodoLetivo = '".$periodo_atual."' and alunos.sitAcademica=1 
     	                                                            and thaa.turmaIdTurma = turma.idTurma ".
-    		$where_curso." ".$where_semestre);
+    		$where_curso." ".$where_turma." ".$where_semestre);
     	    	
     	//teste
 //     	$alunos->where("turma.periodoLetivo = '".$periodo_atual."' and alunos.sitAcademica=1 and alunos.ra");
@@ -293,7 +352,7 @@ if(isset($_SESSION["s_periodo"])){
     	
     	
 //     	echo "TOTAL DE ALUNOS ATIVOS DO PERIODO ATUAL: ".$qtd_alunos;
-    	echo "<br />";
+//     	echo "<br />";
 
     	?>
     	
@@ -355,8 +414,8 @@ if(isset($_SESSION["s_periodo"])){
     		
     		$a->join($tha,'INNER','tha');
     		
-    		$a->select("t.idTurma, t.nomeDisciplina, t.professorId, t.periodoLetivo, t.serie, t.curso, a.nome, a.curso, tha.avaliado");
-    		$a->where("t.periodoLetivo = '".$periodo_atual."' and a.ra = '".$ra_aluno."' and tha.turmaIdTurma = t.idTurma ".$where_semestre2);
+    		$a->select("t.idTurma, t.nomeDisciplina, t.professorId, t.periodoLetivo, t.serie, t.curso, t.turma, a.nome, a.curso, tha.avaliado");
+    		$a->where("t.periodoLetivo = '".$periodo_atual."' and a.ra = '".$ra_aluno."' and tha.turmaIdTurma = t.idTurma ".$where_semestre2." ".$where_turma2);
     		
     		//$a->groupBy("t.idTurma");
     		
@@ -391,10 +450,10 @@ if(isset($_SESSION["s_periodo"])){
     			}else{
     				
     				echo "<tr>";
-    				echo "<td>".$a->id_turma."</td>";
-    				echo "<td>".utf8_encode($a->nome_disciplina)."</td>";
-    				echo "<td>".utf8_encode($a->serie)."</td>";
-    				echo "<td>".utf8_encode($a->curso)."</td>";
+    				echo "<td style='width: 5%;'>".$a->turma."</td>";
+    				echo "<td>".$a->id_turma." - ".utf8_encode($a->nome_disciplina)."</td>";
+    				echo "<td style='width: 10%;'>".utf8_encode($a->serie)."</td>";
+    				echo "<td style='width: 30%;'>".utf8_encode($a->curso)."</td>";
     				   						
     				echo "</tr>";
     				
@@ -580,9 +639,9 @@ if(isset($_SESSION["s_periodo"])){
 // 		$awe->setOrdem($value);
     	
     	
-    	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES PENDENTES: ".$qtd_pendente;
-    	echo "<br />";
-    	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
+//     	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES PENDENTES: ".$qtd_pendente;
+//     	echo "<br />";
+//     	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
     	
     	?>
         

@@ -117,7 +117,7 @@ function loginController() {
 
 					$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
 					
-					$page = "avaliacoesteste.php";
+					$page = "alunospendentes.php";
 						
 				}
 			}
@@ -154,10 +154,15 @@ function loginController() {
 		//pega o processo de avaliação ativo
 		//pega dados do processo de avaliacao
 		$processo = new ProcessoAvaliacao();
-		$processo->get(1);
+		
+		$processo->order("id DESC");
+		$processo->find();
+		$processo->fetch(true);
+// $processo->get(1);
 			
 		$_SESSION["s_processo"] = serialize($processo);
-		$_SESSION["s_periodo"] = "2/2011";
+// 		$_SESSION["s_periodo"] = "2/2011";
+		$_SESSION["s_periodo"] = "1/2012";
 			
 		redirectTo($page);
 			
@@ -271,7 +276,7 @@ function isUsuario($login, $senha) {
 function isProfessor($login, $senha) {
 	$usuarioLogado = new Professor();
 	$usuarioLogado->login = $login;
-	$usuarioLogado->senha = $senha;
+	$usuarioLogado->senha = md5($senha);
 
 	$qtd = $usuarioLogado->find(true);
 	if($qtd == 0){

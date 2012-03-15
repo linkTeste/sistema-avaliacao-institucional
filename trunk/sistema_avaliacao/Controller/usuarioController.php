@@ -197,6 +197,7 @@ session_start();
 		$usuario->setId($id);
 		$usuario->setNome($nome);
 		$usuario->setLogin($login);
+		$usuario->setSenha($login);
 		$usuario->setEmail($email);
 		
 		

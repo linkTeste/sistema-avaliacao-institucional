@@ -65,8 +65,8 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
                     $('#subtipo').removeOption(/./);
 
                     var tipoAluno = {
-    						"Disciplina/Professor" : "Disciplina/Professor",
-    						"Curso/Coordenação" : "Curso/Coordenação",
+    						"Professor/Disciplina" : "Professor/Disciplina",
+    						"Curso/Coordenador" : "Curso/Coordenador",
     						"Instituição" : "Instituição"
     						}
 					

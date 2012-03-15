@@ -22,6 +22,7 @@ require_once '../system/application/models/dao/Questao.php';
 require_once '../system/application/models/dao/Turma.php';
 require_once '../system/application/models/dao/TurmaHasAluno.php';
 require_once '../system/application/models/dao/Aluno.php';
+require_once '../system/application/models/dao/Professor.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
 require_once '../system/application/models/dao/Comentarios.php';
@@ -68,18 +69,58 @@ session_start();
 		if($action == "avaliar"){
 			//redireciona para pagina de avaliacao
 
-			//pega o tipo da avaliacao
+			//pega o tipo e subtipo da avaliacao
+			if(isset($_GET["tipo"])){
+				$tipo = $_GET["tipo"];
+			}
 			if(isset($_GET["subtipo"])){
 				$subtipo = $_GET["subtipo"];
 			}
 			
-// 			if($subtipo == "DisciplinaProfessor"){
+			
+			if($subtipo == "Professor/Disciplina"){
 				//pega a turma
 				if(isset($_GET["turma"])){
 					$id_turma = $_GET["turma"];
 				}
 				$turma = new Turma();
 				$turma->get($id_turma);
+				
+				$_SESSION["s_turma"] = serialize($turma);
+			}
+			
+			if($subtipo == "Curso/Coordenador"){
+				//pega o curso
+				if(isset($_GET["curso"])){
+					$curso = $_GET["curso"];
+				}
+				
+				if(isset($_GET["coordenador_id"])){
+					$id_coordenador = $_GET["coordenador_id"];
+				}
+				
+				//pega o professor
+				$professor = new Professor();
+				$professor->get($id_coordenador);
+// 				$turma = new Turma();
+// 				$turma->get($id_turma);
+			
+				$_SESSION["s_curso"] = $curso;
+				$_SESSION["s_coordenador"] = serialize($professor);
+			}
+			
+			if($subtipo == "Instituição"){
+// 				if(isset($_GET["turma"])){
+// 					$id_turma = $_GET["turma"];
+// 				}
+// 				$turma = new Turma();
+// 				$turma->get($id_turma);
+			
+// 				$_SESSION["s_turma"] = serialize($turma);
+			}
+						
+
+				
 				
 				$processo = unserialize($_SESSION["s_processo"]);
 				
@@ -88,8 +129,8 @@ session_start();
 				//pegamos o questionario id agora da tabela questionario_usado
 				$questionarioUsado = new QuestionarioUsado();
 				$questionarioUsado->processoAvaliacaoId = $processo->getId();
-				$questionarioUsado->tipo ="Aluno";
-				$questionarioUsado->subtipo ="Disciplina/Professor";
+				$questionarioUsado->tipo = $tipo;
+				$questionarioUsado->subtipo = $subtipo;
 				$questionarioUsado->find(true);
 
 				$questionario_id = $questionarioUsado->getQuestionarioId();
@@ -97,24 +138,12 @@ session_start();
 				$questionario->get($questionario_id);
 					
 					
-				$_SESSION["s_turma"] = serialize($turma);
 				$_SESSION["s_questionario"] = serialize($questionario);
+				$_SESSION["tipo"] = $tipo;
+				$_SESSION["subtipo"] = $subtipo;
 				
 // 			}
-			if($subtipo == "CursoCoordenador"){
-				//pega o curso
-				if(isset($_GET["curso"])){
-					$curso = $_GET["curso"];
-				}
-				
-				//criar tabela curso
-				//pegar o questionario do curso
-				
-				//jogar o curso na sessao
-				//jogar questionario na sessao
-			}
-			
-			
+					
 			
 			
 			$page = "avaliacao.php";
@@ -163,7 +192,28 @@ session_start();
 				$questionario_id = $_POST["questionario_id"];
 			}
 			
-			//echo "questionario id".$questionario_id;
+		//pega o tipo e subtipo da avaliacao
+			if(isset($_POST["tipo"])){
+				$tipo = $_POST["tipo"];
+			}
+			if(isset($_POST["subtipo"])){
+				$subtipo = $_POST["subtipo"];
+			}
+			
+			
+			if($subtipo == "Professor/Disciplina"){
+				$turma = unserialize($_SESSION["s_turma"]);
+				$item_avaliado = $turma->getIdTurma();
+			}
+			
+			if($subtipo == "Curso/Coordenador"){
+				$curso = $_SESSION["s_curso"];
+				$item_avaliado = $curso;
+			}
+			
+			if($subtipo == "Instituição"){
+				$item_avaliado = "Instituição";
+			}
 			
 						
 			
@@ -173,7 +223,7 @@ session_start();
 			//print_r($questoesNotas);
 			
 			$processo = unserialize($_SESSION["s_processo"]);
-			$turma = unserialize($_SESSION["s_turma"]);
+// 			$turma = unserialize($_SESSION["s_turma"]);
 			
 			foreach ($questoesNotas as $qn){
 				$q = $qn[question_id];
@@ -191,8 +241,12 @@ session_start();
 				//define o avaliador da avaliacao
 				$avaliacao->setAvaliador($aluno->getRa());
 				
+				//define o tipo da avaliacao(aluno, professor, cooordenador)
+				//tipo avaliador
+				$avaliacao->setTipoAvaliacao($tipo);
+				
 				//define o objeto da avalia��o
-				$avaliacao->setItemAvaliado($turma->getIdTurma());
+				$avaliacao->setItemAvaliado($item_avaliado);
 				
 				//substituido pelo objeto da avaliacao
 				//$avaliacao->setTurmaIdTurma($turma->getIdTurma());
@@ -213,18 +267,17 @@ session_start();
 				$questionario->save();
 				
 				//se for a avaliacao da turma, marca ela
-				
-				//marca a turma como avaliada
-				$tha = new TurmaHasAluno();
-				$tha->turmaIdTurma = $turma->getIdTurma();
-				$tha->alunoRa = $aluno->getRa();
-				
-				$tha->find(true);
-				$tha->setAvaliado("Avaliado");				
-				$tha->save();
-				
-				//ate aqui
-				
+				if($subtipo == "Professor/Disciplina"){
+					//marca a turma como avaliada
+					$tha = new TurmaHasAluno();
+					$tha->turmaIdTurma = $turma->getIdTurma();
+					$tha->alunoRa = $aluno->getRa();
+					
+					$tha->find(true);
+					$tha->setAvaliado("Avaliado");
+					$tha->save();
+				}
+								
 				
 				//marca o processo de avaliacao como avaliado
 				//para que ele n�o seja excluido por alguem
@@ -236,6 +289,22 @@ session_start();
 			}
 			
 			if(isset($_POST["obs"]) && $_POST["obs"] != ""){
+				if($subtipo == "Professor/Disciplina"){
+					$turma = unserialize($_SESSION["s_turma"]);
+					$item_avaliado = $turma->getIdTurma();
+				}
+					
+				if($subtipo == "Curso/Coordenador"){
+					$curso = $_SESSION["s_curso"];
+					$item_avaliado = $curso;
+				}
+					
+				if($subtipo == "Instituição"){
+					$item_avaliado = "Instituição";
+				}
+				
+				
+				
 				$comentario_texto = $_POST["obs"];
 				
 				//seta o comentario no banco de dados
@@ -244,14 +313,15 @@ session_start();
 				$comentario->setDataAvaliacao(date('Y-m-d H:i:s'));
 				
 				//define o avaliador
-				//terminar depois, modificar tabela no banco
+				$comentario->setAvaliador($aluno->getRa());
 				
+				//define o tipo da avaliacao(aluno, professor, cooordenador)
+				//tipo avaliador
+				$comentario->setTipoAvaliacao($tipo);
 				
-				$comentario->setAlunoRa($aluno->getRa());
-				$comentario->setTurmaIdTurma($turma->getIdTurma());
-					
-				// 			echo $aluno->getRa();
-				// 			echo $turma->getIdTurma();
+				//define o objeto da avalia��o
+				$comentario->setItemAvaliado($item_avaliado);
+				
 				$comentario->save();
 				
 			}

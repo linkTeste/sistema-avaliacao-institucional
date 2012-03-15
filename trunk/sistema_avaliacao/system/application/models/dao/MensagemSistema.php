@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "mensagem_sistema"
- * in 2012-03-10
+ * in 2012-03-13
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -15,6 +15,7 @@ class MensagemSistema extends Lumine_Base {
     public $id;
     public $texto;
     public $tipo;
+    public $codigo;
     
     
     /**
@@ -65,6 +66,22 @@ class MensagemSistema extends Lumine_Base {
     public function setTipo($value) {
     	$this->tipo = $value;
     }
+    /**
+     * get codigo
+     *
+     */
+    public function getCodigo() {
+    	return $this->codigo;
+    }
+    
+    /**
+     * set codigo
+     * @param Type $value
+     *
+     */
+    public function setCodigo($value) {
+    	$this->codigo = $value;
+    }
     
     /**
      * Inicia os valores da classe
@@ -81,6 +98,7 @@ class MensagemSistema extends Lumine_Base {
         $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true));
         $this->metadata()->addField('texto', 'texto', 'text', 65535, array());
         $this->metadata()->addField('tipo', 'tipo', 'varchar', 45, array());
+        $this->metadata()->addField('codigo', 'codigo', 'varchar', 255, array());
 
         
     }

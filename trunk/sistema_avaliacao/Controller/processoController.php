@@ -203,7 +203,7 @@ session_start();
 // 		}
 			
 		$_SESSION["action"] = $action;
-		$_SESSION["s_processo"] = $processo;
+		$_SESSION["s_processo"] = serialize($processo);
 		$_SESSION["mensagem"] = $mensagem;
 		
 		

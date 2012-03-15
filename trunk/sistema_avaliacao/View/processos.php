@@ -149,10 +149,10 @@ if(isset($_SESSION["s_processo"])){
         	<input type="text" name="descricao" value="<?php echo $descricao;?>"/><br /><br /><br />
             
             <label for="input-inicio">Data inicial:</label><br />
-			<input type="text" name="input-inicio" id="input-inicio" value="<?php echo $inicio;?>"/><br /><br /><br />
+			<input type="text" name="input-inicio" id="input-inicio" value="<?php echo $inicio;?>" readonly="readonly"/><br /><br /><br />
             
             <label for="input-fim">Data final:</label><br />
-            <input type="text" name="input-fim" id="input-fim" value="<?php echo $fim;?>"/><br /><br /><br />
+            <input type="text" name="input-fim" id="input-fim" value="<?php echo $fim;?>" readonly="readonly"/><br /><br /><br />
             <br /><br />
             
                     

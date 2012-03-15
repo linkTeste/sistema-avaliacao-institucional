@@ -222,14 +222,23 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 						echo "<td>".$lista->getLogin()."</td>";
 						echo "<td>".$lista->getEmail()."</td>";
 						echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
-						echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
+						if($lista->getLogin() != "admin"){
+							echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
+							if($processo_avaliado == "Avaliado"){
+								echo "<td style='width: 10%'>&nbsp</td>";
+							}
+							else{
+								echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+							}
+						}
+						else{
+							echo "<td style='width: 10%'>&nbsp</td>";
+							echo "<td style='width: 10%'>&nbsp</td>";
+						}
 						
-						if($processo_avaliado == "Avaliado"){
-    						echo "<td style='width: 10%'>&nbsp</td>";    						
-    					}
-    					else{
-    						echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
-    					}
+						
+						
+						
     					echo "</tr>";
 					}
                 

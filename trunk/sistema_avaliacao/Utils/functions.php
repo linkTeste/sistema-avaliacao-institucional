@@ -50,6 +50,9 @@ function date_to_ptbr($date) {
 	
 	return date("d/m/Y", mktime ($mo,$da,$yr));
 }
+
+
+
 /**
 * @name pegaImagem
 * @author Fabio Baía
