@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "avaliacao"
- * in 2012-03-13
+ * in 2012-06-20
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -22,6 +22,7 @@ class Avaliacao extends Lumine_Base {
     public $itemAvaliado;
     public $avaliador;
     public $tipoAvaliacao;
+    public $subtipoAvaliacao;
     
     
     /**
@@ -184,6 +185,22 @@ class Avaliacao extends Lumine_Base {
     public function setTipoAvaliacao($value) {
     	$this->tipoAvaliacao = $value;
     }
+    /**
+     * get subtipoAvaliacao
+     *
+     */
+    public function getSubtipoAvaliacao() {
+    	return $this->subtipoAvaliacao;
+    }
+    
+    /**
+     * set subtipoAvaliacao
+     * @param Type $value
+     *
+     */
+    public function setSubtipoAvaliacao($value) {
+    	$this->subtipoAvaliacao = $value;
+    }
     
     /**
      * Inicia os valores da classe
@@ -207,6 +224,7 @@ class Avaliacao extends Lumine_Base {
         $this->metadata()->addField('itemAvaliado', 'item_avaliado', 'varchar', 45, array());
         $this->metadata()->addField('avaliador', 'avaliador', 'varchar', 45, array());
         $this->metadata()->addField('tipoAvaliacao', 'tipo_avaliacao', 'varchar', 45, array());
+        $this->metadata()->addField('subtipoAvaliacao', 'subtipo_avaliacao', 'varchar', 45, array());
 
         
     }

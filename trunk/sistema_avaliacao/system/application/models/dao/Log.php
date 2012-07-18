@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "log"
- * in 2012-03-13
+ * in 2012-06-20
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -14,9 +14,11 @@ class Log extends Lumine_Base {
     
     public $id;
     public $usuario;
-    public $operacao;
+    public $tipoUsuario;
     public $hora;
     public $ip;
+    public $saida;
+    public $processoAvaliacaoId;
     
     
     /**
@@ -52,20 +54,20 @@ class Log extends Lumine_Base {
     	$this->usuario = $value;
     }
     /**
-     * get operacao
+     * get tipoUsuario
      *
      */
-    public function getOperacao() {
-    	return $this->operacao;
+    public function getTipoUsuario() {
+    	return $this->tipoUsuario;
     }
     
     /**
-     * set operacao
+     * set tipoUsuario
      * @param Type $value
      *
      */
-    public function setOperacao($value) {
-    	$this->operacao = $value;
+    public function setTipoUsuario($value) {
+    	$this->tipoUsuario = $value;
     }
     /**
      * get hora
@@ -99,6 +101,38 @@ class Log extends Lumine_Base {
     public function setIp($value) {
     	$this->ip = $value;
     }
+    /**
+     * get saida
+     *
+     */
+    public function getSaida() {
+    	return $this->saida;
+    }
+    
+    /**
+     * set saida
+     * @param Type $value
+     *
+     */
+    public function setSaida($value) {
+    	$this->saida = $value;
+    }
+    /**
+     * get processoAvaliacaoId
+     *
+     */
+    public function getProcessoAvaliacaoId() {
+    	return $this->processoAvaliacaoId;
+    }
+    
+    /**
+     * set processoAvaliacaoId
+     * @param Type $value
+     *
+     */
+    public function setProcessoAvaliacaoId($value) {
+    	$this->processoAvaliacaoId = $value;
+    }
     
     /**
      * Inicia os valores da classe
@@ -112,11 +146,13 @@ class Log extends Lumine_Base {
         
         # nome_do_membro, nome_da_coluna, tipo, comprimento, opcoes
         
-        $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true));
+        $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true, 'autoincrement' => true));
         $this->metadata()->addField('usuario', 'usuario', 'varchar', 45, array());
-        $this->metadata()->addField('operacao', 'operacao', 'varchar', 255, array());
+        $this->metadata()->addField('tipoUsuario', 'tipo_usuario', 'varchar', 45, array());
         $this->metadata()->addField('hora', 'hora', 'datetime', null, array());
         $this->metadata()->addField('ip', 'ip', 'varchar', 45, array());
+        $this->metadata()->addField('saida', 'saida', 'datetime', null, array());
+        $this->metadata()->addField('processoAvaliacaoId', 'processo_avaliacao_id', 'int', 11, array('notnull' => true, 'foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'ProcessoAvaliacao'));
 
         
     }

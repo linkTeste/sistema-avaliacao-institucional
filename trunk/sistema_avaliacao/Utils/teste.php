@@ -1,4 +1,8 @@
 <?php
+$s = md5("vanessa");
+echo $s;
+exit;
+
 // ini_set('memory_limit', '-1'); //nao funcionou
 
 //conexao ao banco academico pra atualizar os dados
@@ -37,15 +41,16 @@ require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/Turma.php';
 
-//as duas linhas abaixo não funcionam. pesquisar o motivo(se der tempo :))
+
+//as duas linhas abaixo nï¿½o funcionam. pesquisar o motivo(se der tempo :))
 //Lumine::import('system/application/models/dao/Usuario.php');
 // Lumine_Util::import('system/application/models/dao/Usuario.php');
 
-//testando inserção de usuario
+//testando inserï¿½ï¿½o de usuario
 
 // $usuario = new Usuario();
 
-// $usuario->nome = "Fabio Baía";
+// $usuario->nome = "Fabio Baï¿½a";
 // $usuario->login = "fabio";
 // $usuario->senha = "baia";
 // $usuario->save();
@@ -95,7 +100,7 @@ require_once '../system/application/models/dao/Turma.php';
 
 // insere usuarios
 // $usuario = new Usuario();
-// $usuario->setNome("Fabio Cezar Baía");
+// $usuario->setNome("Fabio Cezar Baï¿½a");
 // $usuario->setLogin("fabio");
 // $usuario->setSenha("baia");
 // $usuario->setEmail("baiacfabio@gmail.com");
@@ -111,7 +116,7 @@ require_once '../system/application/models/dao/Turma.php';
 // $professor->setEmail("fulano@gmail.com");
 // $professor->setIscoordenador(true);
 
-// //usar o insert pq o id não é auto-incremento
+// //usar o insert pq o id nï¿½o ï¿½ auto-incremento
 // $professor->insert();
 
 
@@ -137,11 +142,11 @@ require_once '../system/application/models/dao/Turma.php';
 // $avaliacao->setQuestionarioHasQuestaoQuestaoId(9);
 // $avaliacao->setNota(5);
 // $avaliacao->setDataAvaliacao(date("Y-m-d"));
-// //usar insert pq essa tabela não tem id
+// //usar insert pq essa tabela nï¿½o tem id
 // $avaliacao->save();
 
 
-//define se é pra mostrar as mensagens de debug ou não
+//define se ï¿½ pra mostrar as mensagens de debug ou nï¿½o
 $debug = true;
 importaTudo();
 // importaAlunos();
@@ -151,12 +156,17 @@ importaTudo();
 
 
 
-//importação dos dados
+//importaï¿½ï¿½o dos dados
 function importaTudo(){
-	importaAlunos();
-	importaProfessores();
-	importaCoordenadores();
-	importaTurmas();
+// 	importaAlunos();
+// 	importaProfessores();
+// 	importaCoordenadores();
+// 	importaTurmas();
+// 	importaTurmas2(5);
+// 	importaTurmas2(4);
+// 	importaTurmas2(3);
+// 	importaTurmas2(2);
+// 	importaTurmas2(1);
 	importaTurmas2();
 }
 
@@ -299,7 +309,7 @@ function importaProfessores(){
 			}
 		}
 		else {
-			//não vai inserir pq o objetivo é so atualizar os dados faltantes com base nos registros ja inseridos
+			//nï¿½o vai inserir pq o objetivo ï¿½ so atualizar os dados faltantes com base nos registros ja inseridos
 			//$professor->insert();
 		}
 
@@ -310,7 +320,7 @@ function importaProfessores(){
 //importa coordenadores
 /**
 * @name importaCoordenadores
-* @author Fabio Baía
+* @author Fabio Baï¿½a
 * @since 05/03/2012 13:57:50
 * importa os coordenadorwes do sistema academico
 **/
@@ -434,7 +444,7 @@ function importaTurmas2(){
 
 	
 	
-	//a sql abaixo pega só os registros q tem registros equivalentes na tabela de turmas
+	//a sql abaixo pega sï¿½ os registros q tem registros equivalentes na tabela de turmas
 	//$sql = "select d.cod_turma, d.ra from ca_turmas t, ca_diario d where t.id_turma = d.cod_turma";
 
 	//o mesmo q a linha de cima mas de forma otimizada
@@ -443,7 +453,7 @@ function importaTurmas2(){
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '2/2011' ORDER BY d.cod_turma DESC LIMIT ".$limitInicio.", ".$limitFim;
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT ".$limitInicio.", ".$limitFim;
 
-		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '1/2012' ORDER BY d.cod_turma ASC LIMIT 0, 1000";
+// 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '1/2012' ORDER BY d.cod_turma DESC LIMIT 0, 500";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC";
 //      $sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 500, 1000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 800, 900";
@@ -451,36 +461,90 @@ function importaTurmas2(){
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 1000, 2000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 2000, 3000";
 // 		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma ORDER BY d.cod_turma DESC LIMIT 3000, 4000";
+	
+	//pega sï¿½ a serie da turma
+	//$sql = "SELECT d.cod_turma, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma GROUP BY d.cod_turma ORDER BY d.cod_turma";
+
+	//pega por curso
+	//$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d INNER JOIN ca_turmas t ON t.id_turma = d.cod_turma and t.periodo_letivo = '1/2012' and t.id_curso = ".$curso." ORDER BY d.cod_turma";
+	//$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d, ca_turmas t WHERE t.id_turma = d.cod_turma and t.periodo_letivo = '1/2012' and t.id_curso = ".$curso." ORDER BY d.cod_turma";
+	$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d, ca_turmas t WHERE t.id_turma = d.cod_turma and t.periodo_letivo = '1/2012' ORDER BY d.cod_turma";
 	$query = mysql_query($sql,$conexaoAcademico) or die(mysql_error());
 	//Percorre os campos da tabela
 	//$i = 0;
-
+	
+	
+	$total = mysql_num_rows($query);
+	
+// 	echo "importando curso: ".$curso;
+// 	echo "<br />";
+// 	echo "total registros >>>> ".$total;
+// 	echo "<br />";
+	
+	//limit 0, 400
+	//limit 400, 400
+	//limit 0, 400
+	
+	
+	$qtdReg = 100;
+	$divisao = $total / $qtdReg;
+	$ceil = ceil($divisao);
+// 	echo "divisao" .$divisao;
+// 	echo "<br />";
+// 	echo "sobra" .$sobra;
+// 	echo "<br />";
+// 	echo "arredondamento" .$ceil;
+// 	echo "<br />";
+	$valor = 0;
+	
+	$array_series = array();
+	
+		
+	for($i = 0; $i<$ceil; $i++){
+		//echo "limit ".$valor.", ".$qtdReg;
+		//echo "<br />";
+		$valor += $qtdReg;
+		$sql = "SELECT d.cod_turma, d.ra, d.serie FROM ca_diario d, ca_turmas t WHERE t.id_turma = d.cod_turma and t.periodo_letivo = '1/2012' ORDER BY d.cod_turma LIMIT ".$valor.", ".$qtdReg;
+		$query = mysql_query($sql,$conexaoAcademico) or die(mysql_error());
 
 	while ($dados = mysql_fetch_assoc($query)) {
 		$id_turma = $dados["cod_turma"];
 		$ra_aluno = $dados["ra"];
 		$serie_turma = $dados["serie"];
-		echo $id_turma;
-		echo "<br />";
-
-		$turma = new Turma();
-		$turma->get($id_turma);
+		//echo $id_turma;
+		//echo "<br />";
 		
-		//adiciona a serie na turma e atualiza
-		$turma->setSerie($serie_turma);
-		$turma->save();
-		$aluno = new Aluno();
-		$aluno->get($ra_aluno);
+		$array_series[] = array("cod_turma" => $dados["cod_turma"],
+							"ra" => $dados["ra"],
+							"serie" => $dados["serie"]);
+		
+		
+		echo "UPDATE turma SET turma='".$serie_turma."' WHERE id_turma=".$id_turma.";";
+		echo "<br />";
+// 		$turma = new Turma();
+// 		$turma->get($id_turma);
+		
+// 		//adiciona a serie na turma e atualiza
+// 		$turma->setSerie($serie_turma);
+// 		$turma->save();
 
-		$turmas = array();
-		$turmas = $aluno->getTurmas();
-		array_push($turmas, $turma);
-		$aluno->setTurmas($turmas);
+		
 
-		//faz update
-		$aluno->save();
+		
+		
+// 		$aluno = new Aluno();
+// 		$aluno->get($ra_aluno);
 
-// 		// 	$select = "select id_turma from turma where id_turma = '".$id_turma."'";
+// 		$turmas = array();
+// 		$turmas = $aluno->getTurmas();
+// 		array_push($turmas, $turma);
+// 		$aluno->setTurmas($turmas);
+		
+
+// 		//faz update
+// 		$aluno->save();
+
+		// 	$select = "select id_turma from turma where id_turma = '".$id_turma."'";
 // 		$select = "select ra from aluno where ra = '".$ra_aluno."'";
 // 		$resultado = mysql_query($select, $conexao) or die(mysql_error());
 
@@ -514,14 +578,85 @@ function importaTurmas2(){
 
 		//$i++;
 
-	}
+	}//fecha while
+	//echo "slepping...";
+	//echo "<br />";
+	//sleep(5);
+		
 	
-// 	} //fecha for
+	
+	} //fecha for
+	
+	
+	//print_r($array_series);
+	
+	//exit;
+
 }
+
+
+//----SQL ---
+/*
+INSERT INTO `faculdadeunica05`.`turma`
+(`id_turma`,
+`nome_disciplina`,
+`periodo_letivo`,
+`serie`,
+`curso`,
+`questionario_id`,
+`professor_id`,
+`coordenador_id`,
+`turma`)
+VALUES
+(
+{
+	id_turma: INT},
+	{
+		nome_disciplina: VARCHAR},
+		{
+			periodo_letivo: VARCHAR},
+			{
+				serie: VARCHAR},
+				{
+					curso: VARCHAR},
+					{
+						questionario_id: INT},
+						{
+							professor_id: INT},
+							{
+								coordenador_id: INT},
+								{
+									turma: VARCHAR}
+									);
+									
+									
+START TRANSACTION;
+
+USE `faculdadeunica05`;
+
+INSERT INTO `faculdadeunica05`.`permissao` (`id`, `nome`, `link`) VALUES (1, 'Usu&aacute;rios', 'usuarios.php');
+
+INSERT INTO `faculdadeunica05`.`permissao` (`id`, `nome`, `link`) VALUES (2, 'Processos de Avalia&ccedil;&atilde;o', 'processos.php');
+
+INSERT INTO `faculdadeunica05`.`permissao` (`id`, `nome`, `link`) VALUES (3, 'Question&aacute;rios', 'questionarios.php');
+
+INSERT INTO `faculdadeunica05`.`permissao` (`id`, `nome`, `link`) VALUES (4, 'Definir Question&aacute;rios', 'gerenciar_avaliacoes.php');
+
+INSERT INTO `faculdadeunica05`.`permissao` (`id`, `nome`, `link`) VALUES (5, 'Relat&oacute;rios', 'relatorios.php');
+
+INSERT INTO `faculdadeunica05`.`permissao` (`id`, `nome`, `link`) VALUES (6, 'Configura&ccedil;&otilde;es', 'configuracoes.php');
+
+
+
+COMMIT;
+
+
+*/
+//
 
 /**
 * @name criaAvaliacoes
-* @author Fabio Baía
+* @author Fabio Baï¿½a
 * @since 03/02/2012 16:12:57
 * cria as avaliacoes com base nos dados dos alunos
 **/

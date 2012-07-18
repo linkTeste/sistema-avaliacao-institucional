@@ -10,6 +10,7 @@ require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Turma.php';
 require_once '../system/application/models/dao/Questao.php';
 require_once '../system/application/models/dao/Questionario.php';
+require_once '../system/application/models/dao/QuestionarioHasQuestao.php';
 require_once '../system/application/models/dao/Professor.php';
 
 require '../Utils/functions.php';
@@ -21,21 +22,18 @@ if (!isset($_SESSION)) {
 if(isset($_SESSION["s_questionario"])){
 	$questionario = unserialize($_SESSION["s_questionario"]);
 	$questionario_id = $questionario->getId();
+}else{
+	header("Location: login.php");
 }
 
 //verifica o tipo e subtipo
 if(isset($_SESSION["tipo"])){
 	$tipo = $_SESSION["tipo"];
 	if(isset($_SESSION["subtipo"])){
-		$subtipo = $_SESSION["subtipo"];
-		
+		$subtipo = $_SESSION["subtipo"];		
 	}
 
 }
-
-echo "tipo: ".$tipo;
-echo "<br />";
-echo "subtipo: ".$subtipo;
 
 if($subtipo == "Professor/Disciplina"){
 	$id_professor;
@@ -53,6 +51,7 @@ if($subtipo == "Curso/Coordenador"){
 	if(isset($_SESSION["s_coordenador"])){
 		$coordenador = unserialize($_SESSION["s_coordenador"]);
 		//$id_coordenador = $coordenador->getId();
+		$id_professor = $coordenador->getId();
 	}
 }
 
@@ -89,74 +88,85 @@ $professor->get($id_professor);
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <link href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth' rel='stylesheet' type='text/css' />
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.raty.js"></script>
 </head>
 
-<body>
+<body style="background: #fafafa;">
+<!-- 
 <div id="menu_usuario">
 		<ul>
 			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php echo $aluno->getNome();?> - <a
+			<li id="username">Ol&aacute;, <?php //echo $aluno->getNome();?> - <a
 				href="../Controller/loginController.php?action=logout">Sair</a>
-			</li>
-			
+			</li>			
 		</ul>
 	</div>
+	 -->
 <div id="wrapper" class="container">
 	<div id="header">
 		<div id="header_logo"></div>
 	</div>
     <div id="content">
-    <div id="menu">
-				<ul>
-					<li><a href="index.php" title="P&aacute;gina Inicial"
-						class="botao_left botaoGoogleGrey">P&aacute;gina Inicial</a></li>
-					<li><a href="avaliacoes.php" title="Avalia&ccedil;&otilde;es"
-						class="botao_left botaoGoogleGrey">Avalia&ccedil;&otilde;es</a></li>
-					<li><a href="#" title="Relat&oacute;rios"
-						class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
-					
-				</ul>
-			</div>     
+    <?php include_once 'inc/menu_aluno_inc.php';?>     
     
-    <br />
-    	
+        	
         <div id="avaliacao_current">
            	<div class="div1"> 
             	<h2>Você está avaliando agora...</h2>          	
-            	<div class="photo">
-                	<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="Foto do Professor" />
-            	</div>
+            	
             	<?php
             	if($tipo == "Aluno" && $subtipo == "Professor/Disciplina" ){
             	?>
+            	<div class="photo">
+                	<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="Foto do Professor" />
+            	</div>
             	<div class="description">                	
-            		<h4><span>Professor: </span><?php echo utf8_encode($professor->getNome()); ?></h4>
-            		<h4><span>Disciplina: </span><?php echo utf8_encode($turma->getNomeDisciplina()); ?></h4>                
+            		<h4><?php echo utf8_encode($professor->getNome()); ?></h4>
+            		<h4><span><?php echo utf8_encode($turma->getNomeDisciplina()); ?></span></h4>                
             	</div>
             	<?php 
 				}
             	if($tipo == "Aluno" && $subtipo == "Curso/Coordenador" ){
             	?>
+            	<div class="photo">
+                	<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="Foto do Professor" />
+            	</div>
             	<div class="description">                	
-            		<h4><span>Curso: </span><?php echo $curso; ?></h4>
-            		<h4><span>Coordenador: </span><?php echo "tste".$coordenador->getNome(); ?></h4>                
+            		<h4><?php echo utf8_encode($coordenador->getNome()); ?></h4>
+            		<h4><span>Coordenador de <?php echo $curso; ?></span></h4>                
             	</div>
             	<?php 
 				}
 				if($tipo == "Aluno" && $subtipo == "Instituição" ){
             	?>
+            	<div class="photo">
+                	<img src="css/images/avatar/default_instituicao.png" alt="Logotipo da Instituição" />
+            	</div>
             	<div class="description">
-<!--             	<h4><span>Curso: </span></h4> -->
-            	<h4>Instituição</h4>                
+					<h4>FACULDADE UNICAMPO</h4>
+        			<h4><span>Instituição</span></h4>              
             	</div>
             	<?php 
 				}
             	?>
-            </div>
+            	<?php 
+            	if($tipo == "Aluno" && substr($subtipo, 0 , 4) == "Lab_" ){
+            	?>
+            	<div class="photo">
+                	<img src="css/images/avatar/default_instituicao.png" alt="Logotipo da Instituição" />
+            	</div>
+            	<div class="description">
+	            	<h4>FACULDADE UNICAMPO</h4>
+        			<h4><span>Laboratório de <?php echo substr($subtipo, 4);?></span></h4>              
+            	</div>
+            	<?php 
+				}
+            	?>
+            	</div>
         </div>
         
         <form name="form" method="post" action="../Controller/avaliacaoController.php" onsubmit="return verifica()">
@@ -166,6 +176,7 @@ $professor->get($id_professor);
         	<input  type="hidden" name="subtipo" value="<?php echo $subtipo;?>"/>
         	
         <div id="escala_conceitos">
+        	<div class="white">
         	<h3>Questões</h3>
 
         	
@@ -174,12 +185,19 @@ $professor->get($id_professor);
     	
     	// muda o alias
     	$questionario->alias('q');
-    	// telefone
+    	
     	$q = new Questao();
+    	$qhq = new QuestionarioHasQuestao();
+    	
     	// une as classes
     	$questionario->join($q,'INNER','qu');
+    	$questionario->join($qhq,'INNER','qhq');
+    	
     	// seleciona os dados desejados
-    	$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional");
+    	$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+    	
+    	$questionario->where("qu.id = qhq.questaoId");
+    	$questionario->order("qhq.ordem");
     	// recupera os registros
     	$questionario->find();
     	
@@ -217,10 +235,13 @@ $professor->get($id_professor);
 
 				}			
 			?>
-			
-            <label for="obs" class="obs">Sugestões e/ou reclamações</label><br />
-            <textarea name="obs" class="obs"></textarea>          
-                      
+			</div><!-- fecha div white -->
+			<br />
+			<div class="f3f3f3">
+				<h3>Sugestões e/ou reclamações</h3>
+            	<!-- <label for="obs" class="obs">Sugestões e/ou reclamações</label><br /> -->
+            	<textarea name="obs" class="obs"></textarea>          
+            </div>        
             
         </div>
         
@@ -236,10 +257,7 @@ $professor->get($id_professor);
         </form>          
         
     </div>
-    <div id="footer">
-        <hr />
-    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-    </div>
+    <?php include_once 'inc/footer_inc.php';?>
 </div>
 
 <script type="text/javascript">  
@@ -272,8 +290,8 @@ $professor->get($id_professor);
 						         
 						         //alert('ID: ' + $(this).attr('id') + '\nscore: ' + score + '\nevent: ' + evt);						
 						},
-						width: 1202
-						/*width: 948
+						width: "100%"
+						/*width: 948 - 1202
 						/*,
 						target:     '.target',
 						targetKeep: true,

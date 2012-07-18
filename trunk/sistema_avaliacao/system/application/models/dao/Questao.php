@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "questao"
- * in 2012-03-13
+ * in 2012-06-20
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -17,6 +17,8 @@ class Questao extends Lumine_Base {
     public $topico;
     public $opcional;
     public $dataCriacao;
+    public $tipo;
+    public $subtipo;
     public $questionariohasquestoes = array();
     public $questionarios = array();
     
@@ -102,6 +104,38 @@ class Questao extends Lumine_Base {
     	$this->dataCriacao = $value;
     }
     /**
+     * get tipo
+     *
+     */
+    public function getTipo() {
+    	return $this->tipo;
+    }
+    
+    /**
+     * set tipo
+     * @param Type $value
+     *
+     */
+    public function setTipo($value) {
+    	$this->tipo = $value;
+    }
+    /**
+     * get subtipo
+     *
+     */
+    public function getSubtipo() {
+    	return $this->subtipo;
+    }
+    
+    /**
+     * set subtipo
+     * @param Type $value
+     *
+     */
+    public function setSubtipo($value) {
+    	$this->subtipo = $value;
+    }
+    /**
      * get questionariohasquestoes
      *
      */
@@ -151,6 +185,8 @@ class Questao extends Lumine_Base {
         $this->metadata()->addField('topico', 'topico', 'varchar', 45, array());
         $this->metadata()->addField('opcional', 'opcional', 'varchar', 45, array());
         $this->metadata()->addField('dataCriacao', 'data_criacao', 'datetime', null, array());
+        $this->metadata()->addField('tipo', 'tipo', 'varchar', 45, array());
+        $this->metadata()->addField('subtipo', 'subtipo', 'varchar', 45, array());
 
         
         $this->metadata()->addRelation('questionariohasquestoes', Lumine_Metadata::ONE_TO_MANY, 'QuestionarioHasQuestao', 'questaoId', null, null, null);

@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "processo_avaliacao"
- * in 2012-03-13
+ * in 2012-06-20
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -18,7 +18,10 @@ class ProcessoAvaliacao extends Lumine_Base {
     public $fim;
     public $dataCriacao;
     public $avaliado;
+    public $ativo;
     public $avaliacoes = array();
+    public $log = array();
+    public $notificacoes = array();
     public $questionariousados = array();
     
     
@@ -119,6 +122,22 @@ class ProcessoAvaliacao extends Lumine_Base {
     	$this->avaliado = $value;
     }
     /**
+     * get ativo
+     *
+     */
+    public function getAtivo() {
+    	return $this->ativo;
+    }
+    
+    /**
+     * set ativo
+     * @param Type $value
+     *
+     */
+    public function setAtivo($value) {
+    	$this->ativo = $value;
+    }
+    /**
      * get avaliacoes
      *
      */
@@ -133,6 +152,38 @@ class ProcessoAvaliacao extends Lumine_Base {
      */
     public function setAvaliacoes($value) {
     	$this->avaliacoes = $value;
+    }
+    /**
+     * get log
+     *
+     */
+    public function getLog() {
+    	return $this->log;
+    }
+    
+    /**
+     * set log
+     * @param Type $value
+     *
+     */
+    public function setLog($value) {
+    	$this->log = $value;
+    }
+    /**
+     * get notificacoes
+     *
+     */
+    public function getNotificacoes() {
+    	return $this->notificacoes;
+    }
+    
+    /**
+     * set notificacoes
+     * @param Type $value
+     *
+     */
+    public function setNotificacoes($value) {
+    	$this->notificacoes = $value;
     }
     /**
      * get questionariousados
@@ -169,9 +220,12 @@ class ProcessoAvaliacao extends Lumine_Base {
         $this->metadata()->addField('fim', 'fim', 'datetime', null, array());
         $this->metadata()->addField('dataCriacao', 'data_criacao', 'datetime', null, array());
         $this->metadata()->addField('avaliado', 'avaliado', 'varchar', 45, array());
+        $this->metadata()->addField('ativo', 'ativo', 'varchar', 45, array());
 
         
         $this->metadata()->addRelation('avaliacoes', Lumine_Metadata::ONE_TO_MANY, 'Avaliacao', 'processoAvaliacaoId', null, null, null);
+        $this->metadata()->addRelation('log', Lumine_Metadata::ONE_TO_MANY, 'Log', 'processoAvaliacaoId', null, null, null);
+        $this->metadata()->addRelation('notificacoes', Lumine_Metadata::ONE_TO_MANY, 'Notificacao', 'processoAvaliacaoId', null, null, null);
         $this->metadata()->addRelation('questionariousados', Lumine_Metadata::ONE_TO_MANY, 'QuestionarioUsado', 'processoAvaliacaoId', null, null, null);
     }
 

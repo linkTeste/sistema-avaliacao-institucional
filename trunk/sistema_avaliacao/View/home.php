@@ -21,7 +21,7 @@
             <p>Solicitamos sua participação para auxiliar na avaliação de desempenho dos docentes por entender-se que ela é indispensável para a melhoria contínua das atividades desenvolvidas em sala de aula.</p>
             <p>Para tanto, é necessário que sua opinião não se baseie em impressões precipitadas ou ditadas pela emoção. Procure avaliar o professor nos quesitos propostos, baseando sua resposta no que é mais constante no comportamento do professor.</p>
         </div>
-        <div id="escala_conceitos">
+        <div id="escala_conceitos_home">
         	<h3>Escala de Conceitos</h3>
             <div id="item_escala">
                 <div id="texto_escala">Quando a questão <span>não for atendida</span></div>

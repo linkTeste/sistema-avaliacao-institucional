@@ -8,12 +8,31 @@ $database = "faculdadeunica05";
 $conn = mysql_connect("$host","$login_db","$senha_db");
 $banco = mysql_select_db("$database");
 
+
+///////////////////////
+
+
+//pega o tipo e subtipo da questao pra filtrar as questoes
+// $questionario = unserialize($_SESSION["s_questionario"]);
+$tipo = utf8_decode($_GET["tipo"]);
+$subtipo = utf8_decode($_GET["subtipo"]);
+// $tipo = $_GET["tipo"];
+// $subtipo = $_GET["subtipo"];
+
+
+//////////////////////
+
+
+
 //$q=strtolower ($_GET["term"]);
 $q=utf8_decode($_GET["term"]);
-//echo "ola";
+//$q=$_GET["term"];
+
 //echo $_GET["term"];
 
-$sql = "SELECT * FROM questao WHERE texto like '%$q%'";
+// $sql = "SELECT * FROM questao WHERE texto like '%$q%'";
+$sql = "SELECT * FROM questao WHERE texto like '%$q%' and tipo = '$tipo' and subtipo = '$subtipo'";
+
 
 $result = mysql_query($sql);// or die ("Erro". mysql_query());
 
@@ -35,8 +54,7 @@ while($row = mysql_fetch_array($result))
 	} else { $first = false;
 	}
 	$json .= '{"value":"'.utf8_encode($row['texto']).'"}';
-	//teste
-// 	$json .= '{"value":"<b>'.utf8_encode($row['topico']).'</b>'.utf8_encode($row['texto']).'"}';
+
 }
 $json .= ']';
 

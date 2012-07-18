@@ -13,6 +13,7 @@ require_once '../system/application/models/dao/Professor.php';
 require_once '../system/application/models/dao/Questionario.php';
 require_once '../system/application/models/dao/QuestionarioUsado.php';
 require_once '../system/application/models/dao/Permissao.php';
+require_once '../system/application/models/dao/Laboratorio.php';
 require '../Utils/functions.php';
 
 if (!isset($_SESSION)) {
@@ -61,6 +62,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 <link type="text/css"
 	href="css/unicampo-theme/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <!-- <script type="text/javascript" src="js/jqtransformplugin/jquery.jqtransform.js"></script> -->
 <script type="text/javascript">
@@ -79,7 +81,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 
 </head>
 
-<body>
+<body style="background: #fafafa;">
 
 
 
@@ -87,18 +89,20 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 <?php if(isset($_GET['status'])){	?>
 	<div id="blackout"></div>
 <?php } ?>
+<!-- 
 <div id="menu_usuario">
 		<ul>
 			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php echo $usuario_logado->getNome();?> - <a
+			<li id="username">Ol&aacute;, <?php //echo $usuario_logado->getNome();?> - <a
 				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
-	</div>	
+	</div>
+	-->	
 <div id="wrapper" class="container">
 <?php if(isset($_GET['status'])){	?>
     <div id="status">
@@ -114,125 +118,142 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 		<div id="header_logo"></div>
 	</div>
     <div id="content">
-    <div id="menu">
-    <ul>
-    <?php 
-    	foreach ($usuario_logado_permissoes as $value) {
-    		$permissao = new Permissao();
-    		$permissao->get($value);
-    ?>
-    <li><a href="<?php echo $permissao->getLink();?>"  title="<?php echo $permissao->getNome();?>" class="botao_left botaoGoogleGrey"><?php echo $permissao->getNome();?></a></li>
-    <?php		
-    	}    
-    ?>	
-    </ul>    
-    </div>      
+    <?php include_once 'inc/menu_admin_inc.php';?>      
     
-    <br />
-    	<h3>Turmas do periodo letivo atual(2/2011)</h3>
-    	<p>Para cada turma escolha o questionario que sera usado.</p>
+    <div class="white">
+    	<h3>Definir Question&aacute;rios</h3>
+    	<p>Para cada tipo de usu&aacute;rio escolha o question&aacute;rio que ser&aacute; usado.</p>
     	
     	<form action="../Controller/questionarioController.php?action=definirQuestionario" id="gerenciar_avaliacoes" method="post">
     	<input type="hidden" name="id" value="<?php //echo $id; ?>"/>
     	<div id="tabs">
-	<ul>
-		<li><a href="#tabs-1">Aluno</a></li>
-		<li><a href="#tabs-2">Professor</a></li>
-		<li><a href="#tabs-3">Coordenador</a></li>
-		<li><a href="#tabs-4">Funcion&aacute;rio</a></li>
-	</ul>
+			<ul>
+				<li><a href="#tabs-1">Aluno</a></li>
+				<li><a href="#tabs-2">Professor</a></li>
+				<li><a href="#tabs-3">Coordenador</a></li>
+				<li><a href="#tabs-4">Funcion&aacute;rio</a></li>
+			</ul>
 	
-	<div id="tabs-1">
+			<div id="tabs-1">
+			
+				<div id="avaliacao_box">
+					<label>Disciplinas e Professores:</label>
+					<div id="select" class="botaoGoogleGrey">
+					<input type="hidden" name="tipo[]" value="Aluno"/>
+					<input type="hidden" name="subtipo[]" value="Professor/Disciplina"/>
+					<select name="quest[]">
+					<?php 
+	    			$lista_questionarios = new Questionario(); 
+	    			$lista_questionarios->tipo = "Aluno";
+	    			$lista_questionarios->subtipo ="Professor/Disciplina";
+	    			$lista_questionarios->find();    			 
+	    			while( $lista_questionarios->fetch() ) {
+	    				//descobrir uma forma de marcar a opcao salva como selected
+	    			?>
+	    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
+	    			
+	    			<?php
+	    			}
+	    			?>    		
+					</select>
+					</div>
+				</div>
+				
+				<div id="avaliacao_box">
+					<label>Curso e Coordena&ccedil;&atilde;o:</label>
+					<div id="select" class="botaoGoogleGrey">
+					<input type="hidden" name="tipo[]" value="Aluno"/>
+					<input type="hidden" name="subtipo[]" value="Curso/Coordenador"/>
+					<select name="quest[]">
+					<?php 
+	    			$lista_questionarios = new Questionario(); 
+	    			$lista_questionarios->tipo = "Aluno";
+	    			$lista_questionarios->subtipo ="Curso/Coordenador";
+	    			$lista_questionarios->find();    			 
+	    			while( $lista_questionarios->fetch() ) {
+	    				//descobrir uma forma de marcar a opcao salva como selected
+	    			?>
+	    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
+	    			
+	    			<?php
+	    			}
+	    			?>    		
+					</select>
+					</div>
+				</div>
+				
+				<div id="avaliacao_box">
+					<label>Institui&ccedil;&atilde;o:</label>
+					<div id="select" class="botaoGoogleGrey">
+					<input type="hidden" name="tipo[]" value="Aluno"/>
+					<input type="hidden" name="subtipo[]" value="Instituição"/>
+					<select name="quest[]">
+					<?php 
+	    			$lista_questionarios = new Questionario(); 
+	    			$lista_questionarios->tipo = "Aluno";
+	    			$lista_questionarios->subtipo = utf8_decode("Instituição");
+	    			$lista_questionarios->find();    			 
+	    			while( $lista_questionarios->fetch() ) {
+	    				//descobrir uma forma de marcar a opcao salva como selected
+	    			?>
+	    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
+	    			
+	    			<?php
+	    			}
+	    			?>    		
+					</select>
+					</div>
+				</div>
+				
+				<?php 
+				$laboratorios = new Laboratorio();
+				$laboratorios->find();
+				while ($laboratorios->fetch()) {
+					
+				?>
+				<div id="avaliacao_box">
+					<label>Laboratório de <?php echo utf8_encode($laboratorios->getNome());?>:</label>
+					<div id="select" class="botaoGoogleGrey">
+					<input type="hidden" name="tipo[]" value="Aluno"/>
+					<input type="hidden" name="subtipo[]" value="<?php echo utf8_encode("Lab_".$laboratorios->getNome());?>"/>
+					<select name="quest[]">
+					<?php 
+	    			$lista_questionarios = new Questionario(); 
+	    			$lista_questionarios->tipo = "Aluno";
+	    			$lista_questionarios->subtipo = utf8_decode("Lab_").$laboratorios->getNome();
+	    			$lista_questionarios->find();    			 
+	    			while( $lista_questionarios->fetch() ) {
+	    				//descobrir uma forma de marcar a opcao salva como selected
+	    			?>
+	    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
+	    			
+	    			<?php
+	    			}
+	    			?>    		
+					</select>
+					</div>
+				</div>
+				<?php }//fecha WHILE?>
+				
+			</div>
+		
+		<div id="tabs-2">
 		
 			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o de Disciplinas e Professores:</label>
-				<div id="select" class="botaoGoogleGrey">
-				<input type="hidden" name="tipo[]" value="Aluno"/>
-				<input type="hidden" name="subtipo[]" value="Professor/Disciplina"/>
-				<select name="quest[]">
-				<?php 
-    			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->tipo = "Aluno";
-    			$lista_questionarios->subtipo ="Professor/Disciplina";
-    			$lista_questionarios->find();    			 
-    			while( $lista_questionarios->fetch() ) {
-    				//descobrir uma forma de marcar a opcao salva como selected
-    			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
-    			
-    			<?php
-    			}
-    			?>    		
-				</select>
-				</div>
-			</div>
-			
-			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o de Curso e Coordena&ccedil;&atilde;o:</label>
-				<div id="select" class="botaoGoogleGrey">
-				<input type="hidden" name="tipo[]" value="Aluno"/>
-				<input type="hidden" name="subtipo[]" value="Curso/Coordenador"/>
-				<select name="quest[]">
-				<?php 
-    			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->tipo = "Aluno";
-    			$lista_questionarios->subtipo ="Curso/Coordenador";
-    			$lista_questionarios->find();    			 
-    			while( $lista_questionarios->fetch() ) {
-    				//descobrir uma forma de marcar a opcao salva como selected
-    			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
-    			
-    			<?php
-    			}
-    			?>    		
-				</select>
-				</div>
-			</div>
-			
-			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o da Institui&ccedil;&atilde;o:</label>
-				<div id="select" class="botaoGoogleGrey">
-				<input type="hidden" name="tipo[]" value="Aluno"/>
-				<input type="hidden" name="subtipo[]" value="Instituição"/>
-				<select name="quest[]">
-				<?php 
-    			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->tipo = "Aluno";
-    			$lista_questionarios->subtipo ="Instituição";
-    			$lista_questionarios->find();    			 
-    			while( $lista_questionarios->fetch() ) {
-    				//descobrir uma forma de marcar a opcao salva como selected
-    			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
-    			
-    			<?php
-    			}
-    			?>    		
-				</select>
-				</div>
-			</div>
-			
-			
-		
-	</div>
-	<div id="tabs-2">
-		
-			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Auto-avalia&ccedil;&atilde;o:</label>
+				<label>Auto-avalia&ccedil;&atilde;o:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Professor"/>
-				<input type="hidden" name="subtipo[]" value="Auto-avaliação"/>
+				<input type="hidden" name="subtipo[]" value="Auto-avaliação-professor"/>
 				<select name="quest[]">
 				<?php 
-    			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->tipo = "Professor";
-    			$lista_questionarios->subtipo ="Auto-avaliação";
-    			$lista_questionarios->find();    			 
-    			while( $lista_questionarios->fetch() ) {
+    			$lista_questionarios2 = new Questionario(); 
+    			$lista_questionarios2->tipo = "Professor";
+    			$lista_questionarios2->subtipo = utf8_decode("Auto-avaliação-professor");
+    			$lista_questionarios2->find();    			 
+    			while( $lista_questionarios2->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
     			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
+    			<option value="<?php echo $lista_questionarios2->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios2->getDescricao());?></option>
     			
     			<?php
     			}
@@ -242,20 +263,20 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 			</div>
 			
 			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o de Coordenador:</label>
+				<label>Coordenador:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Professor"/>
 				<input type="hidden" name="subtipo[]" value="Coordenador"/>
 				<select name="quest[]">
 				<?php 
-    			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->tipo = "Professor";
-    			$lista_questionarios->subtipo ="Coordenador";
-    			$lista_questionarios->find();    			 
-    			while( $lista_questionarios->fetch() ) {
+    			$lista_questionarios2 = new Questionario(); 
+    			$lista_questionarios2->tipo = "Professor";
+    			$lista_questionarios2->subtipo ="Coordenador";
+    			$lista_questionarios2->find();    			 
+    			while( $lista_questionarios2->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
     			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
+    			<option value="<?php echo $lista_questionarios2->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios2->getDescricao());?></option>
     			
     			<?php
     			}
@@ -265,20 +286,20 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 			</div>
 			
 			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o da Institui&ccedil;&atilde;o:</label>
+				<label>Institui&ccedil;&atilde;o:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Professor"/>
 				<input type="hidden" name="subtipo[]" value="Instituição"/>
 				<select name="quest[]">
 				<?php 
-    			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->tipo = "Professor";
-    			$lista_questionarios->subtipo ="Instituição";
-    			$lista_questionarios->find();    			 
-    			while( $lista_questionarios->fetch() ) {
+    			$lista_questionarios2 = new Questionario(); 
+    			$lista_questionarios2->tipo = "Professor";
+    			$lista_questionarios2->subtipo = utf8_decode("Instituição");
+    			$lista_questionarios2->find();    			 
+    			while( $lista_questionarios2->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
     			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
+    			<option value="<?php echo $lista_questionarios2->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios2->getDescricao());?></option>
     			
     			<?php
     			}
@@ -287,26 +308,54 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 				</div>
 			</div>
 			
-			
+			<?php 
+				$laboratorios = new Laboratorio();
+				$laboratorios->find();
+				while ($laboratorios->fetch()) {
+					
+				?>
+				<div id="avaliacao_box">
+					<label>Laboratório de <?php echo utf8_encode($laboratorios->getNome());?>:</label>
+					<div id="select" class="botaoGoogleGrey">
+					<input type="hidden" name="tipo[]" value="Professor"/>
+					<input type="hidden" name="subtipo[]" value="<?php echo utf8_encode("Lab_".$laboratorios->getNome());?>"/>
+					<select name="quest[]">
+					<?php 
+	    			$lista_questionarios = new Questionario(); 
+	    			$lista_questionarios->tipo = "Professor";
+	    			$lista_questionarios->subtipo = utf8_decode("Lab_").$laboratorios->getNome();
+	    			$lista_questionarios->find();    			 
+	    			while( $lista_questionarios->fetch() ) {
+	    				//descobrir uma forma de marcar a opcao salva como selected
+	    			?>
+	    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
+	    			
+	    			<?php
+	    			}
+	    			?>    		
+					</select>
+					</div>
+				</div>
+				<?php }//fecha WHILE?>
+		</div>
 		
-	</div>
-	<div id="tabs-3">
+		<div id="tabs-3">
 		
 			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Auto-avalia&ccedil;&atilde;o:</label>
+				<label>Auto-avalia&ccedil;&atilde;o:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Coordenador"/>
-				<input type="hidden" name="subtipo[]" value="Auto-avaliação"/>
+				<input type="hidden" name="subtipo[]" value="Auto-avaliação-coordenador"/>
 				<select name="quest[]">
 				<?php 
     			$lista_questionarios = new Questionario(); 
     			$lista_questionarios->tipo = "Coordenador";
-    			$lista_questionarios->subtipo ="Auto-avaliação";
+    			$lista_questionarios->subtipo = utf8_decode("Auto-avaliação-coordenador");
     			$lista_questionarios->find();    			 
     			while( $lista_questionarios->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
     			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
+    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
     			
     			<?php
     			}
@@ -316,7 +365,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 			</div>
 			
 			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o de Docentes:</label>
+				<label>Docentes:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Coordenador"/>
 				<input type="hidden" name="subtipo[]" value="Docente"/>
@@ -329,7 +378,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
     			while( $lista_questionarios->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
     			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
+    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
     			
     			<?php
     			}
@@ -339,7 +388,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 			</div>
 			
 			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o da Institui&ccedil;&atilde;o:</label>
+				<label>Institui&ccedil;&atilde;o:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Coordenador"/>
 				<input type="hidden" name="subtipo[]" value="Instituição"/>
@@ -347,12 +396,12 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 				<?php 
     			$lista_questionarios = new Questionario(); 
     			$lista_questionarios->tipo = "Coordenador";
-    			$lista_questionarios->subtipo ="Instituição";
+    			$lista_questionarios->subtipo = utf8_decode("Instituição");
     			$lista_questionarios->find();    			 
     			while( $lista_questionarios->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
     			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
+    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
     			
     			<?php
     			}
@@ -367,20 +416,20 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 	<div id="tabs-4">
 		
 			<div id="avaliacao_box">
-				<label>Question&aacute;rio de Avalia&ccedil;&atilde;o da Institui&ccedil;&atilde;o:</label>
+				<label>Institui&ccedil;&atilde;o:</label>
 				<div id="select" class="botaoGoogleGrey">
 				<input type="hidden" name="tipo[]" value="Funcionário"/>
 				<input type="hidden" name="subtipo[]" value="Instituição"/>
 				<select name="quest[]">
 				<?php 
     			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->tipo = "Funcionário";
-    			$lista_questionarios->subtipo ="Instituição";
+    			$lista_questionarios->tipo = utf8_decode("Funcionário");
+    			$lista_questionarios->subtipo = utf8_decode("Instituição");
     			$lista_questionarios->find();    			 
     			while( $lista_questionarios->fetch() ) {
     				//descobrir uma forma de marcar a opcao salva como selected
     			?>
-    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo $lista_questionarios->getDescricao();?></option>
+    			<option value="<?php echo $lista_questionarios->getId(); ?>" <?php echo $selected;?>><?php echo utf8_encode($lista_questionarios->getDescricao());?></option>
     			
     			<?php
     			}
@@ -391,11 +440,12 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 		
 	</div>
 </div>
+
 <br />
 <input type="submit" value="Salvar" name="enviar" class="botaoGoogleBlue" style="/*margin-left: 440px;*/margin-left: 47%;" />
 <br />
 </form>	
-
+</div><!--  fecha div white -->
 
     	
 <!--     	<form action="" id="gerenciar_avaliacoes" method="post"> -->
@@ -437,7 +487,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
     			
     			
     			$lista_questionarios = new Questionario(); 
-    			$lista_questionarios->instrumentoId = 1;		//assim lista s� os questionarios das turmas(instrumento 1)
+    			$lista_questionarios->instrumentoId = 1;		//assim lista s� os questionarios das turmas(instrumento 1)
     			$lista_questionarios->find();    			 
     			while( $lista_questionarios->fetch() ) {
     				$quesId = $turma->getQuestionarioId();
@@ -466,20 +516,10 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
     	}
     	
     	?>
-        <!-- 
-        <input type="submit" value="Salvar" name="enviar" />
-        </form>
-         -->
-        
-        <br />
-       
                 
         
     </div>
-    <div id="footer">
-        <hr />
-    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-    </div>
+    <?php include_once 'inc/footer_inc.php';?>
 </div>
 </body>
 </html>

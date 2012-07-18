@@ -1,4 +1,16 @@
 <?php
+///obs: os requires devem vir antes da sessao
+require '../lumine/Lumine.php';
+require '../lumine-conf.php';
+
+//inicializa a configuracao
+$cfg = new Lumine_Configuration( $lumineConfig );
+
+require_once '../system/application/models/dao/MensagemSistema.php';
+
+
+require '../Utils/functions.php';
+
 session_start();
 
 if(isset($_GET['url'])){
@@ -68,7 +80,9 @@ $().ready(function() {
 			
             <?php
 			if(isset($_GET["msg_e"])){
-				$msg = $_GET["msg_e"];
+				$msg_code = $_GET["msg_e"];
+				$msg = new MensagemSistema();
+				$msg->get("codigo", $msg_code);
 			?>
 			<script type="text/javascript" language="javascript">  
 	$().ready(function() {
@@ -77,7 +91,7 @@ $().ready(function() {
   </script>
 			
             <div id="msg_error">
-            	<h3><?php echo $msg ?></h3>            
+            	<h3><?php echo utf8_encode($msg->getTexto()); ?></h3>           
             </div>            
             <?php
 			}
@@ -85,10 +99,13 @@ $().ready(function() {
             
             <?php
 			if(isset($_GET["msg"])){
-				$msg = $_GET["msg"];
+				$msg_code = $_GET["msg"];
+				$msg = new MensagemSistema();
+				$msg->get("codigo", $msg_code);
+				
 			?>
             <div id="msg">
-            	<h3><?php echo $msg ?></h3>            
+            	<h3><?php echo utf8_encode($msg->getTexto()); ?></h3>            
             </div>            
             <?php
 			}

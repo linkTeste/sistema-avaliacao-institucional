@@ -4,7 +4,7 @@
 
 //trabalha com os beans e DAOS
 
-//define qual página chamar de acordo com a action
+//define qual pï¿½gina chamar de acordo com a action
 
 //incluir aqui as classes que serao usadas
 //require "../Model/Bean/questionario.class.php";
@@ -25,10 +25,10 @@ session_start();
 
 /**
  * @name processoController
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 12/01/2012
- * controller do questionario - responsável por tratar as requisições via get, post ou session.
- * Controla o fluxo da aplicação definindo qual página chamar de acordo com a action recebida.
+ * controller do questionario - responsï¿½vel por tratar as requisiï¿½ï¿½es via get, post ou session.
+ * Controla o fluxo da aplicaï¿½ï¿½o definindo qual pï¿½gina chamar de acordo com a action recebida.
  **/
 //class processoController {
 	$action;
@@ -44,9 +44,9 @@ session_start();
 
 	/**
 	 * @name processoController
-	 * @author Fabio Baía
+	 * @author Fabio Baï¿½a
 	 * @since 12/01/2012
-	 * função que verifica a action e direciona para a action específica
+	 * funï¿½ï¿½o que verifica a action e direciona para a action especï¿½fica
 	 **/
 	function processoController() {
 		//fazer o tratamento aqui da codificacao utf-8, iso, etc
@@ -69,7 +69,7 @@ session_start();
 			redirectTo($page);
 		}
 		if($action == "edit"){
-			//se for edicao pega o id do questionario que será editado
+			//se for edicao pega o id do questionario que serï¿½ editado
 			if(isset($_GET["id"])){
 				$id = $_GET["id"];
 			}
@@ -86,7 +86,7 @@ session_start();
 			
 		}
 		if($action == "delete"){
-			//se for edicao pega o id do questionario que será excluido
+			//se for edicao pega o id do questionario que serï¿½ excluido
 			if(isset($_GET["id"])){
 				$id = $_GET["id"];
 			}
@@ -146,6 +146,34 @@ session_start();
 			$page = "processo.php";
 			redirectTo($page);		
 		}
+		if($action == "ativar"){
+			//se for "ativar" pega o id do questionario que ativado e desativa os outros
+			if(isset($_GET["id"])){
+				$id = $_GET["id"];
+			}
+		
+			$processos = new ProcessoAvaliacao();
+			$processos->find();
+			
+			while ($processos->fetch()) {
+				$p = new ProcessoAvaliacao();
+				$p->get($processos->id);
+				
+				if($processos->id == $id){
+					$p->setAtivo("Ativo");
+				}else{
+					$p->setAtivo("Desativado");
+				}
+				
+				$p->save();
+			}
+		
+			
+			
+				
+			$page = "processos.php";
+			redirectTo($page);
+		}
 		if($action == "save"){			
 			save();				
 		}
@@ -154,9 +182,9 @@ session_start();
 
 	/**
 	 * @name save
-	 * @author Fabio Baía
+	 * @author Fabio Baï¿½a
 	 * @since 12/01/2012
-	 * função responsavel por cadastrar/atualizar um questionario
+	 * funï¿½ï¿½o responsavel por cadastrar/atualizar um questionario
 	 **/
 	function save() {
 		$id;
@@ -214,9 +242,9 @@ session_start();
 		
 	/**
 	 * @name prepareSession
-	 * @author Fabio Baía
+	 * @author Fabio Baï¿½a
 	 * @since 12/01/2012
-	 * função que lança dados na sessão
+	 * funï¿½ï¿½o que lanï¿½a dados na sessï¿½o
 	 **/
 	function prepareSession(questionario $questionario, $action, $mensagem = null) {
 		//prepara a sessao
@@ -228,17 +256,6 @@ session_start();
 		$_SESSION["mensagem"] = $mensagem;
 		
 		}
-
-	/**
-	 * @name redirectTo
-	 * @author Fabio Baía
-	 * @since 12/01/2012
-	 * função que redireciona pra uma pagina específica
-	 **/
-	function redirectTo($page) {
-		$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
-		header("Location: ".$url_base.$page);
-	}
 
 
 //}

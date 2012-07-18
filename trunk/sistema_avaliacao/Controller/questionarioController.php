@@ -4,7 +4,7 @@
 
 //trabalha com os beans e DAOS
 
-//define qual página chamar de acordo com a action
+//define qual pï¿½gina chamar de acordo com a action
 
 //incluir aqui as classes que serao usadas
 //require "../Model/Bean/questionario.class.php";
@@ -19,6 +19,7 @@ $cfg = new Lumine_Configuration( $lumineConfig );
 require_once '../system/application/models/dao/Questionario.php';
 require_once '../system/application/models/dao/QuestionarioUsado.php';
 require_once '../system/application/models/dao/Questao.php';
+require_once '../system/application/models/dao/ProcessoAvaliacao.php';
 
 //if (!isset($_SESSION)) {
 session_start();
@@ -26,10 +27,10 @@ session_start();
 
 /**
  * @name questionarioController
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 12/01/2012
- * controller do questionario - responsável por tratar as requisições via get, post ou session.
- * Controla o fluxo da aplicação definindo qual página chamar de acordo com a action recebida.
+ * controller do questionario - responsï¿½vel por tratar as requisiï¿½ï¿½es via get, post ou session.
+ * Controla o fluxo da aplicaï¿½ï¿½o definindo qual pï¿½gina chamar de acordo com a action recebida.
  **/
 //class questionarioController {
 $action;
@@ -41,13 +42,15 @@ $questionario;
 $questionarioDAO;
 
 
+
+
 questionarioController();
 
 /**
  * @name questionarioController
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 12/01/2012
- * função que verifica a action e direciona para a action específica
+ * funï¿½ï¿½o que verifica a action e direciona para a action especï¿½fica
  **/
 function questionarioController() {
 	//fazer o tratamento aqui da codificacao utf-8, iso, etc
@@ -61,9 +64,9 @@ function questionarioController() {
 
 	if($action == "new"){
 		//redireciona para pagina de cadastro
-		//echo "aqui eu coloco um avariável na sessão indicando q é pra mostrar o form de cadastro";
+		//echo "aqui eu coloco um avariï¿½vel na sessï¿½o indicando q ï¿½ pra mostrar o form de cadastro";
 			
-		//como vou tentar fazer tudo em uma view só a action definira quais partes da view devem ser mostradas
+		//como vou tentar fazer tudo em uma view sï¿½ a action definira quais partes da view devem ser mostradas
 			
 		$questionario = new questionario();
 			
@@ -72,7 +75,7 @@ function questionarioController() {
 		redirectTo($page);
 	}
 	if($action == "edit"){
-		//se for edicao pega o id do questionario que será editado
+		//se for edicao pega o id do questionario que serï¿½ editado
 		if(isset($_GET["id"])){
 			$id = $_GET["id"];
 		}
@@ -89,7 +92,7 @@ function questionarioController() {
 			
 	}
 	if($action == "delete"){
-		//se for edicao pega o id do questionario que será excluido
+		//se for edicao pega o id do questionario que serï¿½ excluido
 		if(isset($_GET["id"])){
 			$id = $_GET["id"];
 		}
@@ -160,9 +163,9 @@ function questionarioController() {
 
 /**
  * @name save
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 12/01/2012
- * função responsavel por cadastrar/atualizar um questionario
+ * funï¿½ï¿½o responsavel por cadastrar/atualizar um questionario
  **/
 function save() {
 	$id;
@@ -178,7 +181,7 @@ function save() {
 	}
 		
 	if(isset($_POST["description"])){
-		$descricao = $_POST["description"];
+		$descricao = utf8_decode($_POST["description"]);
 	}
 		
 	if(isset($_POST["instrumento"])){
@@ -186,12 +189,14 @@ function save() {
 	}
 
 	if(isset($_POST["tipo"])){
-		$tipo = $_POST["tipo"];
+		$tipo = utf8_decode($_POST["tipo"]);
 	}
 
 	if(isset($_POST["subtipo"])){
-		$subtipo = $_POST["subtipo"];
+		$subtipo = utf8_decode($_POST["subtipo"]);
 	}
+	
+	
 		
 	$questionario = new Questionario();
 	$questionario->setId($id);
@@ -222,7 +227,7 @@ function save() {
 
 /**
  * @name definirQuestionarios
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 09/03/2012 13:22:21
  * insert a description here
  **/
@@ -234,6 +239,18 @@ function definirQuestionarios() {
 	$arrayTSQ = array();
 	$size;
 	$id;
+	$processo;
+	
+	if(isset($_SESSION["s_processo"])){
+		$str = $_SESSION["s_processo"];
+		if($str instanceof ProcessoAvaliacao){
+			$processo = $str;
+		}else{
+			$processo = unserialize($_SESSION["s_processo"]);
+		}
+		// 	echo $processo->getId();
+		// 	exit;
+	}
 
 	if(isset($_POST["id"])){
 		if($_POST["id"] == ""){
@@ -257,6 +274,7 @@ function definirQuestionarios() {
 		foreach($_POST['subtipo'] as $keySubtipo)
 		{
 			$arraySubtipo[] = $keySubtipo;
+// 			$arraySubtipo[] = utf8_decode($keySubtipo);
 			//echo "Subtipo: ".$keySubtipo;
 		}
 		//echo "<br />";
@@ -266,7 +284,14 @@ function definirQuestionarios() {
 			$arrayQuest[] = $keyQuest;
 			//echo "quest: ".$keyQuest;
 		}
+		
+// 		debug
+// 		print_r($_POST['tipo']);
+// 		echo "<br />";
+// 		echo $_POST['subtipo'];
+// 		exit;
 
+		
 		for ($i = 0; $i < $size; $i++) {
 			$arrayTSQ[$arrayTipo[$i]] = $arrayQuest[$i];
 
@@ -276,7 +301,12 @@ function definirQuestionarios() {
 			$questionarioUsado->subtipo = $arraySubtipo[$i];
 			
 			//pegar o processo atual
-			$questionarioUsado->processoAvaliacaoId = 1;
+			//$questionarioUsado = new QuestionarioUsado();
+			$questionarioUsado->processoAvaliacaoId = $processo->getId();
+			
+// 			echo "processo >> ".$processo->getId();
+// 			exit;
+			//$questionarioUsado->processoAvaliacaoId = 1;
 			
 			$questionarioUsado->find(true);
 			
@@ -301,9 +331,9 @@ function definirQuestionarios() {
 
 /**
  * @name prepareSession
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 12/01/2012
- * função que lança dados na sessão
+ * funï¿½ï¿½o que lanï¿½a dados na sessï¿½o
  **/
 function prepareSession(questionario $questionario, $action, $mensagem = null) {
 	//prepara a sessao
@@ -318,9 +348,9 @@ function prepareSession(questionario $questionario, $action, $mensagem = null) {
 
 /**
  * @name redirectTo
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 12/01/2012
- * função que redireciona pra uma pagina específica
+ * funï¿½ï¿½o que redireciona pra uma pagina especï¿½fica
  **/
 function redirectTo($page) {
 	$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
