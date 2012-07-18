@@ -9,6 +9,7 @@ $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Questionario.php';
 require_once '../system/application/models/dao/Questao.php';
+require_once '../system/application/models/dao/QuestionarioHasQuestao.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/Usuario.php';
 require_once '../system/application/models/dao/Permissao.php';
@@ -56,6 +57,10 @@ if(isset($_SESSION["s_questionario"])){
 	
 	$questionario_id = $questionario->getId();
 	$questionario_avaliado = $questionario->getAvaliado();
+	
+	$tipo = utf8_encode($questionario->getTipo());
+	$subtipo = utf8_encode($questionario->getSubtipo());
+
 }
 
 
@@ -82,6 +87,7 @@ if(isset($_SESSION["s_questionario"])){
 
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 
@@ -89,7 +95,9 @@ if(isset($_SESSION["s_questionario"])){
 $().ready(function() {
 		
 		$("#texto").autocomplete({
-			source: "../Utils/searchQuestions.php"
+			source: "../Utils/searchQuestions.php?tipo=<?php echo $tipo;?>&subtipo=<?php echo $subtipo;?>",
+			delay: 0,
+			minLength: 0
 		});
 	});
 	</script>
@@ -131,7 +139,7 @@ $().ready(function() {
 
 </head>
 
-<body>
+<body style="background: #fafafa;">
 
 
 <?php if(($new == true) || $edit == true){	?>
@@ -141,18 +149,20 @@ $().ready(function() {
 	
 	
 <?php } ?>
-<div id="menu_usuario">
+<!-- 
+	<div id="menu_usuario">
 		<ul>
 			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php echo $usuario_logado->getNome();?> - <a
+			<li id="username">Ol&aacute;, <?php //echo $usuario_logado->getNome();?> - <a
 				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
 	</div>
+	-->
 	
 	<div id="teste"></div>
 	
@@ -216,23 +226,19 @@ $().ready(function() {
 		<div id="header_logo"></div>
 	</div>
     <div id="content">
-    <div id="menu">
-    <ul>
-    <?php 
-    	foreach ($usuario_logado_permissoes as $value) {
-    		$permissao = new Permissao();
-    		$permissao->get($value);
-    ?>
-    <li><a href="<?php echo $permissao->getLink();?>"  title="<?php echo $permissao->getNome();?>" class="botao_left botaoGoogleGrey"><?php echo $permissao->getNome();?></a></li>
-    <?php		
-    	}    
-    ?>	
-    </ul>    
-    </div>       
+    <?php include_once 'inc/menu_admin_inc.php';?>       
+    
+    <div class="white">
+    <div style="padding: 5px;">   
+    <h4>Question&aacute;rio: <?php echo utf8_encode($questionario->getDescricao()); ?></h4> 
+    <h4>Avaliador: <?php echo utf8_encode($questionario->getTipo()); ?></h4> 
+    <h4>Avaliação: <?php echo utf8_encode($questionario->getSubtipo()); ?></h4>
+    </div>
+    </div>
     
     <br />
-        
-    <h2>Questionario <?php echo $questionario->getDescricao(); ?></h2> 
+    
+    <div class="white">
     <br />
     <?php 
     	if($questionario_avaliado == "Avaliado"){
@@ -245,9 +251,7 @@ $().ready(function() {
     	
         <?php } ?>    	
         
-
-        <h3>Questões Cadastradas</h3>
-        
+        <h3>Questões Cadastradas</h3>        
                 
         <div id="questionarios">
         	<table>
@@ -257,7 +261,7 @@ $().ready(function() {
                 	<th>ID</th>
                 	<th>QUEST&Atilde;O</th>
                 	<th>MODIFICADO EM</th>
-                    <th>&nbsp;</th>
+                    <th colspan="2">&nbsp;</th>
                 </tr>
                 </thead>
                 <tbody id="sortable">
@@ -267,14 +271,19 @@ $().ready(function() {
     	
     	// muda o alias
     	$questionario->alias('q');
-    	// telefone
-    	$q = new Questao();
+    	
+    	$q = new Questao();    	
+    	$qhq = new QuestionarioHasQuestao();
     	
     	// une as classes
     	$questionario->join($q,'INNER','qu');
-    	
+    	$questionario->join($qhq,'INNER','qhq');
+    	    	
     	// seleciona os dados desejados
-    	$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional");
+    	$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qu.dataCriacao as dt, qhq.ordem");
+    	
+    	$questionario->where("qu.id = qhq.questaoId");
+    	$questionario->order("qhq.ordem");
     	// recupera os registros
     	$questionario->find();
     	
@@ -283,13 +292,10 @@ $().ready(function() {
     	while( $questionario->fetch() ) {
     		echo "<tr id=recordsArray_".$questionario->id.">";
     		//echo "<td style='width: 5%'>".$questionario->id."</td>";
-    		echo "<td style='width: 5%'><span>:: </span>".$questionario->id."</td>";
-    		
-//     		if($questionario->opcional == "opcional"){
-//     			echo "<td><img src='css/images/opcional.png' alt='Opcional'/></td>";
-//     		}else{
-//     			echo "<td>&nbsp</td>";
-//     		}
+    		echo "<td style='width: 5%'>".$questionario->id."</td>";
+  	
+  		
+
     		
     		if($questionario->opcional == "opcional"){
     			echo "<td style='width: 70%'>".utf8_encode($questionario->texto)."<span class='span_opcional'>Questão Opcional</span></td>";
@@ -297,15 +303,17 @@ $().ready(function() {
     			echo "<td style='width: 70%'>".utf8_encode($questionario->texto)."</td>";
     		}
     		
-    		echo "<td style='width: 20%'>".datetime_to_ptbr($questionario->dataCreate)."</td>";
+    		echo "<td style='width: 15%'>".datetime_to_ptbr($questionario->dt)."</td>";
     		
     		if($questionario_avaliado == "Avaliado"){
-    			echo "<td style='width: 10%'>&nbsp</td>";
+    			echo "<td style='width: 5%'>&nbsp</td>";
+    			echo "<td style='width: 5%'>&nbsp</td>";
     		}
     		else{
-    			echo "<td style='width: 10%'><a href='../Controller/questaoController.php?action=delete&id=".$questionario->id."&questionario_id=".$questionario_id."' class='botao_right botaoGoogleGrey' title='Remover do questionário'>Excluir</a></td>";
+    			echo "<td style='width: 5%'><span><a href='' class='botao_right move botaoGoogleGrey' title='Mover'>Mover</a></span></td>";
+    			echo "<td style='width: 5%'><a href='../Controller/questaoController.php?action=delete&id=".$questionario->id."&questionario_id=".$questionario_id."' class='botao_right botaoGoogleRed' title='Remover do questionário'>Excluir</a></td>";
     		}
-    		echo "</tr>";
+    		echo "</tr>";    		
     		
     	}
     	
@@ -316,13 +324,11 @@ $().ready(function() {
             </table>
         
         </div>
+        </div><!-- fecha div white -->
         
     </div>
     
-    <div id="footer">
-        <hr />
-    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-    </div>
+    <?php include_once 'inc/footer_inc.php';?>
 </div>
 </body>
 </html>

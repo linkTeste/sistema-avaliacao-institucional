@@ -172,11 +172,11 @@ session_start();
 		}
 			
 		if(isset($_POST["nome"])){
-			$nome = $_POST["nome"];
+			$nome = utf8_decode($_POST["nome"]);
 		}
 		
 		if(isset($_POST["login"])){
-			$login = $_POST["login"];
+			$login = utf8_decode($_POST["login"]);
 		}
 			
 		if(isset($_POST["email"])){

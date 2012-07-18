@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "turma"
- * in 2012-03-13
+ * in 2012-06-20
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -22,7 +22,9 @@ class Turma extends Lumine_Base {
     public $coordenadorId;
     public $turma;
     public $turmahasalunos = array();
+    public $turmahaslaboratorios = array();
     public $alunos = array();
+    public $laboratorios = array();
     
     
     /**
@@ -186,6 +188,22 @@ class Turma extends Lumine_Base {
     	$this->turmahasalunos = $value;
     }
     /**
+     * get turmahaslaboratorios
+     *
+     */
+    public function getTurmahaslaboratorios() {
+    	return $this->turmahaslaboratorios;
+    }
+    
+    /**
+     * set turmahaslaboratorios
+     * @param Type $value
+     *
+     */
+    public function setTurmahaslaboratorios($value) {
+    	$this->turmahaslaboratorios = $value;
+    }
+    /**
      * get alunos
      *
      */
@@ -200,6 +218,22 @@ class Turma extends Lumine_Base {
      */
     public function setAlunos($value) {
     	$this->alunos = $value;
+    }
+    /**
+     * get laboratorios
+     *
+     */
+    public function getLaboratorios() {
+    	return $this->laboratorios;
+    }
+    
+    /**
+     * set laboratorios
+     * @param Type $value
+     *
+     */
+    public function setLaboratorios($value) {
+    	$this->laboratorios = $value;
     }
     
     /**
@@ -226,7 +260,9 @@ class Turma extends Lumine_Base {
 
         
         $this->metadata()->addRelation('turmahasalunos', Lumine_Metadata::ONE_TO_MANY, 'TurmaHasAluno', 'turmaIdTurma', null, null, null);
+        $this->metadata()->addRelation('turmahaslaboratorios', Lumine_Metadata::ONE_TO_MANY, 'TurmaHasLaboratorio', 'turmaIdTurma', null, null, null);
         $this->metadata()->addRelation('alunos', Lumine_Metadata::MANY_TO_MANY, 'Aluno', 'idTurma', 'turma_has_aluno', 'turma_id_turma', null);
+        $this->metadata()->addRelation('laboratorios', Lumine_Metadata::MANY_TO_MANY, 'Laboratorio', 'idTurma', 'turma_has_laboratorio', 'turma_id_turma', null);
     }
 
     #### END AUTOCODE

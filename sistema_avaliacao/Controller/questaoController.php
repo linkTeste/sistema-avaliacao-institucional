@@ -77,23 +77,23 @@ function questaoController() {
 		$page = "questionario.php";
 		redirectTo($page);
 	}
-	if($action == "edit"){
-		//se for edicao pega o id do questionario que será editado
-		if(isset($_GET["id"])){
-			$id = $_GET["id"];
-		}
+// 	if($action == "edit"){
+// 		//se for edicao pega o id do questionario que será editado
+// 		if(isset($_GET["id"])){
+// 			$id = $_GET["id"];
+// 		}
 
-		$questionarioDAO = new questionarioDAO();
-		$questionario = $questionarioDAO->get($id);
+// 		$questionarioDAO = new questionarioDAO();
+// 		$questionario = $questionarioDAO->get($id);
 			
-		//debug
-		//print_r($questionario);
+// 		//debug
+// 		//print_r($questionario);
 			
-		prepareSession($questionario, $questao, $action);
-		$page = "questionario.php";
-		redirectTo($page);
+// 		prepareSession($questionario, $questao, $action);
+// 		$page = "questionario.php";
+// 		redirectTo($page);
 			
-	}
+// 	}
 	if($action == "delete"){
 		//se for edicao pega o id do questionario que será excluido
 		if(isset($_GET["id"])){
@@ -161,26 +161,12 @@ function questaoController() {
 		
 		$questionario = unserialize($_SESSION["s_questionario"]);
 		
-// 		$qhq = new QuestionarioHasQuestao();
-// 		$qhq->questionarioId = $questionario->getId();
-// 		$qhq->find();
-		
-		//guarda o id das questoes
-// 		$id_array = array();
-// 		$i = 0;
-// 		while ($qhq->fetch()) {
-// 			$id_array[$i] = $qhq->questaoId;
-// 			$i++;	
-			
-// 		}
-		
-		
 		$ordem = 1;		
 		foreach ($updateRecordsArray as $value) {
-			echo "ID: ".$value;
-			echo " - ";
-			echo $ordem;
-			echo "<br />";
+// 			echo "ID: ".$value;
+// 			echo " - ";
+// 			echo $ordem;
+// 			echo "<br />";
 			
 			$qhq = new QuestionarioHasQuestao();
 			$qhq->questionarioId = $questionario->getId();
@@ -237,11 +223,16 @@ function save() {
 	
 	
 	
-	
+	$questionario = new Questionario();
+	$questionario->get($questionario_id);
 	
 	
 	$questao = new Questao();
 	$questao->texto = utf8_decode($texto);
+	
+	//adiciona os marcadores de tipo e subtipo à questao
+	$questao->tipo = $questionario->getTipo();
+	$questao->subtipo = $questionario->getSubtipo();
 	
 	if(isset($_POST["checkbox-opcional"])){
 		$opcional = "opcional";
@@ -251,20 +242,14 @@ function save() {
 		//$opcional = "";
 	}
 	
-	
 	$questao->find(true);
-// 	try {
-// // 		$questao->texto = $texto;
-// // 		$questao->find(true);
-		
-// 	} catch (Exception $e) {
-		
-// 	}
-	//$questao->setTexto($texto);
+	
+	$questao->setDataCriacao(date('Y-m-d H:i:s'));
+
 	$questao->save();
 	
-	$questionario = new Questionario();
-	$questionario->get($questionario_id);
+// 	$questionario = new Questionario();
+// 	$questionario->get($questionario_id);
 			
 	$array_questions = $questionario->getQuestoes();
 	array_push($array_questions, $questao);

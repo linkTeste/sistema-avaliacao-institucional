@@ -77,7 +77,10 @@ if(isset($_SESSION["s_processo"])){
 	href="css/unicampo-theme/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="js/info_usuario.js"></script>
+<script type="text/javascript" src="js/jquery.checkbox.js"></script>
 <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
 <script>
 	$(function() {
 		
@@ -104,18 +107,31 @@ if(isset($_SESSION["s_processo"])){
 			dateFormat: 'dd/mm/yy',
 			timeFormat: 'hh:mm:ss'}
 			);
+
+		$('input:radio').checkbox();
 	});
 	</script>
+	
+	<?php if(($new == true) || $edit == true){	?>
+<script type="text/javascript">
+$(document).ready(function() {
+	ativaBlackout();
+	ativaPopup();
+	verificaSize();
+});
+</script>
+<?php }?>
+
 </head>
 
-<body>
+<body style="background: #fafafa;">
 
 
 
 
 
 <?php if(($new == true) || $edit == true){	?>
-	<div id="blackout"></div>
+	<div id="overlay"></div>
 	
 	
 	
@@ -123,18 +139,20 @@ if(isset($_SESSION["s_processo"])){
 	
 	
 <?php } ?>
-<div id="menu_usuario">
+<!-- 
+	<div id="menu_usuario">
 		<ul>
 			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php echo $usuario_logado->getNome();?> - <a
+			<li id="username">Ol&aacute;, <?php //echo $usuario_logado->getNome();?> - <a
 				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
-	</div>	
+	</div>
+	 -->
 <div id="wrapper" class="container">
 <?php if(($new == true) || $edit == true){	?>
     <div id="box">
@@ -158,9 +176,9 @@ if(isset($_SESSION["s_processo"])){
                     
         	
         	<hr />
-            <button class="botaoGoogleBlue float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
+            <button class="botaoGoogleBlue float-right" type="submit" name="enviar" onclick="removePopup();document.getElementById('status').style.zIndex='0';">Salvar</button>
             
-            <button class="botaoGoogleBlue float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
+            <button class="botaoGoogleBlue float-right" type="reset" name="cancelar" onclick="removePopup();document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
             
             <div class="clear"></div>
             </form>
@@ -185,27 +203,14 @@ if(isset($_SESSION["s_processo"])){
 		<div id="header_logo"></div>
 	</div>
     <div id="content">
-    <div id="menu">
-    <ul>
-    <?php 
-    	foreach ($usuario_logado_permissoes as $value) {
-    		$permissao = new Permissao();
-    		$permissao->get($value);
-    ?>
-    <li><a href="<?php echo $permissao->getLink();?>"  title="<?php echo $permissao->getNome();?>" class="botao_left botaoGoogleGrey"><?php echo $permissao->getNome();?></a></li>
-    <?php		
-    	}    
-    ?>	
-    </ul>    
-    </div>      
+    <?php include_once 'inc/menu_admin_inc.php';?>      
     
+    <div class="white">
     <br />
 
         <a href="../Controller/processoController.php?action=new"  title="Novo Processo de Avalia&ccedil;&atilde;o" class="botao_right botaoGoogleBlue">Novo Processo</a>
 
-		<br />
-		<br />
-        <h3>Processos de Avalia&ccedil;&atilde;o Cadastrados</h3>
+		<h3>Processos de Avalia&ccedil;&atilde;o Cadastrados</h3>
         
         <div id="questionarios">
         	<table>
@@ -219,20 +224,21 @@ if(isset($_SESSION["s_processo"])){
                 </tr>
                 <?php
                 	$lista = new ProcessoAvaliacao();
+                	$lista->order("id DESC");
                 	$lista->find();
 					while( $lista->fetch()) {
 						echo "<tr>";
-						echo "<td>".$lista->getId()."</td>";
-						echo "<td>".$lista->getDescricao()."</td>";
-						echo "<td>".datetime_to_ptbr($lista->getInicio())."</td>";
-						echo "<td>".datetime_to_ptbr($lista->getFim())."</td>";
-						echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
-						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
+						echo "<td style='width: 5%'>".$lista->getId()."</td>";
+						echo "<td style='width: 40%'>".$lista->getDescricao()."</td>";
+						echo "<td style='width: 15%'>".datetime_to_ptbr($lista->getInicio())."</td>";
+						echo "<td style='width: 15%'>".datetime_to_ptbr($lista->getFim())."</td>";
+						echo "<td style='width: 15%'>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
+						echo "<td style='width: 5%'><a href='../Controller/processoController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
 						
 						if($lista->getAvaliado() == "Avaliado"){
-							echo "<td style='width: 10%'>&nbsp</td>";
+							echo "<td style='width: 5%'>&nbsp</td>";
 						}else{
-							echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+							echo "<td style='width: 5%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleRed' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
 						}
 						
 // 						if($processo_avaliado == "Avaliado"){
@@ -241,7 +247,14 @@ if(isset($_SESSION["s_processo"])){
 //     					else{
 //     						echo "<td style='width: 10%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
 //     					}
-    					echo "</tr>";
+						
+						//echo "<td style='width: 5%'><a class='botao_right botaoGoogleGrey'><input name='radio.1' value='".$lista->getId()."' type='radio'>Off</a></td>";
+						if($lista->getAtivo() == "Ativo"){
+							echo "<td style='width: 5%'><a href='../Controller/processoController.php?action=ativar&id=".$lista->getId()."' class='botao_right botaoGoogleBlue' title='Desativar'>On</a></td>";
+						}else{
+							echo "<td style='width: 5%'><a href='../Controller/processoController.php?action=ativar&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Ativar'>Off</a></td>";
+						}
+						echo "</tr>";
 					}
                 
 					
@@ -265,12 +278,9 @@ if(isset($_SESSION["s_processo"])){
             </table>
         
         </div>
-        
+        </div><!-- fecha div white -->
     </div>
-    <div id="footer">
-        <hr />
-    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-    </div>
+    <?php include_once 'inc/footer_inc.php';?>
 </div>
 </body>
 <?php 

@@ -32,7 +32,11 @@ if(isset($_SESSION["s_usuario_logado"])){
 	}else{
 		$usuario_logado = unserialize($_SESSION["s_usuario_logado"]);
 	}
+}else{
+	header("Location: login.php");
 }
+
+
 if(isset($_SESSION["s_usuario_logado_permissoes"])){
 	$usuario_logado_permissoes = $_SESSION["s_usuario_logado_permissoes"];
 }
@@ -58,32 +62,46 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
-
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="js/info_usuario.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<?php if(($new == true) || $edit == true){	?>
+<script type="text/javascript">
+$(document).ready(function() {
+	ativaBlackout();
+	ativaPopup();
+	verificaSize();
+})
+</script>
+<?php }?>
 </head>
 
-<body>
+<body style="background: #fafafa;">
 
 
 
 
 
 <?php if(($new == true) || $edit == true){	?>
-	<div id="blackout"></div>
+	<div id="overlay"></div>
 		
 	
 <?php } ?>
-<div id="menu_usuario">
+<!-- 
+	<div id="menu_usuario">
 		<ul>
 			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php echo $usuario_logado->getNome();?> - <a
+			<li id="username">Ol&aacute;, <?php //echo $usuario_logado->getNome();?> - <a
 				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
-	</div>	
+	</div>
+	-->
 <div id="wrapper" class="container">
 <?php if(($new == true) || $edit == true){	?>
     <div id="box">
@@ -117,7 +135,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
         	<input type="hidden" name="id" value="<?php echo $id;?>"/>
         	
         	<label for="nome">Nome:</label><br />
-        	<input type="text" name="nome" value="<?php echo $nome;?>"/><br /><br /><br />
+        	<input type="text" name="nome" value="<?php echo utf8_encode($nome);?>"/><br /><br /><br />
             
             <label for="login">Login:</label><br />
 			<input type="text" name="login" value="<?php echo $login;?>"/><br /><br /><br />
@@ -153,9 +171,9 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
                     
         	
         	<hr />
-            <button class="botaoGoogleBlue float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
+            <button class="botaoGoogleBlue float-right" type="submit" name="enviar" onclick="removePopup();document.getElementById('status').style.zIndex='0';">Salvar</button>
             
-            <button class="botaoGoogleBlue float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
+            <button class="botaoGoogleBlue float-right" type="reset" name="cancelar" onclick="removePopup();document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
             
             <div class="clear"></div>
             </form>
@@ -176,31 +194,16 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
        	</div>
     </div>-->
 <?php } ?>
-	<div id="header">
-		<div id="header_logo"></div>
-	</div>
+		<?php include_once 'inc/header_inc.php';?>
     <div id="content">
-    <div id="menu">
-    <ul>
-    <?php 
-    	foreach ($usuario_logado_permissoes as $value) {
-    		$permissao = new Permissao();
-    		$permissao->get($value);
-    ?>
-    <li><a href="<?php echo $permissao->getLink();?>"  title="<?php echo $permissao->getNome();?>" class="botao_left botaoGoogleGrey"><?php echo $permissao->getNome();?></a></li>
-    <?php		
-    	}    
-    ?>	
-    </ul>    
-    </div>       
+    <?php include_once 'inc/menu_admin_inc.php';?>       
     
+    <div class="white">
     <br />
 
         <a href="../Controller/usuarioController.php?action=new"  title="Novo Usu&aacute;rio" class="botao_right botaoGoogleBlue">Novo Usu&aacute;rio</a>
 
-		<br />
-		<br />
-        <h3>Usu&aacute;rios Cadastrados</h3>
+		<h3>Usu&aacute;rios Cadastrados</h3>
         
         <div id="questionarios">
         	<table>
@@ -217,23 +220,23 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
                 	$lista->find();
 					while( $lista->fetch()) {
 						echo "<tr>";
-						echo "<td>".$lista->getId()."</td>";
-						echo "<td>".$lista->getNome()."</td>";
-						echo "<td>".$lista->getLogin()."</td>";
-						echo "<td>".$lista->getEmail()."</td>";
-						echo "<td>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
+						echo "<td style='width: 5%'>".$lista->getId()."</td>";
+						echo "<td style='width: 40%'>".utf8_encode($lista->getNome())."</td>";
+						echo "<td style='width: 10%'>".utf8_encode($lista->getLogin())."</td>";
+						echo "<td style='width: 20%'>".$lista->getEmail()."</td>";
+						echo "<td style='width: 15%'>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
 						if($lista->getLogin() != "admin"){
-							echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Processo de Avalia&ccedil;&atilde;o'>Editar</a></td>";
+							echo "<td style='width: 5%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Usuário'>Editar</a></td>";
 							if($processo_avaliado == "Avaliado"){
-								echo "<td style='width: 10%'>&nbsp</td>";
+								echo "<td style='width: 5%'>&nbsp</td>";
 							}
 							else{
-								echo "<td style='width: 10%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+								echo "<td style='width: 5%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleRed' title='Remover Usuário'>Excluir</a></td>";
 							}
 						}
 						else{
-							echo "<td style='width: 10%'>&nbsp</td>";
-							echo "<td style='width: 10%'>&nbsp</td>";
+							echo "<td style='width: 5%'>&nbsp</td>";
+							echo "<td style='width: 5%'>&nbsp</td>";
 						}
 						
 						
@@ -263,12 +266,10 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
             </table>
         
         </div>
+        </div><!-- fecha div white -->
         
     </div>
-    <div id="footer">
-        <hr />
-    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-    </div>
+    <?php include_once 'inc/footer_inc.php';?>
 </div>
 </body>
 <?php 

@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "notificacao"
- * in 2012-03-13
+ * in 2012-06-20
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -18,6 +18,7 @@ class Notificacao extends Lumine_Base {
     public $avaliacaoProrrogada;
     public $avaliacaoFim;
     public $relatoriosDisponiveis;
+    public $processoAvaliacaoId;
     
     
     /**
@@ -116,6 +117,22 @@ class Notificacao extends Lumine_Base {
     public function setRelatoriosDisponiveis($value) {
     	$this->relatoriosDisponiveis = $value;
     }
+    /**
+     * get processoAvaliacaoId
+     *
+     */
+    public function getProcessoAvaliacaoId() {
+    	return $this->processoAvaliacaoId;
+    }
+    
+    /**
+     * set processoAvaliacaoId
+     * @param Type $value
+     *
+     */
+    public function setProcessoAvaliacaoId($value) {
+    	$this->processoAvaliacaoId = $value;
+    }
     
     /**
      * Inicia os valores da classe
@@ -135,6 +152,7 @@ class Notificacao extends Lumine_Base {
         $this->metadata()->addField('avaliacaoProrrogada', 'avaliacao_prorrogada', 'int', 11, array());
         $this->metadata()->addField('avaliacaoFim', 'avaliacao_fim', 'int', 11, array());
         $this->metadata()->addField('relatoriosDisponiveis', 'relatorios_disponiveis', 'int', 11, array());
+        $this->metadata()->addField('processoAvaliacaoId', 'processo_avaliacao_id', 'int', 11, array('notnull' => true, 'foreign' => '1', 'onUpdate' => 'CASCADE', 'onDelete' => 'RESTRICT', 'linkOn' => 'id', 'class' => 'ProcessoAvaliacao'));
 
         
     }

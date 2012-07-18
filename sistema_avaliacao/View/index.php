@@ -20,31 +20,6 @@ if (!isset($_SESSION)) {
 	session_start();
 }
 
-//pegar dados ficticios de aluno
-
-// $ra = "0003.01.10"; //Ilson Gomes - Psicologia
-// $ra = "0011.03.10"; //Dirnei de F�tima - Servi�o Social
-// $ra = "0245.03.11"; //Camila Larissa - Servi�o Social
-// $ra = "0012.02.10"; //ELIANE DOS SANTOS - Enfermagem
-// $ra = "0025.04.10"; //THIAGO GABRIEL MARCELINO - Tecnologia em Gest�o de Cooperativas
-// $ra = "0028.05.10"; //GREYCE DA COSTA VICENTE - TECNOLOGIA EM GEST�O COMERCIAL
-// $ra = "0031.01.10"; //AMANDA INTROVINI DE CASTRO - Psicologia
-// $ra = "0100.01.10"; //ELIANE GUADAGNIN RAIS - Psicologia
-
-// $aluno = new Aluno();
-// $aluno->get($ra);
-
-
-// echo "Aluno: ".$aluno->getNome();
-// echo "<br />";
-// echo "RA: ".$aluno->getRa();
-
-//pega dados do processo de avaliacao
-// $processo = new ProcessoAvaliacao();
-// $processo->get(1);
-
-//periodo letivo atual pra limitar a listagem de turmas
-// $periodo_atual = "2/2011";
 
 if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 	$str = $_SESSION["s_aluno"];
@@ -76,40 +51,32 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.raty.js"></script>
 </head>
 
-<body>
+<body style="background: #fafafa;">
+	<!-- 
 	<div id="menu_usuario">
 		<ul>
 			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php echo $aluno->getNome();?> - <a
+			<li id="username">Ol&aacute;, <?php //echo $aluno->getNome();?> - <a
 				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
 	</div>
+	 -->
 	<div id="wrapper" class="container">
 		<div id="header">
 		<div id="header_logo"></div>
 	</div>
 		<div id="content">
-			<div id="menu">
-				<ul>
-					<li><a href="index.php" title="P&aacute;gina Inicial"
-						class="botao_left botaoGoogleGrey">P&aacute;gina Inicial</a></li>
-					<li><a href="avaliacoes.php" title="Avalia&ccedil;&otilde;es"
-						class="botao_left botaoGoogleGrey">Avalia&ccedil;&otilde;es</a></li>
-					<li><a href="#" title="Relat&oacute;rios"
-						class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
-					
-				</ul>
-			</div>
+			<?php include_once 'inc/menu_aluno_inc.php';?>
 
-			<br />
 			<div id="apresentacao">
 				<p>Caro aluno,</p>
 				<p>Solicitamos sua participação para auxiliar na avaliação de
@@ -121,7 +88,7 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 					o professor nos quesitos propostos, baseando sua resposta no que é
 					mais constante no comportamento do professor.</p>
 			</div>
-			<div id="escala_conceitos">
+			<div id="escala_conceitos_home">
 				<h3>Escala de Conceitos</h3>
 				<div id="item_escala">
 					<div id="texto_escala">
@@ -218,15 +185,12 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 			<br />
 
 			<!--<a href="avaliacoes.php" class="btn-comecar-avaliacao" title="Começar Avaliação"></a>-->
-			<a href="avaliacoes.php" class="botao botaoGoogleBlue">Começar
+			<a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoes.php");?>" class="botao botaoGoogleBlue">Começar
 				Avaliação</a>
 			<div class="clear"></div>
 			<br />
 		</div>
-		<div id="footer">
-			<hr />
-			<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-		</div>
+		<?php include_once 'inc/footer_inc.php';?>
 	</div>
 </body>
 

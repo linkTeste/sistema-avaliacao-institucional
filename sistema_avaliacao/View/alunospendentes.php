@@ -36,7 +36,7 @@ if(isset($_GET['status'])){
 // 		$aluno = unserialize($_SESSION["s_aluno"]);
 // 	}
 
-// 	//é importante guardar o ra pois a cada nova consulta sql precisaremos de um 'novo' aluno
+// 	//ï¿½ importante guardar o ra pois a cada nova consulta sql precisaremos de um 'novo' aluno
 // 	//e para obter o 'novo' aluno precisamos do ra dele
 // 	$ra = $aluno->getRa();
 // }
@@ -60,7 +60,7 @@ if(isset($_SESSION["s_periodo"])){
 if(isset($_SESSION["s_periodo"])){
 	$cursos_coordenados = $_SESSION["s_cursos_coordenados"];	
 }
-// $cursos_coordenados = array("Tecnologia em Gestão Comercial", "Tecnologia em Gestão de Cooperativas", "Psicologia", "Enfermagem");
+// $cursos_coordenados = array("Tecnologia em Gestï¿½o Comercial", "Tecnologia em Gestï¿½o de Cooperativas", "Psicologia", "Enfermagem");
 
 
 
@@ -82,11 +82,12 @@ if(isset($_SESSION["s_periodo"])){
 <link type="text/css"
 	href="css/unicampo-theme/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 
 </head>
 
-<body>
+<body style="background: #fafafa;">
 
 
 
@@ -102,42 +103,21 @@ if(isset($_SESSION["s_periodo"])){
 <?php if(isset($_GET['status'])){	?>
 	<div id="blackout"></div>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 <?php } ?>
-<div id="menu_usuario">
+<!-- 
+	<div id="menu_usuario">
 		<ul>
 			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
 					Unicampo</a></li>
 			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
 					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php echo $usuario_logado->getNome();?> - <a
+			<li id="username">Ol&aacute;, <?php //echo $usuario_logado->getNome();?> - <a
 				href="../Controller/loginController.php?action=logout">Sair</a>
 			</li>
 			
 		</ul>
 	</div>
+	-->
 <div id="wrapper" class="container">
 <?php if(isset($_GET['status'])){	?>
     <div id="status">
@@ -153,20 +133,9 @@ if(isset($_SESSION["s_periodo"])){
 		<div id="header_logo"></div>
 	</div>
     <div id="content">
-    <div id="menu">
-				<ul>
-					<li><a href="index.php" title="P&aacute;gina Inicial"
-						class="botao_left botaoGoogleGrey">P&aacute;gina Inicial</a></li>
-<!-- 					<li><a href="avaliacoes.php" title="Avalia&ccedil;&otilde;es" -->
-<!-- 						class="botao_left botaoGoogleGrey">Avalia&ccedil;&otilde;es</a></li> -->
-					<li><a href="alunospendentes.php" title="Alunos Pendentes"
-						class="botao_left botaoGoogleGrey">Alunos Pendentes</a></li>
-					<li><a href="#" title="Relat&oacute;rios"
-						class="botao_left botaoGoogleGrey">Relat&oacute;rios</a></li>
-					
-				</ul>
-			</div>      
+    <?php include_once 'inc/menu_coord_inc.php';?>      
     
+    <div class="white">
     <br />
     	<h3>Alunos com AvaliaÃ§Ãµes Pendentes</h3>
     	<?php 
@@ -174,7 +143,7 @@ if(isset($_SESSION["s_periodo"])){
     	if(isset($_POST["semestre-selecionado"]) && $_POST["semestre-selecionado"] != ""){
     		//filtro por semestre
     		$ss = $_POST["semestre-selecionado"];    		
-    		$semestre_escolhido = $ss."º SEMESTRE";
+    		$semestre_escolhido = $ss."ï¿½ SEMESTRE";
 //     		$semestre_escolhido = $ss;
     		$where_semestre = "and turma.serie = '".$semestre_escolhido."'";
     		$where_semestre2 = "and t.serie = '".$semestre_escolhido."'";
@@ -217,7 +186,7 @@ if(isset($_SESSION["s_periodo"])){
     		<option value="">Escolha o curso</option>
     		<?php 
     		foreach ($cursos_coordenados as $curso) {
-    			//select serie from turma where (curso="Serviço Social"  or curso = "Psicologia") and periodo_letivo = '2/2011' group by serie ;
+    			//select serie from turma where (curso="Serviï¿½o Social"  or curso = "Psicologia") and periodo_letivo = '2/2011' group by serie ;
     			echo "<option value='".utf8_encode($curso)."'>".utf8_encode($curso)."</option>";
     		}
     		
@@ -281,7 +250,7 @@ if(isset($_SESSION["s_periodo"])){
     		<?php
     		 		
     		while($turmaA->fetch()) {
-    			$value = explode("º", $turmaA->serie);
+    			$value = explode("ï¿½", $turmaA->serie);
     			if($turmaA->serie != ""){
     		?>
     		<option value="<?php echo $value[0];?>"><?php echo utf8_encode($turmaA->serie);?></option>
@@ -481,6 +450,7 @@ if(isset($_SESSION["s_periodo"])){
 <!--     	    		</table> -->
     	    		
     	    		</div>
+    	    		</div><!-- fecha div white -->
     	    		<?php
     	
     	
@@ -546,7 +516,7 @@ if(isset($_SESSION["s_periodo"])){
 // //     		if($a->fetch() == ""){
 //     		if($qtd1 == 0){
     			 
-//     			//é necessario pegar dados do aluno NOVAMENTE
+//     			//ï¿½ necessario pegar dados do aluno NOVAMENTE
 //     			$a = new Aluno();
 //     			$a->get($ra_aluno);
     			
@@ -587,7 +557,7 @@ if(isset($_SESSION["s_periodo"])){
 //     	}
     	
     	
-    	/*-------------------- PEGA AS AVALIAÇÕES CONCLUIDAS -------------------------*/
+    	/*-------------------- PEGA AS AVALIAï¿½ï¿½ES CONCLUIDAS -------------------------*/
 //     	$lista_alunos = new Aluno();
 //     	$lista_alunos->sitAcademica = 1;
 //     	$qtd_alunos = $lista_alunos->find();

@@ -19,7 +19,7 @@
 ################################################################################
 /**
  * Model generada para a tabela "ProcessoAvaliacao"
- * in 2012-03-13 15:38:41
+ * in 2012-06-20 14:50:55
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package Lumine

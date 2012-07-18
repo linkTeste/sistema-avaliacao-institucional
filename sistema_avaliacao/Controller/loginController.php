@@ -4,7 +4,7 @@
 
 //trabalha com os beans e DAOS
 
-//define qual página chamar de acordo com a action
+//define qual pï¿½gina chamar de acordo com a action
 
 //incluir aqui as classes que serao usadas
 //require "../Model/Bean/questionario.class.php";
@@ -23,9 +23,13 @@ require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Usuario.php';
 require_once '../system/application/models/dao/UsuarioHasPermissao.php';
 require_once '../system/application/models/dao/Professor.php';
+require_once '../system/application/models/dao/Funcionario.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
 require_once '../system/application/models/dao/Comentarios.php';
+require_once '../system/application/models/dao/Log.php';
+
+require '../Utils/functions.php';
 
 //if (!isset($_SESSION)) {
 session_start();
@@ -33,9 +37,9 @@ session_start();
 
 /**
  * @name loginController
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 22/02/2012 20:47
- * controller do login - responsável por fazer a autenticação do usuario, seja ele aluno,
+ * controller do login - responsï¿½vel por fazer a autenticaï¿½ï¿½o do usuario, seja ele aluno,
  * professor, funcionario ou coordenador.
  **/
 //class questionarioController {
@@ -44,14 +48,17 @@ $page;
 
 $default_page = "home.php";
 
+//pegar isso dinamicamente
+$periodo_atual = "1/2012";
+
 
 loginController();
 
 /**
  * @name loginController
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 22/02/2012 20:48:53
- * função que verifica a action e direciona para a action específica
+ * funï¿½ï¿½o que verifica a action e direciona para a action especï¿½fica
  **/
 function loginController() {
 
@@ -66,7 +73,7 @@ function loginController() {
 
 	if($action == "logar"){
 
-		//primeiro zera a sessao por segurança
+		//primeiro zera a sessao por seguranï¿½a
 		//logout();
 
 		//pega os dados e verifica quem esta fazendo o login
@@ -80,21 +87,28 @@ function loginController() {
 			$senha = $_POST["senha"];
 		}
 			
-
-
+		
 		//verifica qual o tipo do usuario
 		$usuarioLogado = isAluno($login, $senha);
 		if($usuarioLogado != false){
 			
-			$_SESSION["s_aluno"] = serialize($usuarioLogado);
-				
+			$type = "Aluno";
+			//registra log
+			registraLog($usuarioLogado->getRa(), $type);
+			
+			$_SESSION["s_aluno"] = serialize($usuarioLogado);		
+			
+			
 			$page = "index.php";
 
 		}else {
-			$usuarioLogado = isUsuario($login, $senha);
+			$usuarioLogado = isUsuario($login, $senha);		
 			
 			if($usuarioLogado != false){
-
+				$type = "Admin";
+				//registra log
+				registraLog($usuarioLogado->getId(), $type);
+				
 				$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
 
 				//obtem as permissoes do usuario logado e joga na sessao
@@ -114,11 +128,37 @@ function loginController() {
 			}else{
 				$usuarioLogado = isProfessor($login, $senha);
 				if($usuarioLogado != false){
-
+					
+					
+					//verifica se ele ï¿½ coordenador
+					if($usuarioLogado->getIscoordenador() == true){
+						$type = "Coordenador";
+						$page = "indexCoordenador.php";
+					}else{
+						$type = "Professor";
+						$page = "indexProfessor.php";
+					}
+					
+					//registra log
+					registraLog($usuarioLogado->getId(), $type);
+					
 					$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
 					
-					$page = "alunospendentes.php";
+					
 						
+				}else{
+					$usuarioLogado = isFuncionario($login, $senha);
+						
+					if($usuarioLogado != false){
+						$type = "Funcionario";
+						//registra log
+						registraLog($usuarioLogado->getId(), $type);
+					
+						$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
+										
+						$page = "indexFuncionario.php";
+													
+					}
 				}
 			}
 		}
@@ -151,15 +191,15 @@ function loginController() {
 
 
 
-		//pega o processo de avaliação ativo
+		//pega o processo de avaliaï¿½ï¿½o ativo
 		//pega dados do processo de avaliacao
 		$processo = new ProcessoAvaliacao();
 		
-		$processo->order("id DESC");
+		$processo->where("ativo='Ativo'");
 		$processo->find();
 		$processo->fetch(true);
 // $processo->get(1);
-			
+		
 		$_SESSION["s_processo"] = serialize($processo);
 // 		$_SESSION["s_periodo"] = "2/2011";
 		$_SESSION["s_periodo"] = "1/2012";
@@ -189,34 +229,38 @@ function loginController() {
 
 /**
  * @name logout
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 23/02/2012 18:30:26
  * desconecta da sessao e destroi os dados da mesma
  **/
 function logout() {
 	//Destruir sessao
-	// primeiro destruímos os dados associados à sessão
+	// primeiro destruï¿½mos os dados associados ï¿½ sessï¿½o
 	$_SESSION = array();
 
-	// destruímos então o cookie relacionado a esta sessão
+	// destruï¿½mos entï¿½o o cookie relacionado a esta sessï¿½o
 	if(isset($_COOKIE[session_name()])){
 		setcookie(session_name(), '', time() - 1000, '/');
 	}
 
-	// finalmente destruimos a sessão
+	// finalmente destruimos a sessï¿½o
 	session_destroy();
 
 	//fim da destruicao
-
-	//header("Location: login.php?msg=Você fez o logout agora.");
-	header("Location: http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/login.php?msg=Você fez o logout agora");
+	
+	//pega a mensagem de status
+	$msg_code = "msg_status_1";
+	
+	//header("Location: login.php?msg=Vocï¿½ fez o logout agora.");
+	header("Location: http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/login.php?msg=".$msg_code);
+	
 }
 
 /**
  * @name isAluno
- * @author Fabio Baía
+ * @author Fabio BaÃ­a
  * @since 22/02/2012 20:56:00
- * verifica se o usuario é um aluno
+ * verifica se o usuario ï¿½ um aluno
  **/
 function isAluno($login, $senha) {
 
@@ -232,11 +276,11 @@ function isAluno($login, $senha) {
 
 	if($qtd == 0){
 		// 			echo "aluno zero";
-		//não encontrou retorna false
+		//nï¿½o encontrou retorna false
 		return false;
 	}
 	else{
-		// 			echo "É um aluno: ".$aluno->getNome();
+		// 			echo "ï¿½ um aluno: ".$aluno->getNome();
 		//encontrou retorna o aluno
 		return $usuarioLogado;
 	}
@@ -245,9 +289,9 @@ function isAluno($login, $senha) {
 
 /**
  * @name isUsuario
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 23/02/2012 17:19:18
- * verifica se o usuario é um administrador
+ * verifica se o usuario ï¿½ um administrador
  **/
 function isUsuario($login, $senha) {
 
@@ -258,7 +302,7 @@ function isUsuario($login, $senha) {
 	$qtd = $usuarioLogado->find(true);
 	//echo "usuarios: ".$qtd;
 	if($qtd == 0){
-		//não encontrou retorna false
+		//nï¿½o encontrou retorna false
 		return false;
 	}
 	else{
@@ -269,14 +313,16 @@ function isUsuario($login, $senha) {
 
 /**
  * @name isProfessor
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 02/03/2012 14:44:27
- * verifica se o usuario é professor
+ * verifica se o usuario ï¿½ professor
  **/
 function isProfessor($login, $senha) {
 	$usuarioLogado = new Professor();
 	$usuarioLogado->login = $login;
 	$usuarioLogado->senha = md5($senha);
+	
+	global $periodo_atual;
 
 	$qtd = $usuarioLogado->find(true);
 	if($qtd == 0){
@@ -288,6 +334,7 @@ function isProfessor($login, $senha) {
 		$turma = new Turma();
 		$turma->alias("turma");
 		$turma->select("turma.curso, turma.coordenadorId");
+		$turma->where("turma.coordenadorId = ".$idProfessor." and turma.periodoLetivo = '".$periodo_atual."'");
 		$turma->where("turma.coordenadorId = ".$idProfessor);
 		$turma->group("turma.curso");
 		$qtdCursos = $turma->find();
@@ -313,10 +360,31 @@ function isProfessor($login, $senha) {
 }
 
 /**
+* @name isFuncionario
+* @author Fabio BaÃ­a
+* @since 14/06/2012 14:19:14
+* verifica se o usuario e um professor
+**/
+function isFuncionario($login, $senha) {
+	
+	$usuarioLogado = new Funcionario();
+	$usuarioLogado->login = $login;
+	$usuarioLogado->senha = md5($senha);
+	$qtd = $usuarioLogado->find(true);
+	//echo "usuarios: ".$qtd;
+	if($qtd == 0){
+		return false;
+	}
+	else{
+		return $usuarioLogado;
+	}
+}
+
+/**
  * @name prepareSession
- * @author Fabio Baía
+ * @author Fabio Baï¿½a
  * @since 12/01/2012
- * função que lança dados na sessão
+ * funï¿½ï¿½o que lanï¿½a dados na sessï¿½o
  **/
 function prepareSession(questionario $questionario, $action, $mensagem = null) {
 	//prepara a sessao
@@ -329,15 +397,28 @@ function prepareSession(questionario $questionario, $action, $mensagem = null) {
 
 }
 
+
+
+
+
 /**
- * @name redirectTo
- * @author Fabio Baía
- * @since 12/01/2012
- * função que redireciona pra uma pagina específica
- **/
-function redirectTo($page) {
-	$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
-	header("Location: ".$url_base.$page);
+* @name registraLog
+* @author Fabio BaÃ­a
+* @since 22/05/2012 16:21:19
+* registra no banco de dados o nome do usuario que logou, hora de acesso e ip
+**/
+function registraLog($usuarioId, $tipoUsuario) {
+	$ip = $_SERVER['REMOTE_ADDR'];
+	$agora = date('Y-m-d H:i:s');
+		
+	$log = new Log();
+	$log->setId(0);
+	$log->setUsuario($usuarioId);
+	$log->setTipoUsuario($tipoUsuario);
+	$log->setHora($agora);
+	$log->setIp($ip);
+	
+	$log->save();
 }
 
 

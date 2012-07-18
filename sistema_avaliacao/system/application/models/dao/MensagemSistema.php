@@ -2,7 +2,7 @@
 #### START AUTOCODE
 /**
  * Classe generada para a tabela "mensagem_sistema"
- * in 2012-03-13
+ * in 2012-06-20
  * @author Hugo Ferreira da Silva
  * @link http://www.hufersil.com.br/lumine
  * @package system.application.models.dao
@@ -95,7 +95,7 @@ class MensagemSistema extends Lumine_Base {
         
         # nome_do_membro, nome_da_coluna, tipo, comprimento, opcoes
         
-        $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true));
+        $this->metadata()->addField('id', 'id', 'int', 11, array('primary' => true, 'notnull' => true, 'autoincrement' => true));
         $this->metadata()->addField('texto', 'texto', 'text', 65535, array());
         $this->metadata()->addField('tipo', 'tipo', 'varchar', 45, array());
         $this->metadata()->addField('codigo', 'codigo', 'varchar', 255, array());
