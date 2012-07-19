@@ -41,7 +41,6 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 	$usuario_logado_permissoes = $_SESSION["s_usuario_logado_permissoes"];
 }
 
-
 //fazer isso no index do admin
 //pega dados do processo de avaliacao
 // $processo = new ProcessoAvaliacao();
@@ -59,6 +58,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+<?php include_once 'inc/theme_inc.php';?>
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
@@ -72,7 +72,7 @@ $(document).ready(function() {
 	ativaBlackout();
 	ativaPopup();
 	verificaSize();
-})
+});
 </script>
 <?php }?>
 </head>
