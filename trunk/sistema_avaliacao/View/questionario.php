@@ -75,7 +75,7 @@ if(isset($_SESSION["s_questionario"])){
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
-
+<?php include_once 'inc/theme_inc.php';?>
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
@@ -222,9 +222,7 @@ $().ready(function() {
        	</div>
     </div>-->
 <?php } ?>
-	<div id="header">
-		<div id="header_logo"></div>
-	</div>
+	<?php include_once 'inc/header_inc.php';?>
     <div id="content">
     <?php include_once 'inc/menu_admin_inc.php';?>       
     

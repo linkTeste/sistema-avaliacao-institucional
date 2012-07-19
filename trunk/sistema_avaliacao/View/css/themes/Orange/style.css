@@ -1,0 +1,35 @@
+@CHARSET "ISO-8859-1";
+
+/*
+* Theme: Orange
+* Author: Fabio Cezar Baía
+* Date: 18/07/2012 15:22
+*/
+#header_client_logo {
+	background: url(images/header_logo_be4822.png) no-repeat;
+	height: 109px;
+	width: 328px;
+	margin: 0;
+}
+
+div.white {
+	min-height: 550px;
+	background: white url(images/fundo_be4822.png) bottom right no-repeat;
+}
+
+#menu ul li a:hover {
+	color: #be4822;
+}
+
+#menu ul li a.home_link {
+	color: white;
+	padding-left: 25px;
+	border: 1px solid #be4822;
+	background: #be4822 url(images/home.png) 5px 11px no-repeat;
+}
+
+/*links normais*/
+a.link2:hover {
+	text-decoration: underline;
+	color: #be4822;
+}

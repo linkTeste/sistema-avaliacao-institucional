@@ -1,0 +1,35 @@
+@CHARSET "ISO-8859-1";
+
+/*
+* Theme: Dark Green
+* Author: Fabio Cezar Baía
+* Date: 18/07/2012 17:56
+*/
+#header_client_logo {
+	background: url(images/header_logo_008c69.png) no-repeat;
+	height: 109px;
+	width: 328px;
+	margin: 0;
+}
+
+div.white {
+	min-height: 550px;
+	background: white url(images/fundo_008c69.png) bottom right no-repeat;
+}
+
+#menu ul li a:hover {
+	color: #008c69;
+}
+
+#menu ul li a.home_link {
+	color: white;
+	padding-left: 25px;
+	border: 1px solid #008c69;
+	background: #008c69 url(images/home.png) 5px 11px no-repeat;
+}
+
+/*links normais*/
+a.link2:hover {
+	text-decoration: underline;
+	color: #008c69;
+}
