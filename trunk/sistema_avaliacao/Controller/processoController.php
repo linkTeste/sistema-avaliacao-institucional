@@ -90,37 +90,28 @@ session_start();
 			if(isset($_GET["id"])){
 				$id = $_GET["id"];
 			}
-		
+			if(isset($_POST["id"])){
+				$id = $_POST["id"];
+			}
+			
+			if(isset($_GET["confirm"])){
+				$confirm = $_GET["confirm"];
+			}
+			if(isset($_POST["confirm"])){
+				$confirm = $_POST["confirm"];
+			}
+			
+			
 			$processo = new ProcessoAvaliacao();
 			$processo->get($id);
 			
-			//primeiro devemos remover as questoes do questionario
-			
-// 			$questionario->alias('q');
-// 			$q = new Questao();
-// 			$questionario->join($q,'INNER','qu');
-// 			$questionario->select("qu.id, qu.texto, qu.topico");
-// 			$questionario->find();
-			 
-// 			$pos = 0;
-// 			$ids_remover = array();
-// 			while( $questionario->fetch() ) {
-// 				$ids_remover[$pos] = $questionario->id;
-// 				$pos++;			
-// 			}
-			
-			//criamos aqui um questionario2 pq o questionario agora guarda os 
-			//valores das questoes e por isso nao e mais um questionario
-			
-// 			$questionario2 = new Questionario();
-// 			$questionario2->get($id);
-// 			$questionario2->remove('questoes', $ids_remover);
-			
-			//depois excluimos o processo	
-			$processo->delete();
-			
-				
-			//session
+			if($confirm == "true"){
+				//depois excluimos o processo
+				$processo->delete();
+			}else{
+				$_SESSION["action"] = $action;
+				$_SESSION["s_processo"] = serialize($processo);
+			}			
 			
 			$page = "processos.php";
 			redirectTo($page);
@@ -166,9 +157,7 @@ session_start();
 				}
 				
 				$p->save();
-			}
-		
-			
+			}			
 			
 				
 			$page = "processos.php";

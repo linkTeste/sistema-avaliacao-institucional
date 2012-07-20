@@ -23,6 +23,9 @@ if(isset($_SESSION["action"])){
 	if($_SESSION["action"] == "edit"){
 		$edit = true;
 	}
+	if($_SESSION["action"] == "delete"){
+		$delete = true;
+	}
 	$_SESSION["action"] = null;
 }
 
@@ -113,7 +116,7 @@ if(isset($_SESSION["s_processo"])){
 	});
 	</script>
 	
-	<?php if(($new == true) || $edit == true){	?>
+	<?php if(($new == true) || $edit == true || $delete== true){	?>
 <script type="text/javascript">
 $(document).ready(function() {
 	ativaBlackout();
@@ -131,7 +134,7 @@ $(document).ready(function() {
 
 
 
-<?php if(($new == true) || $edit == true){	?>
+<?php if(($new == true) || $edit == true || $delete == true){	?>
 	<div id="overlay"></div>
 	
 	
@@ -185,20 +188,29 @@ $(document).ready(function() {
             </form>
        	</div>
      </div>   
-     <!--<div id="box">
+     
+<?php } ?>
+
+<?php if(($delete == true)){	?>
+    <div id="box">
     	<div id="box_inside">
-    		<form action="adm_questionario.php" method="post">
-        	<label for="textarea-question">Texto da questão:</label><br />
-            <textarea id="textarea-question" name="textarea-question"></textarea>
+        <?php
+		
+		?>
+		<h2>Você tem certeza que deseja excluir esse registro?</h2>
+    		<form action="../Controller/processoController.php?action=delete" id="form-questionario" method="post">
+        	<input type="hidden" name="id" value="<?php echo $id; ?>"/>
+        	<input type="hidden" name="confirm" value="true"/>
         	
-            <button class="btn-default float-right" type="submit" name="enviar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Salvar</button>
-            
-            <button class="btn-default float-right" type="reset" name="cancelar" onclick="document.getElementById('box').style.display='none';document.getElementById('blackout').style.display='none';document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
+        	<hr />
+            <button class="botaoGoogleBlue float-right" type="reset" name="cancelar" onclick="removePopup();document.getElementById('status').style.zIndex='0';">Cancelar</button>        	        
+            <button class="botaoGoogleRed float-right" type="submit" name="enviar" onclick="removePopup();document.getElementById('status').style.zIndex='0';">Excluir</button>
             
             <div class="clear"></div>
             </form>
        	</div>
-    </div>-->
+     </div>   
+     
 <?php } ?>
 	
 <?php include_once 'inc/header_inc.php';?>
@@ -238,7 +250,7 @@ $(document).ready(function() {
 						if($lista->getAvaliado() == "Avaliado"){
 							echo "<td style='width: 5%'>&nbsp</td>";
 						}else{
-							echo "<td style='width: 5%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleRed' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
+							echo "<td style='width: 5%'><a href='../Controller/processoController.php?action=delete&id=".$lista->getId()."&confirm=false' class='botao_right botaoGoogleRed' title='Remover Processo de Avalia&ccedil;&atilde;o'>Excluir</a></td>";
 						}
 						
 // 						if($processo_avaliado == "Avaliado"){

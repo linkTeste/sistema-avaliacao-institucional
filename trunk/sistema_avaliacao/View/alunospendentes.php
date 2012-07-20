@@ -52,13 +52,13 @@ if(isset($_SESSION["s_usuario_logado"])){
 
 if(isset($_SESSION["s_periodo"])){
 	$periodo_atual = $_SESSION["s_periodo"];
-// 	echo "periodo: ".$periodo_atual;
+	// 	echo "periodo: ".$periodo_atual;
 }else{
 	header("Location: index.php");
 }
 
 if(isset($_SESSION["s_periodo"])){
-	$cursos_coordenados = $_SESSION["s_cursos_coordenados"];	
+	$cursos_coordenados = $_SESSION["s_cursos_coordenados"];
 }
 // $cursos_coordenados = array("Tecnologia em Gest�o Comercial", "Tecnologia em Gest�o de Cooperativas", "Psicologia", "Enfermagem");
 
@@ -84,6 +84,7 @@ if(isset($_SESSION["s_periodo"])){
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 </head>
 
@@ -100,8 +101,14 @@ if(isset($_SESSION["s_periodo"])){
 
 
 
+
+
 <?php if(isset($_GET['status'])){	?>
 	<div id="blackout"></div>
+	
+	
+	
+	
 	
 <?php } ?>
 <!-- 
@@ -140,10 +147,13 @@ if(isset($_SESSION["s_periodo"])){
     	<h3>Alunos com Avaliações Pendentes</h3>
     	<?php 
     	
+    	$qtd_alunos;
+    	$qtd_alunos_avaliaram = 0;
+    	
     	if(isset($_POST["semestre-selecionado"]) && $_POST["semestre-selecionado"] != ""){
     		//filtro por semestre
     		$ss = $_POST["semestre-selecionado"];    		
-    		$semestre_escolhido = $ss."� SEMESTRE";
+    		$semestre_escolhido = $ss."º SEMESTRE";
 //     		$semestre_escolhido = $ss;
     		$where_semestre = "and turma.serie = '".$semestre_escolhido."'";
     		$where_semestre2 = "and t.serie = '".$semestre_escolhido."'";
@@ -250,7 +260,7 @@ if(isset($_SESSION["s_periodo"])){
     		<?php
     		 		
     		while($turmaA->fetch()) {
-    			$value = explode("�", $turmaA->serie);
+    			$value = explode("º", $turmaA->serie);
     			if($turmaA->serie != ""){
     		?>
     		<option value="<?php echo $value[0];?>"><?php echo utf8_encode($turmaA->serie);?></option>
@@ -284,7 +294,7 @@ if(isset($_SESSION["s_periodo"])){
     	
     	
     	//pega todos alunos do periodo, do curso que o coordenador coordena
-    	$cursoDoCoordenador = "Psicologia";
+    	//$cursoDoCoordenador = "Psicologia";
     	
     	
     	
@@ -298,7 +308,7 @@ if(isset($_SESSION["s_periodo"])){
     	
     	$alunos->join($thaa,'INNER','thaa');
     	
-    	$alunos->select("alunos.nome, turma.periodoLetivo, alunos.sitAcademica, alunos.ra, count(thaa.avaliado) as total, count(thaa.avaliado is null) as totalP");
+    	$alunos->select("alunos.nome, turma.periodoLetivo, alunos.sitAcademica, alunos.ra, count(thaa.avaliado) as totalA, count(thaa.avaliado is null) as total");
 //     	$alunos->where("turma.periodoLetivo = '".$periodo_atual."' and alunos.sitAcademica=1");
 //     	$alunos->where("turma.periodoLetivo = '".$periodo_atual."' and alunos.sitAcademica=1 and turma.curso='".$cursoDoCoordenador."' ");
     	
@@ -336,9 +346,7 @@ if(isset($_SESSION["s_periodo"])){
     			autoHeight: false, //ajusta o accordion ao conteudo
     			navigation: true
     		});
-    	});
-
-    	
+    	});  	
     	</script>
     		
     	<div id="accordion">
@@ -350,7 +358,7 @@ if(isset($_SESSION["s_periodo"])){
     		$cur = $alunos->curso;
     		
     		$total = $alunos->total;
-    		$totalP = $alunos->totalP;
+    		$totalA = $alunos->totalA;
     		
 //     		echo "total: ".$total;
 //     		echo "<br />";
@@ -358,10 +366,11 @@ if(isset($_SESSION["s_periodo"])){
     		
     		$qtd_pendente_aluno = 0;
     		
-    		if($total == $totalP){
-    			 
+    		if($total == $totalA){
+    			 //incrementa a qtd de alunos q avaliaram tudo
+    			 $qtd_alunos_avaliaram++;
     		}else{
-    			echo "<h4><a href='#'>".utf8_encode($alunos->nome)."</a></h4>";
+    			echo "<h4><a href='#'>".utf8_encode($alunos->nome)."<span style='float: right;'>Avaliou ".$totalA." de ".$total."</span></a></h4>";
     		}
     		?>
     		
@@ -609,15 +618,57 @@ if(isset($_SESSION["s_periodo"])){
 // 		$awe->setOrdem($value);
     	
     	
-//     	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES PENDENTES: ".$qtd_pendente;
-//     	echo "<br />";
-//     	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
+    	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES PENDENTES: ".$qtd_pendente;
+    	echo "<br />";
+    	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
+    	echo "<br />";
+    	echo "TOTAL DE ALUNOS Q NÃO CONCLUIRAM A AVALIAÇÃO: ".$qtd_alunos;
+    	echo "<br />";
+    	echo "TOTAL DE ALUNOS CONCLUIRAM A AVALIAÇÃO: ".$qtd_alunos_avaliaram;  	
+    	
     	
     	?>
         
         <br />
-        
-        
+        <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.load('visualization', '1.1', {packages:['controls']});
+      google.setOnLoadCallback(drawChart);     
+      
+      
+    </script>
+        <script type="text/javascript">
+      
+      function drawChart(){
+        	// Create and populate the data table.
+        	  var data = new google.visualization.DataTable();
+              data.addColumn('string', 'alunos');
+              data.addColumn('number', 'Avaliaram');
+              data.addColumn('number', 'Pendentes');
+
+              <?php
+              //$qtd_alunos_avaliaram = 75;
+              //$qtd_alunos = 155;
+              ?>
+              var data = google.visualization.arrayToDataTable([                                                         
+                                                                ['Classificação', 'Qtd'],
+                                                                ['Avaliaram',     <?php echo $qtd_alunos_avaliaram;?>],
+                                                                ['Pendentes',      <?php echo $qtd_alunos - $qtd_alunos_avaliaram?>]
+                                                              ]);
+
+      var options = {
+              title: 'Avaliaram X Pendentes'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);     
+      
+      }
+
+      //drawChart();
+      
+    </script>
+        <div id="chart_div" style="width: 900px; height: 500px;"></div>
                 
         
     </div>
