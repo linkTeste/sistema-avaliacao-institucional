@@ -162,6 +162,15 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
    						}
    						?>           
         	<br style="clear: both;" />
+        	<hr />
+        	
+        	<h3>Alertas</h3>
+        	
+        	<ul>
+        		<li>Abrir Processo de Avaliação</li>
+        		<li>Fechar Processo de Avaliação</li>
+        		<li>Prorrogar Processo de Avaliação</li>
+        	</ul>
            </div>
         </div><!-- fecha div white -->
         
