@@ -1130,9 +1130,7 @@ function discoveryInfoTurma($id, $info) {
 
 <div id="wrapper" class="container">
 
-	<div id="header">
-		<div id="header_logo"></div>
-	</div>
+	<?php include_once 'inc/header_inc.php';?> 
     <div id="content">
     <?php include_once 'inc/menu_admin_inc.php';?>       
     
