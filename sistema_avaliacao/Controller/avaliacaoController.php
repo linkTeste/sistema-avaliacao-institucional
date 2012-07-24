@@ -328,6 +328,9 @@ function avaliacaoController() {
 		if($subtipo == "Instituição"){
 			$item_avaliado = "Instituição";
 		}
+		if($subtipo == "Sistema"){
+			$item_avaliado = "Sistema";
+		}
 			
 			
 			

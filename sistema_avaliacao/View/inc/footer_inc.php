@@ -22,8 +22,7 @@
 		</div>
 		<div style="
 ">
-			©
-		2012 - Faculdade Unicampo - Todos os direitos reservados<br>
+Unicampo - Faculdade União de Campo Mourão - 2012<br>
     		Desenvolvido por <a href="mailto:baiacfabio@gmail.com" >DevMake Systems</a><br>
 		</div>
 		

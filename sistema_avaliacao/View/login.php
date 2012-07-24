@@ -72,9 +72,7 @@ $().ready(function() {
 
 <body>
 	<div id="wrapper" class="container">
-    	<div id="header">
-        	<div id="header_logo"></div>
-        </div>
+    	<?php include_once 'inc/header_inc.php';?>
         <div id="content_login">
 <!--         	<img src="logo-login.png" alt="Portal do Aluno - Acesso restrito" /> -->
 			
@@ -129,14 +127,7 @@ $().ready(function() {
             </form>
             <a href="recuperar_senha.php" id="recupera_senha" title="Clique aqui para recuperar sua senha">Perdeu a senha?</a>
         </div>
-        <div id="footer" class="span-24">
-        	<div id="footer_endereco" class="span-12">
-        		
-        	</div>
-        <div id="footer_realizacao" class="span-10 last">
-        
-        </div>
-        </div>
+        <?php include_once 'inc/footer_inc.php';?>
     
     </div>
 

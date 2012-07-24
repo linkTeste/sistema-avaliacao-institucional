@@ -54,6 +54,10 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+
+
+
 <?php include_once 'inc/theme_inc.php';?>
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
@@ -84,8 +88,14 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 
 
 
+
+
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
+	
+	
+	
+	
 	
 	
 	
@@ -123,11 +133,15 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
      			// e é um diretório (isDir)
      			if (!$file->isDot() && $file->isDir()){
 					// atribuição a variável $dname
+					
+     				//verifica se não é diretorio .svn
+     				if($file->getFilename() != ".svn"){
         			$dname = utf8_encode($file->getFilename());
 					
-					$themes[$pos]["nome"] = $dname;
-					$themes[$pos]["filename"] = $theme_directory."/".$dname."/style.css";
-					$themes[$pos]["preview_image"] = $theme_directory."/".$dname."/preview.png";
+								$themes[$pos]["nome"] = $dname;
+								$themes[$pos]["filename"] = $theme_directory."/".$dname."/style.css";
+								$themes[$pos]["preview_image"] = $theme_directory."/".$dname."/preview.png";
+     				}
 					
      			}
 				$pos++;

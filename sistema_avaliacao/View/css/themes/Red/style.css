@@ -12,11 +12,6 @@
 	margin: 0;
 }
 
-div.white {
-	min-height: 550px;
-	background: white url(images/fundo_960605.png) bottom right no-repeat;
-}
-
 #menu ul li a:hover {
 	color: #960605;
 }

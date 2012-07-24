@@ -107,9 +107,7 @@ $professor->get($id_professor);
 	</div>
 	 -->
 <div id="wrapper" class="container">
-	<div id="header">
-		<div id="header_logo"></div>
-	</div>
+	<?php include_once 'inc/header_inc.php';?>
     <div id="content">
     <?php include_once 'inc/menu_aluno_inc.php';?>     
     
@@ -130,6 +128,8 @@ $professor->get($id_professor);
             	</div>
             	<?php 
 				}
+            	?>
+            	<?php
             	if($tipo == "Aluno" && $subtipo == "Curso/Coordenador" ){
             	?>
             	<div class="photo">
@@ -141,6 +141,8 @@ $professor->get($id_professor);
             	</div>
             	<?php 
 				}
+            	?>
+            	<?php
 				if($tipo == "Aluno" && $subtipo == "Instituição" ){
             	?>
             	<div class="photo">
@@ -153,6 +155,19 @@ $professor->get($id_professor);
             	<?php 
 				}
             	?>
+            	<?php
+            		if($tipo == "Aluno" && $subtipo == "Sistema" ){
+            		?>
+            	            	<div class="photo">
+            	                	<img src="css/images/avatar/default_instituicao.png" alt="Logotipo da Instituição" />
+            	            	</div>
+            	            	<div class="description">
+            						<h4>FACULDADE UNICAMPO</h4>
+            	        			<h4><span>Sistema de Avaliação</span></h4>              
+            	            	</div>
+            	            	<?php 
+            					}
+            	            	?>
             	<?php 
             	if($tipo == "Aluno" && substr($subtipo, 0 , 4) == "Lab_" ){
             	?>
