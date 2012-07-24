@@ -167,9 +167,7 @@ $(function() {
        	</div>
     </div>
 <?php } ?>
-	<div id="header">
-		<div id="header_logo"></div>
-	</div>
+	<?php include_once 'inc/header_inc.php';?>
     <div id="content">
     <?php include_once 'inc/menu_prof_inc.php';?>      
     
@@ -210,7 +208,7 @@ $(function() {
     	$turmasProfessor->groupBy("nomeDisciplina");
     	    	 
     	$qtd = $turmasProfessor->find();
-    	echo "total de turmas encontradas: ".$qtd;
+    	//echo "total de turmas encontradas: ".$qtd;
     	while ($turmasProfessor->fetch()) {
     		$turmasDoProfessor_array[] = $turmasProfessor->idTurma;
     	}

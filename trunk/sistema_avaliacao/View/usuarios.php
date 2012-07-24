@@ -158,7 +158,7 @@ $(document).ready(function() {
 
             	?>
             	<label>
-            	<input type="checkbox" value="<?php echo $permissoes->id;?>" name="permissoes[]" <?php echo $checked;?>/><?php echo $permissoes->nome;?>
+            	<input type="checkbox" value="<?php echo $permissoes->id;?>" name="permissoes[]" <?php echo $checked;?>/><?php echo utf8_encode($permissoes->nome);?>
             	</label><br />
             	
             <?php 	

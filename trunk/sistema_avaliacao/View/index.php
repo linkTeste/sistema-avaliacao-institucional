@@ -71,9 +71,7 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 	</div>
 	 -->
 	<div id="wrapper" class="container">
-		<div id="header">
-		<div id="header_logo"></div>
-	</div>
+		<?php include_once 'inc/header_inc.php';?>
 		<div id="content">
 			<?php include_once 'inc/menu_aluno_inc.php';?>
 

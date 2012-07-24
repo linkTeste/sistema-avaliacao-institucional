@@ -75,9 +75,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 		</ul>
 	</div> -->
 	<div id="wrapper" class="container">
-		<div id="header">
-		<div id="header_logo"></div>
-	</div>
+		<?php include_once 'inc/header_inc.php';?>
 		<div id="content">
 			<?php include_once 'inc/menu_coord_inc.php';?>
 
@@ -194,10 +192,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 			<div class="clear"></div>
 			<br />
 		</div>
-		<div id="footer">
-			<hr />
-			<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-		</div>
+		<?php include_once 'inc/footer_inc.php';?>
 	</div>
 </body>
 

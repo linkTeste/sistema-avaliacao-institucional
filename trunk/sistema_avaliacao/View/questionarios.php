@@ -86,7 +86,8 @@ $laboratorios->find();
                     var tipoAluno = {
     						"Professor/Disciplina" : "Professor/Disciplina",
     						"Curso/Coordenador" : "Curso/Coordenador",
-    						"Instituição" : "Instituição"
+    						"Instituição" : "Instituição",
+    						"Sistema" : "Sistema"
     						<?php 
     						foreach ($laboratorios as $lab){
     							echo ',"'.utf8_encode("Lab_".$lab->getNome()).'" : "'.utf8_encode("Lab_".$lab->getNome()).'"';
@@ -97,7 +98,8 @@ $laboratorios->find();
 					var tipoProfessor = {
     						"Auto-avaliação-professor" : "Auto-avaliação",
     						"Coordenador" : "Coordenador",
-    						"Instituição" : "Instituição"
+    						"Instituição" : "Instituição",
+    						"Sistema" : "Sistema"
     						<?php 
     	    				foreach ($laboratorios as $lab){
     	    					echo ',"'.utf8_encode("Lab_".$lab->getNome()).'" : "'.utf8_encode("Lab_".$lab->getNome()).'"';
@@ -107,10 +109,12 @@ $laboratorios->find();
                     var tipoCoordenador = {
     						"Auto-avaliação-coordenador" : "Auto-avaliação",
     						"Docente" : "Docente",
-    						"Instituição" : "Instituição"
+    						"Instituição" : "Instituição",
+    						"Sistema" : "Sistema"
     						}
                     var tipoFuncionario = {
-    						"Instituição" : "Instituição"
+    						"Instituição" : "Instituição",
+    						"Sistema" : "Sistema"
     						}
 					
                     if($('#tipo').selectedTexts() == 'Aluno'){

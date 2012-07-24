@@ -122,9 +122,7 @@ $professor->get($id_professor);
 	</div>
 	 -->
 <div id="wrapper" class="container">
-	<div id="header">
-		<div id="header_logo"></div>
-	</div>
+	<?php include_once 'inc/header_inc.php';?>
     <div id="content">
     <?php include_once 'inc/menu_coord_inc.php';?>     
     
@@ -259,10 +257,7 @@ $professor->get($id_professor);
         </form>          
         
     </div>
-    <div id="footer">
-        <hr />
-    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-    </div>
+    <?php include_once 'inc/footer_inc.php';?>
 </div>
 
 <script type="text/javascript">  
@@ -351,8 +346,8 @@ function verifica(){
 </body>
 <?php 
 
-$_SESSION["turma"] = serialize($turma);
-$_SESSION["aluno"] = serialize($aluno);
+//$_SESSION["turma"] = serialize($turma);
+//$_SESSION["aluno"] = serialize($aluno);
 
 
 ?>

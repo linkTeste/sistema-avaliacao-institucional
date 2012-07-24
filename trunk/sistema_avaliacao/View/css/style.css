@@ -219,9 +219,8 @@
 	text-decoration: none;
 }
 
-div.white {
+div.white .550 {
 	min-height: 550px;
-	background: white url(images/fundo_960605.png) bottom right no-repeat;
 }
 
 .avaliacoes-group,.white {
@@ -605,7 +604,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background: #f4f4f4;
 	/*as linhas abaixo deixam transparente*/
 	zoom: 1;
-	filter: alpha(opacity =                           50);
+	filter: alpha(opacity =                             50);
 	opacity: 0.8;
 	/*
 	background: rgb(238, 238, 238);
@@ -695,7 +694,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(0, 0, 0, 0.5) 100% );
 	background: linear-gradient(top, rgba(69, 72, 77, 0.5) 0%,
 		rgba(0, 0, 0, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(                
+	filter: progid:DXImageTransform.Microsoft.gradient(                 
 		                     startColorstr='#8045484d', endColorstr='#80000000',
 		GradientType=0 );
 }
@@ -735,7 +734,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
 	background: linear-gradient(top, rgba(255, 255, 255, 0.5) 0%,
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(                
+	filter: progid:DXImageTransform.Microsoft.gradient(                 
 		                     startColorstr='#80ffffff', endColorstr='#80ededed',
 		GradientType=0 );
 	-webkit-border-radius: 10px;
@@ -751,6 +750,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	padding: 25px;
 	text-align: center;
 	background: rgb(255, 255, 255);
+	/*
 	background:
 		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ3JSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 	background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
@@ -769,6 +769,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	filter: progid:DXImageTransform.Microsoft.gradient(                
 		                     startColorstr='#ffffff', endColorstr='#ededed',
 		GradientType=0 );
+		*/
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -929,7 +930,7 @@ a.botaoGoogleBlue:hover,a.botaoWhite:hover,input[type="submit"].botaoGoogleBlue:
 	color: #fff;
 }
 
-a.botaoGoogleRed, button.botaoGoogleRed {
+a.botaoGoogleRed,button.botaoGoogleRed {
 	background-color: #D14836;
 	background-image: -webkit-linear-gradient(top, #dd4b39, #d14836);
 	background-image: -moz-linear-gradient(top, #dd4b39, #d14836);
@@ -968,7 +969,7 @@ a.botaoGoogleRed:hover,button.botaoGoogleRed:hover {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
 }
 
-a.botaoGoogleGrey,#select.botaoGoogleGrey,.selectFiltro.botaoGoogleGrey,button.botaoGoogleGrey
+a.botaoGoogleGrey,input[type="submit"].botaoGoogleGrey, input[type="reset"].botaoGoogleGrey, #select.botaoGoogleGrey,.selectFiltro.botaoGoogleGrey,button.botaoGoogleGrey
 	{
 	background-color: transparent;
 	background-image: linear-gradient(top, #f5f5f5, #f1f1f1);
@@ -995,7 +996,7 @@ text-align: center;
 */
 }
 
-a.botaoGoogleGrey:hover,#select.botaoGoogleGrey:hover,.selectFiltro.botaoGoogleGrey:hover,button.botaoGoogleGrey:hover
+a.botaoGoogleGrey:hover,input[type="submit"].botaoGoogleGrey:hover, input[type="reset"].botaoGoogleGrey:hover, #select.botaoGoogleGrey:hover,.selectFiltro.botaoGoogleGrey:hover,button.botaoGoogleGrey:hover
 	{
 	border: 1px solid #c6c6c6;
 	color: #333;
@@ -1264,7 +1265,7 @@ thead th {
 		rgba(204, 204, 204, 1) 100% );
 	background: -ms-linear-gradient(top, rgba(238, 238, 238, 1) 0%,
 		rgba(204, 204, 204, 1) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(           
+	filter: progid:DXImageTransform.Microsoft.gradient(            
 		                     startColorstr='#eeeeee', endColorstr='#cccccc',
 		GradientType=0 );
 	background: linear-gradient(top, rgba(238, 238, 238, 1) 0%,
@@ -1301,6 +1302,7 @@ thead th {
 /*--------------------------- LOGIN ----------------------------------*/
 #content_login {
 	margin: 0 auto;
+	margin-bottom: 100px;
 	width: 350px;
 	margin-top: 120px;
 }

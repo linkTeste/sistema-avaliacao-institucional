@@ -136,9 +136,7 @@ if(isset($_SESSION["s_periodo"])){
        	</div>
     </div>
 <?php } ?>
-	<div id="header">
-		<div id="header_logo"></div>
-	</div>
+	<?php include_once 'inc/header_inc.php';?>
     <div id="content">
     <?php include_once 'inc/menu_coord_inc.php';?>      
     
@@ -287,17 +285,7 @@ if(isset($_SESSION["s_periodo"])){
     	$qtd_pendente = 0;
     	$qtd_avaliada = 0;
     	
-    	//pega todos os alunos ativos
-//     	$lista_alunos = new Aluno();
-//     	$lista_alunos->sitAcademica = 1;    	    	
-//     	$qtd_alunos = $lista_alunos->find();
-    	
-    	
-    	//pega todos alunos do periodo, do curso que o coordenador coordena
-    	//$cursoDoCoordenador = "Psicologia";
-    	
-    	
-    	
+
     	$alunos = new Aluno();
     	$alunos->alias('alunos');
     	
@@ -672,10 +660,7 @@ if(isset($_SESSION["s_periodo"])){
                 
         
     </div>
-    <div id="footer">
-        <hr />
-    	<p>&copy;<?php echo date("Y");?> - Faculdade Unicampo - Todos os direitos reservados</p>
-    </div>
+    <?php include_once 'inc/footer_inc.php';?>
 </div>
 <?php 
 
