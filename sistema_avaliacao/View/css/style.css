@@ -42,7 +42,7 @@
 }
 
 #content {
-	
+	min-height: 300px;
 }
 
 #content h3 { /*font-family: 'Merienda One', cursive;*/
@@ -311,10 +311,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', end
 }
 
 #avaliacao_current .div1 h2 {
+	font-style: italic;
 	text-align: left;
 	/*font-family: 'Merienda One', cursive;*/
 	font-size: 18px;
-	color: #06F; /*azul google*/
+	/*color: #06F; /*azul google*/
+	color: #777;
 	margin-top: 25px;
 	margin-left: 10px;
 }
@@ -602,10 +604,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 .questao:hover {
 	background: #f4f4f4;
-	/*as linhas abaixo deixam transparente*/
-	zoom: 1;
-	filter: alpha(opacity =                             50);
-	opacity: 0.8;
+
 	/*
 	background: rgb(238, 238, 238);
 	background:
@@ -694,7 +693,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(0, 0, 0, 0.5) 100% );
 	background: linear-gradient(top, rgba(69, 72, 77, 0.5) 0%,
 		rgba(0, 0, 0, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(                 
+	filter: progid:DXImageTransform.Microsoft.gradient(                   
 		                     startColorstr='#8045484d', endColorstr='#80000000',
 		GradientType=0 );
 }
@@ -734,7 +733,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
 	background: linear-gradient(top, rgba(255, 255, 255, 0.5) 0%,
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(                 
+	filter: progid:DXImageTransform.Microsoft.gradient(                   
 		                     startColorstr='#80ffffff', endColorstr='#80ededed',
 		GradientType=0 );
 	-webkit-border-radius: 10px;
@@ -874,7 +873,8 @@ height: 25px;*/
 
 a.botaoWhite {
 	background: #fff;
-	color: #cdcdcd;
+	/*color: #cdcdcd;*/
+	color: #777;
 	border: 1px solid #fff;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -886,6 +886,7 @@ a.botaoWhite {
 
 a.botaoGoogleBlue,input[type="submit"].botaoGoogleBlue,button.botaoGoogleBlue,#select.botaoGoogleBlue
 	{
+	cursor: pointer;
 	background-color: #4D90FE;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe),
 		to(#4787ed) );
@@ -931,6 +932,7 @@ a.botaoGoogleBlue:hover,a.botaoWhite:hover,input[type="submit"].botaoGoogleBlue:
 }
 
 a.botaoGoogleRed,button.botaoGoogleRed {
+	cursor: pointer;
 	background-color: #D14836;
 	background-image: -webkit-linear-gradient(top, #dd4b39, #d14836);
 	background-image: -moz-linear-gradient(top, #dd4b39, #d14836);
@@ -969,8 +971,9 @@ a.botaoGoogleRed:hover,button.botaoGoogleRed:hover {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
 }
 
-a.botaoGoogleGrey,input[type="submit"].botaoGoogleGrey, input[type="reset"].botaoGoogleGrey, #select.botaoGoogleGrey,.selectFiltro.botaoGoogleGrey,button.botaoGoogleGrey
+a.botaoGoogleGrey,input[type="submit"].botaoGoogleGrey,input[type="reset"].botaoGoogleGrey,#select.botaoGoogleGrey,.selectFiltro.botaoGoogleGrey,button.botaoGoogleGrey
 	{
+	cursor: pointer;
 	background-color: transparent;
 	background-image: linear-gradient(top, #f5f5f5, #f1f1f1);
 	background-image: -moz-linear-gradient(top, #f5f5f5, #f1f1f1);
@@ -996,7 +999,7 @@ text-align: center;
 */
 }
 
-a.botaoGoogleGrey:hover,input[type="submit"].botaoGoogleGrey:hover, input[type="reset"].botaoGoogleGrey:hover, #select.botaoGoogleGrey:hover,.selectFiltro.botaoGoogleGrey:hover,button.botaoGoogleGrey:hover
+a.botaoGoogleGrey:hover,input[type="submit"].botaoGoogleGrey:hover,input[type="reset"].botaoGoogleGrey:hover,#select.botaoGoogleGrey:hover,.selectFiltro.botaoGoogleGrey:hover,button.botaoGoogleGrey:hover
 	{
 	border: 1px solid #c6c6c6;
 	color: #333;
@@ -1170,6 +1173,7 @@ thead th {
 	right: 0;
 	margin-right: 5px;
 	z-index: 50;
+	_text-align: right;
 }
 
 #info_user span {
@@ -1265,7 +1269,7 @@ thead th {
 		rgba(204, 204, 204, 1) 100% );
 	background: -ms-linear-gradient(top, rgba(238, 238, 238, 1) 0%,
 		rgba(204, 204, 204, 1) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(            
+	filter: progid:DXImageTransform.Microsoft.gradient(              
 		                     startColorstr='#eeeeee', endColorstr='#cccccc',
 		GradientType=0 );
 	background: linear-gradient(top, rgba(238, 238, 238, 1) 0%,

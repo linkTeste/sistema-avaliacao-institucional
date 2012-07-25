@@ -53,6 +53,9 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.raty.js"></script>
+
+<?php include_once 'inc/ie_bugfixes_inc.php';?>
+
 </head>
 
 <body style="background: #fafafa;">
@@ -76,15 +79,19 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 			<?php include_once 'inc/menu_aluno_inc.php';?>
 
 			<div id="apresentacao">
-				<p>Caro aluno,</p>
-				<p>Solicitamos sua participação para auxiliar na avaliação de
-					desempenho dos docentes por entender-se que ela é indispensável
-					para a melhoria contínua das atividades desenvolvidas em sala de
-					aula.</p>
-				<p>Para tanto, é necessário que sua opinião não se baseie em
-					impressões precipitadas ou ditadas pela emoção. Procure avaliar
-					o professor nos quesitos propostos, baseando sua resposta no que é
-					mais constante no comportamento do professor.</p>
+<!-- 				<p>Caro aluno,</p> -->
+<!-- 				<p>Solicitamos sua participação para auxiliar na avaliação de -->
+<!-- 					desempenho dos docentes por entender-se que ela é indispensável -->
+<!-- 					para a melhoria contínua das atividades desenvolvidas em sala de -->
+<!-- 					aula.</p> -->
+<!-- 				<p>Para tanto, é necessário que sua opinião não se baseie em -->
+<!-- 					impressões precipitadas ou ditadas pela emoção. Procure avaliar -->
+<!-- 					o professor nos quesitos propostos, baseando sua resposta no que é -->
+<!-- 					mais constante no comportamento do professor.</p> -->
+				
+				<p>Prezado aluno,</p>	
+				<p>Solicitamos sua colaboração para a melhoria contínua das atividades desenvolvidas na Instituição.</p>
+				<p>Para tanto, pedimos para que leia e responda com atenção as questões.</p>
 			</div>
 			<div id="escala_conceitos_home">
 				<h3>Escala de Conceitos</h3>
@@ -94,14 +101,14 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 					</div>
 					<div class="star_escala">
 						<ul>
-							<li class="star-marked1" title="Questão não atendida"></li>
-							<li class="star-unmarked2"
+							<li class="star-marked1 png_bg" title="Questão não atendida"></li>
+							<li class="star-unmarked2 png_bg"
 								title="Questão atendida em até 25% das vezes"></li>
-							<li class="star-unmarked3"
+							<li class="star-unmarked3 png_bg"
 								title="Questão atendida em até 50% das vezes"></li>
-							<li class="star-unmarked4"
+							<li class="star-unmarked4 png_bg"
 								title="Questão atendida em até 75% das vezes"></li>
-							<li class="star-unmarked5"
+							<li class="star-unmarked5 png_bg"
 								title="Questão atendida em até 100% das vezes"></li>
 						</ul>
 					</div>
@@ -112,14 +119,14 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 					</div>
 					<div class="star_escala">
 						<ul>
-							<li class="star-marked1" title="Questão não atendida"></li>
-							<li class="star-marked2"
+							<li class="star-marked1 png_bg" title="Questão não atendida"></li>
+							<li class="star-marked2 png_bg"
 								title="Questão atendida em até 25% das vezes"></li>
-							<li class="star-unmarked3"
+							<li class="star-unmarked3 png_bg"
 								title="Questão atendida em até 50% das vezes"></li>
-							<li class="star-unmarked4"
+							<li class="star-unmarked4 png_bg"
 								title="Questão atendida em até 75% das vezes"></li>
-							<li class="star-unmarked5"
+							<li class="star-unmarked5 png_bg"
 								title="Questão atendida em até 100% das vezes"></li>
 						</ul>
 					</div>
@@ -130,14 +137,14 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 					</div>
 					<div class="star_escala">
 						<ul>
-							<li class="star-marked1" title="Questão não atendida"></li>
-							<li class="star-marked2"
+							<li class="star-marked1 png_bg" title="Questão não atendida"></li>
+							<li class="star-marked2 png_bg"
 								title="Questão atendida em até 25% das vezes"></li>
-							<li class="star-marked3"
+							<li class="star-marked3 png_bg"
 								title="Questão atendida em até 50% das vezes"></li>
-							<li class="star-unmarked4"
+							<li class="star-unmarked4 png_bg"
 								title="Questão atendida em até 75% das vezes"></li>
-							<li class="star-unmarked5"
+							<li class="star-unmarked5 png_bg"
 								title="Questão atendida em até 100% das vezes"></li>
 						</ul>
 					</div>
@@ -148,14 +155,14 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 					</div>
 					<div class="star_escala">
 						<ul>
-							<li class="star-marked1" title="Questão não atendida"></li>
-							<li class="star-marked2"
+							<li class="star-marked1 png_bg" title="Questão não atendida"></li>
+							<li class="star-marked2 png_bg"
 								title="Questão atendida em até 25% das vezes"></li>
-							<li class="star-marked3"
+							<li class="star-marked3 png_bg"
 								title="Questão atendida em até 50% das vezes"></li>
-							<li class="star-marked4"
+							<li class="star-marked4 png_bg"
 								title="Questão atendida em até 75% das vezes"></li>
-							<li class="star-unmarked5"
+							<li class="star-unmarked5 png_bg"
 								title="Questão atendida em até 100% das vezes"></li>
 						</ul>
 					</div>
@@ -166,14 +173,14 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 					</div>
 					<div class="star_escala">
 						<ul>
-							<li class="star-marked1" title="Questão não atendida"></li>
-							<li class="star-marked2"
+							<li class="star-marked1 png_bg" title="Questão não atendida"></li>
+							<li class="star-marked2 png_bg"
 								title="Questão atendida em até 25% das vezes"></li>
-							<li class="star-marked3"
+							<li class="star-marked3 png_bg"
 								title="Questão atendida em até 50% das vezes"></li>
-							<li class="star-marked4"
+							<li class="star-marked4 png_bg"
 								title="Questão atendida em até 75% das vezes"></li>
-							<li class="star-marked5"
+							<li class="star-marked5 png_bg"
 								title="Questão atendida em até 100% das vezes"></li>
 						</ul>
 					</div>
