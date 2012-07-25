@@ -32,17 +32,20 @@ else{
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <!-- <link rel="stylesheet" href="js/jqtransformplugin/jqtransform.css" type="text/css" media="all" /> -->
-<script type="text/javascript" src="scripts/jquery-1.4.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://updateyourbrowser.net/asn.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.validate.js"></script>
-<script type="text/javascript" src="scripts/additional-methods.js"></script>
-<script type="text/javascript" src="http://updateyourbrowser.net/asn.js"> </script>
+<!-- <script type="text/javascript" src="js/jquery.validate.js"></script> -->
+<!-- <script type="text/javascript" src="js/additional-methods.js"></script> -->
 
 
+
+
+ 
 <!--[if lte IE 6]> 
-<script src="scripts/DD_belatedPNG_0.0.8a.js" type="text/javascript"></script> 
+<script src="js/DD_belatedPNG_0.0.8a.js" type="text/javascript"></script> 
 <script type="text/javascript"> 
-DD_belatedPNG.fix('#faqSection, #footer_middle, img'); 
+DD_belatedPNG.fix('.png_bg, img'); 
 </script> 
 <![endif]--> 
 <script type="text/javascript">

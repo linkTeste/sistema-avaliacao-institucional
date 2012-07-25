@@ -129,6 +129,7 @@ $(function() {
 
 </script>
 
+<?php include_once 'inc/ie_bugfixes_inc.php';?>
 
 </head>
 
@@ -253,21 +254,21 @@ $(function() {
     	//FIM verificacao avaliacao instituicao
     	
     	//verifica se o sistema foi avaliado
-    	$alunoD = new Aluno();
-    	$alunoD->get($ra);
+//     	$alunoD = new Aluno();
+//     	$alunoD->get($ra);
     	
-    	$alunoD->alias('aD');
+//     	$alunoD->alias('aD');
     	
-    	$tD = new Turma();
-    	$avD = new Avaliacao();
-    	$alunoD->join($tD,'INNER','tD');
+//     	$tD = new Turma();
+//     	$avD = new Avaliacao();
+//     	$alunoD->join($tD,'INNER','tD');
     	
-    	$alunoD->join($avD, 'INNER', 'avD', "ra", "avaliador");
-    	$alunoD->select("tD.periodoLetivo, avD.dataAvaliacao, aD.ra, avD.avaliador");
-    	$alunoD->where("tD.periodoLetivo = '".$periodo_atual."' and avD.itemAvaliado= 'Sistema' and aD.ra = avD.avaliador");
-    	$alunoD->groupBy("avD.itemAvaliado");
+//     	$alunoD->join($avD, 'INNER', 'avD', "ra", "avaliador");
+//     	$alunoD->select("tD.periodoLetivo, avD.dataAvaliacao, aD.ra, avD.avaliador");
+//     	$alunoD->where("tD.periodoLetivo = '".$periodo_atual."' and avD.itemAvaliado= 'Sistema' and aD.ra = avD.avaliador");
+//     	$alunoD->groupBy("avD.itemAvaliado");
     	
-    	$sistema_foi_avaliado = $alunoD->find(true);
+//     	$sistema_foi_avaliado = $alunoD->find(true);
     	//FIM verificacao avaliacao sistema
     	
     	//verifica se a DIREÇÃO foi avaliada
@@ -760,12 +761,12 @@ $(function() {
     
     	}
     	
-    	if($sistema_foi_avaliado != 0){
-    		//debug
-    		//     		echo "instituicao foi avaliada";
-    	}else{
+//     	if($sistema_foi_avaliado != 0){
+//     		//debug
+//     		//     		echo "instituicao foi avaliada";
+//     	}else{
     		?>
-    	    	<div id="avaliacao_box">
+    	    	<!-- <div id="avaliacao_box">
     	    	<div class="div1">
     	    	<div class="photo">
     	    	<img src="css/images/avatar/default_instituicao.png" alt="" />
@@ -776,11 +777,11 @@ $(function() {
     	    	</div>
     	    	</div>
     	    	    	
-    	    	<a href="../Controller/avaliacaoController.php?p=<?php echo codifica("action=avaliar&tipo=Aluno&subtipo=Sistema");?>"  title="Avaliar o Sistema" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
+    	    	<a href="../Controller/avaliacaoController.php?p=<?php //echo codifica("action=avaliar&tipo=Aluno&subtipo=Sistema");?>"  title="Avaliar o Sistema" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
     	    	    	
-    	    	</div>
+    	    	</div> -->
     	 <?php
-    	    	}
+//     	    	}
     	
     	if($aluno->fetch() == ""){
     		echo "Nenhuma avalia&ccedil;&atilde;o pendente";
