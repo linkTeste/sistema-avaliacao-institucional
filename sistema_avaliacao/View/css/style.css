@@ -1152,19 +1152,29 @@ thead th {
 	margin: 0;
 }
 
-#menu ul li a:hover {
+#menu ul li a.active{	
 	color: #960605;
-	font-weight: bold;
 	border-left: 1px solid #F3F3F3;
 	border-right: 1px solid #F3F3F3;
 	border-bottom: 1px solid white;
 }
 
-#menu ul li a.home_link {
+#menu ul li a:hover{
+	color: #960605;
+	font-weight: bold;
+	border-left: 1px solid #F3F3F3;
+	border-right: 1px solid #F3F3F3;
+} 
+
+/*#menu ul li a.home_link {
 	color: white;
 	padding-left: 25px;
 	border: 1px solid #960605;
 	background: #960605 url(images/home.png) 5px 11px no-repeat;
+}
+*/
+#menu ul li a.home_link {
+	border-left: 1px solid #f3f3f3;
 }
 
 #info_user {

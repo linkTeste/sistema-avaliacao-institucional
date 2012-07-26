@@ -47,6 +47,7 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+<?php include_once 'inc/theme_inc.php';?>
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
 	rel='stylesheet' type='text/css' />
