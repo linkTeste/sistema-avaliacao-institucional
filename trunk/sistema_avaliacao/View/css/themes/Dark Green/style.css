@@ -12,15 +12,12 @@
 	margin: 0;
 }
 
-#menu ul li a:hover {
+#menu ul li a:hover, #menu ul li a.active {
 	color: #008c69;
 }
 
 #menu ul li a.home_link {
-	color: white;
-	padding-left: 25px;
-	border: 1px solid #008c69;
-	background: #008c69 url(images/home.png) 5px 11px no-repeat;
+	border-left: 1px solid #f3f3f3;
 }
 
 /*links normais*/
