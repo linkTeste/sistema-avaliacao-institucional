@@ -54,12 +54,68 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.raty.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
 
+<link rel="stylesheet" href="js/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="js/nivo-slider/themes/theme2/default.css" type="text/css" media="screen" />
+<script type="text/javascript" src="js/nivo-slider/jquery.nivo.slider.js"></script>
+
+
+<?php 
+$tutorial = true;
+if($tutorial == true){	?>
+<script type="text/javascript">
+$(window).load(function() {
+	$('#slider').nivoSlider({
+		effect: 'fade', // Specify sets like: 'random,fold,fade,sliceDown'
+		slices: 15, // For slice animations
+		boxCols: 8, // For box animations
+		boxRows: 4, // For box animations
+		animSpeed: 600, // Slide transition speed
+		pauseTime: 3000, // How long each slide will show
+		startSlide: 0, // Set starting Slide (0 index)
+		directionNav: true, // Next & Prev navigation
+		directionNavHide: false, // Only show on hover
+		controlNav: false, // 1,2,3... navigation
+		controlNavThumbs: false, // Use thumbnails for Control Nav
+		pauseOnHover: true, // Stop animation while hovering
+		manualAdvance: false, // Force manual transitions
+		prevText: 'Anterior', // Prev directionNav text
+		nextText: 'Proximo', // Next directionNav text
+		randomStart: false, // Start on a random slide
+		beforeChange: function(){
+		}, // Triggers before a slide transition
+		afterChange: function(){
+		}, // Triggers after a slide transition
+		slideshowEnd: function(){
+		}, // Triggers after all slides have been shown
+		lastSlide: function(){
+			//$('#slider').data('nivoslider').stop();
+			removePopup();
+			//document.getElementById("#slider").style.display = 'none';
+		}, // Triggers when last slide is shown
+		afterLoad: function(){
+		} // Triggers when slider has loaded
+	});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	ativaBlackout();
+	ativaPopup();
+	verificaSize();
+	disableButtonRight();
+});
+</script>
+<?php }?>
 <?php include_once 'inc/ie_bugfixes_inc.php';?>
 
 </head>
 
 <body style="background: #fafafa;">
+<div id="overlay"></div>
 	<!-- 
 	<div id="menu_usuario">
 		<ul>
@@ -75,6 +131,25 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 	</div>
 	 -->
 	<div id="wrapper" class="container">
+<?php 
+if($tutorial == true){	?>	
+	<div id="box">
+	<div id="box_inside">
+	<h2>TUTORIAL</h2>
+		<div class="slider-wrapper theme-default">
+            <div id="slider" class="nivoSlider">
+                <img src="css/images/tut1.png" alt="" />
+                <img src="css/images/tut2.png" alt="" />
+                <img src="css/images/tut3.png" alt="" />
+                <img src="css/images/tut5.png" alt="" />
+            </div>            
+        </div>
+	</div>
+	</div>
+	<?php }
+	$tutorial = false;
+	?>
+	
 		<?php include_once 'inc/header_inc.php';?>
 		<div id="content">
 			<?php include_once 'inc/menu_aluno_inc.php';?>
