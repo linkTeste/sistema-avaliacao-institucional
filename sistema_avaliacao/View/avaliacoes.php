@@ -106,6 +106,7 @@ if(isset($_SESSION["s_processo"])){
 <link href="css/lwtCountdown/main.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
+<script type="text/javascript" src="js/functions.min.js"></script>
 <script type="text/javascript" src="js/jquery.lwtCountdown-1.0.js"></script>
 <script type="text/javascript">
 $(function() {
@@ -195,22 +196,7 @@ $(function() {
     ?>
     <div class="avaliacoes-group">
     	<h3>Avaliações Pendentes</h3>
-    	<!-- avaliacao do curso -->
-<!--     	<div id="avaliacao_box"> -->
-<!--     	<div class="div1"> -->
-<!--     	            	<div class="photo"> -->
-<!--     	<img src="css/images/avatar/foto_psicologia.jpg" alt="Curso de Psicologia" /> -->
-<!--     	            	</div> -->
-<!--     	<div class="description"> -->
-<!--     	<h4><span>Curso:</span> Psicologia</h4> -->
-<!--     	<h4><span>Coordenador:</span> Pedro Paulo Rodrigues Cardoso de Melo</h4> -->
-<!--     	</div> -->
-<!--     	</div> -->
-
-<!--     	<a href="" class="botao_right btn_avaliacao botaoGoogleBlue">Avaliar</a> -->
-
-<!--     	        </div> -->
-    	        
+     	        
     	<?php
     	//verifica se o curso foi avaliado
     	$alunoA = new Aluno();
@@ -488,121 +474,6 @@ $(function() {
     	}
     	?>
     	
-    	<?php    	
-    	if($direcao_foi_avaliada != 0){
-    
-    	}else{
-    	?>
-<!--     	<div id="avaliacao_box"> -->
-<!--     		<div class="div1"> -->
-<!--     	    	<div class="photo"> -->
-<!--     	    		<img src="css/images/avatar/default_instituicao.png" alt="" /> -->
-<!--     	    	</div> -->
-<!--     	    	<div class="description"> -->
-<!--     	    		<h4>FACULDADE UNICAMPO</h4> -->
-<!--     	    		<h4><span>Dire&ccedil;&atilde;o</span></h4> -->
-<!--     	    	</div> -->
-<!--     	    </div> -->
-    	    	    	
-<!--     	    <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Direção"  title="Avaliar a Instituição" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
-    	    	    	
-<!--     	</div> -->
-    	<?php
-    	}
-    	?>
-    	    	
-    	<?php 
-    	if($secretaria_foi_avaliada != 0){
-    	
-    	}else{
-    	?>
-<!--     	<div id="avaliacao_box"> -->
-<!--     		<div class="div1"> -->
-<!--     	    	<div class="photo"> -->
-<!--     	    		<img src="css/images/avatar/default_instituicao.png" alt="" /> -->
-<!--     	    	</div> -->
-<!--     	    	<div class="description"> -->
-<!--     	    		<h4>FACULDADE UNICAMPO</h4> -->
-<!--     	    	   	<h4><span>Secretaria</span></h4> -->
-<!--     	 	    </div> -->
-<!-- 			</div> -->
-    	    	    	    	    	
-<!--     	    <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Secretaria"  title="Avaliar a Instituição" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
-    	    	    	    	    	
-<!--     	</div> -->
-    	<?php
-    	}
-    	?>
-    	
-    	<?php 
-    	if($tesouraria_foi_avaliada != 0){
-    	
-    	}else{
-    	?>
-<!--     	<div id="avaliacao_box"> -->
-<!--     		<div class="div1"> -->
-<!--     	    	<div class="photo"> -->
-<!--     	    		<img src="css/images/avatar/default_instituicao.png" alt="" /> -->
-<!--     	    	</div> -->
-<!--     	    	<div class="description"> -->
-<!--     	    		<h4>FACULDADE UNICAMPO</h4> -->
-<!--     	    	   	<h4><span>Tesouraria</span></h4> -->
-<!--     	 	    </div> -->
-<!-- 			</div> -->
-    	    	    	    	    	
-<!--     	    <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Tesouraria"  title="Avaliar a Instituição" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
-    	    	    	    	    	
-<!--     	</div> -->
-    	<?php
-    	}
-    	?>
-    	
-    	<?php 
-    	if($biblioteca_foi_avaliada != 0){
-    	
-    	}else{
-    	?>
-<!--     	<div id="avaliacao_box"> -->
-<!--     		<div class="div1"> -->
-<!--     	    	<div class="photo"> -->
-<!--     	    		<img src="css/images/avatar/default_instituicao.png" alt="" /> -->
-<!--     	    	</div> -->
-<!--     	    	<div class="description"> -->
-<!--     	    		<h4>FACULDADE UNICAMPO</h4> -->
-<!--     	    	   	<h4><span>Biblioteca</span></h4> -->
-<!--     	 	    </div> -->
-<!-- 			</div> -->
-    	    	    	    	    	
-<!--     	    <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Biblioteca"  title="Avaliar a Instituição" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
-    	    	    	    	    	
-<!--     	</div> -->
-    	<?php
-    	}
-    	?>
-    	
-    	<?php 
-    	if($TI_foi_avaliada != 0){
-    	
-    	}else{
-    	?>
-<!--     	<div id="avaliacao_box"> -->
-<!--     		<div class="div1"> -->
-<!--     	    	<div class="photo"> -->
-<!--     	    		<img src="css/images/avatar/default_instituicao.png" alt="" /> -->
-<!--     	    	</div> -->
-<!--     	    	<div class="description"> -->
-<!--     	    		<h4>FACULDADE UNICAMPO</h4> -->
-<!--     	    	   	<h4><span>Tecnologia da Informação - T.I.</span></h4> -->
-<!--     	 	    </div> -->
-<!-- 			</div> -->
-    	    	    	    	    	
-<!--     	    <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=TI"  title="Avaliar a Instituição" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
-    	    	    	    	    	
-<!--     	</div> -->
-    	<?php
-    	}
-    	?>
-    	    	
     	<?php
     	if($curso_foi_avaliado != 0){
     		//debug
@@ -650,15 +521,12 @@ $(function() {
     	    		<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="<?php echo utf8_encode($professor->getNome())?>" />
     	    		</div>
     	    		<div class="description">
-    	    		<!-- <h4><span>Curso: </span><?php //echo $aluno->curso; ?></h4>
-    	    		<h4><span>Coordenador: </span><?php //echo strtoupper(utf8_encode($professor->getNome())); ?></h4> -->
-    	    		
+    	    		    	    		
     	    		<h4><?php echo strtoupper(utf8_encode($professor->getNome())); ?></h4>
     	    		<h4><span>Coordenador de <?php echo utf8_encode($aluno->curso); ?></span></h4>
     	    		</div>
     	    		</div>
-    				<!-- <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Curso/Coordenador&curso=<?php //echo utf8_encode($aluno->curso);?>&coordenador_id=<?php //echo $aluno->coordenador_id;?>"  title="Avaliar o professor" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
-    				<a href="../Controller/avaliacaoController.php?p=<?php echo codifica("action=avaliar&tipo=Aluno&subtipo=Curso/Coordenador&curso=".utf8_encode($aluno->curso)."&coordenador_id=".$aluno->coordenador_id);?>"  title="Avaliar o professor" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
+    					<a href="../Controller/avaliacaoController.php?p=<?php echo codifica("action=avaliar&tipo=Aluno&subtipo=Curso/Coordenador&curso=".utf8_encode($aluno->curso)."&coordenador_id=".$aluno->coordenador_id);?>"  title="Avaliar o professor" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
     				
     	    		</div>
     	    		
@@ -743,9 +611,7 @@ $(function() {
     		<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="<?php echo utf8_encode($professor->getNome())?>" />
     		</div>
     		<div class="description">
-    		<!-- <h4><span>Disciplina: </span><?php //echo $aluno->id_turma." - ".utf8_encode($aluno->nome_disciplina); ?></h4>
-    		<h4><span>Professor: </span><?php //echo strtoupper(utf8_encode($professor->getNome())); ?></h4> -->
-    		
+    		    		
     		<h4><?php echo strtoupper(utf8_encode($professor->getNome())); ?></h4>
     		<h4><span><?php echo utf8_encode($aluno->nome_disciplina); ?></span></h4>
     		</div>
@@ -753,38 +619,20 @@ $(function() {
 			<div class="popupAvaliar">
 				<h6><?php echo $aluno->id_turma." - ".utf8_encode($aluno->nome_disciplina); ?></h6>
 				<h6><?php echo strtoupper(utf8_encode($professor->getNome())); ?></h6></div>
-    		<!-- <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Professor/Disciplina&turma=<?php //echo $aluno->id_turma ?>"  title="Avaliar o professor"  id="xsd" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
     		<a href="../Controller/avaliacaoController.php?p=<?php echo codifica("action=avaliar&tipo=Aluno&subtipo=Professor/Disciplina&turma=".$aluno->id_turma); ?>"  title="Avaliar o professor"  id="xsd" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
 
     		</div>
     		<?php 
     
     	}
-    	
-//     	if($sistema_foi_avaliado != 0){
-//     		//debug
-//     		//     		echo "instituicao foi avaliada";
-//     	}else{
+
     		?>
-    	    	<!-- <div id="avaliacao_box">
-    	    	<div class="div1">
-    	    	<div class="photo">
-    	    	<img src="css/images/avatar/default_instituicao.png" alt="" />
-    	    	</div>
-    	    	<div class="description">
-    	    	<h4>FACULDADE UNICAMPO</h4>
-    	    	<h4><span>Sistema de Avaliação</span></h4>
-    	    	</div>
-    	    	</div>
-    	    	    	
-    	    	<a href="../Controller/avaliacaoController.php?p=<?php //echo codifica("action=avaliar&tipo=Aluno&subtipo=Sistema");?>"  title="Avaliar o Sistema" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
-    	    	    	
-    	    	</div> -->
+
     	 <?php
-//     	    	}
+
     	
     	if($aluno->fetch() == ""){
-    		echo "Nenhuma avalia&ccedil;&atilde;o pendente";
+    		echo "<h4>Nenhuma avalia&ccedil;&atilde;o pendente</h4>";
     	}
     	
     	
@@ -996,7 +844,7 @@ $(function() {
     	
     	
     	if($aluno2->fetch() == "" && $aluno3->fetch() == "" && $instituicao_foi_avaliada == 0){
-    		echo "Nenhuma avalia&ccedil;&atilde;o foi realizada ainda";
+    		echo "<h4>Nenhuma avalia&ccedil;&atilde;o foi realizada ainda</h4>";
     	}
     	
     	?>
@@ -1055,36 +903,5 @@ $(function() {
     </div>
     <?php include_once 'inc/footer_inc.php';?>
 </div>
-<?php 
-
-//$_SESSION["aluno"] = serialize($aluno);
-// $_SESSION["processo"] = serialize($processo);
-?>
-
-<script type="text/javascript">
-
-/*$("a.btn_avaliacao").hover(function(){
-	var p = $(this).parent();
-	var d = p.get(0).tagName + ".popupAvaliar";
-
-	var s = $(d);
-	//alert(s);
-	//s.fadeIn();
- if (s.is(":hidden")) {
-		//alert("hidden");
-		s.fadeIn("slow");
-	} else {
-		//alert("not hidden");
-		s.fadeOut();
-	}
-
-});*/
-
-//
-
-
-
-</script>
-
 </body>
 </html>

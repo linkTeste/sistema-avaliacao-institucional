@@ -33,6 +33,12 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 	header("Location: login.php");
 }
 
+if(isset($_SESSION["s_tutorial"])){
+	$tutorial = $_SESSION["s_tutorial"];
+}else{
+	$tutorial = false;
+}
+
 
 
 ?>
@@ -55,7 +61,7 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.raty.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
-<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/functions.min.js"></script>
 
 <link rel="stylesheet" href="js/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="js/nivo-slider/themes/theme2/default.css" type="text/css" media="screen" />
@@ -63,8 +69,7 @@ if(isset($_SESSION["s_aluno"]) && $_SESSION["s_aluno"] != "" ){
 
 
 <?php 
-$tutorial = true;
-if($tutorial == true){	?>
+if($tutorial != false){	?>
 <script type="text/javascript">
 $(window).load(function() {
 	$('#slider').nivoSlider({
@@ -91,9 +96,7 @@ $(window).load(function() {
 		slideshowEnd: function(){
 		}, // Triggers after all slides have been shown
 		lastSlide: function(){
-			//$('#slider').data('nivoslider').stop();
-			removePopup();
-			//document.getElementById("#slider").style.display = 'none';
+			removePopup();			
 		}, // Triggers when last slide is shown
 		afterLoad: function(){
 		} // Triggers when slider has loaded
@@ -101,12 +104,11 @@ $(window).load(function() {
 });
 </script>
 
-<script type="text/javascript">
+<script type="text/javascript"> 
 $(document).ready(function() {
 	ativaBlackout();
 	ativaPopup();
 	verificaSize();
-	disableButtonRight();
 });
 </script>
 <?php }?>
@@ -116,26 +118,15 @@ $(document).ready(function() {
 
 <body style="background: #fafafa;">
 <div id="overlay"></div>
-	<!-- 
-	<div id="menu_usuario">
-		<ul>
-			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
-					Unicampo</a></li>
-			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
-					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php //echo $aluno->getNome();?> - <a
-				href="../Controller/loginController.php?action=logout">Sair</a>
-			</li>
-			
-		</ul>
-	</div>
-	 -->
+	
 	<div id="wrapper" class="container">
 <?php 
-if($tutorial == true){	?>	
+if($tutorial != false){	?>	
 	<div id="box">
 	<div id="box_inside">
-	<h2>TUTORIAL</h2>
+	<h2>Como fazer a avaliação</h2>
+	<a href="../Controller/tutorialController.php?action=desativar&page=index.php" class="botao_right botaoGoogleGrey" onclick="removePopup();" style="padding-right: 35px;background: url(css/images/close.png) 50px 5px no-repeat;z-index: 9999;
+position: absolute; right: 15px; top:35px;">Fechar</a>
 		<div class="slider-wrapper theme-default">
             <div id="slider" class="nivoSlider">
                 <img src="css/images/tut1.png" alt="" />
@@ -265,9 +256,12 @@ if($tutorial == true){	?>
 
 			<br />
 
-			<!--<a href="avaliacoes.php" class="btn-comecar-avaliacao" title="Começar Avaliação"></a>-->
-			<a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoes.php");?>" class="botao botaoGoogleBlue">Começar
-				Avaliação</a>
+			<div style="margin: 0 auto; width: 280px;">
+			<a href="../Controller/tutorialController.php?action=ativar&tut_id=<?php echo "1";?>&page=index.php" class="botao botaoGoogleBlue" style="margin: 0; float: left; width: 115px; ">Ver Instruções</a>
+				<a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoes.php");?>" class="botao botaoGoogleBlue" style="width: 115px; margin: 0; ">Começar Avaliação</a>
+				
+			
+			</div>
 			<div class="clear"></div>
 			<br />
 		</div>
@@ -275,14 +269,4 @@ if($tutorial == true){	?>
 	</div>
 </body>
 
-
-
-
-<?php 
-
-// $_SESSION["aluno"] = serialize($aluno);
-// $_SESSION["processo"] = serialize($processo);
-// $_SESSION["periodo"] = "2/2011";
-
-?>
 </html>

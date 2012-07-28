@@ -66,13 +66,13 @@ function ativaBlackout() {
 
 	// usar ass linhas abaixo somente qdo o tamanho da pagina for em
 	// pixels(não-relativo)
-	// document.getElementById("overlay").style.height = pageSize[1] + "px";
-	// document.getElementById("overlay").style.width = pageSize[0] + "px";
+	document.getElementById("overlay").style.height = pageSize[1] + "px";
+	document.getElementById("overlay").style.width = pageSize[0] + "px";
 
-	document.getElementById("overlay").style.height = 100 + "%";
-	document.getElementById("overlay").style.width = 100 + "%";
+	//document.getElementById("overlay").style.height = 100 + "%";
+	//document.getElementById("overlay").style.width = 100 + "%";
 
-//	document.getElementById("overlay").style.display = 'block';
+	// document.getElementById("overlay").style.display = 'block';
 	$("#overlay").fadeIn(100);
 }
 
@@ -125,45 +125,44 @@ function verificaSize() {
 
 }
 function ativaPopup() {
-	
+
 	centralizaElemento("box");
 
 	document.getElementById("box").style.display = 'none';
-	
-	//document.getElementById("box").style.display = 'block';
-	//$("#box").slideDown("slow");
+
+	// document.getElementById("box").style.display = 'block';
+	// $("#box").slideDown("slow");
 	$("#box").show("puff", {}, 500);
-	
+
 	// esconde barra de rolagem
 	document.body.style.overflow = "hidden";
 }
 
 function removeBlackout() {
-	//document.getElementById("overlay").style.display = 'none';
-	//$("#overlay").hide();
-	//$("#overlay").slideUp();
-	
-	//ativa o scroll somente apos finalizar a animacao
+	// document.getElementById("overlay").style.display = 'none';
+	// $("#overlay").hide();
+	// $("#overlay").slideUp();
+
+	// ativa o scroll somente apos finalizar a animacao
 	$('#overlay').fadeOut(100, function() {
-	    // habilita barra de rolagem novamente
+		// habilita barra de rolagem novamente
 		document.body.style.overflow = "scroll";
-	  });	
+	});
 }
 
 function removePopup() {
-	//document.getElementById("box").style.display = 'none';
-	//$("#box").hide("slow");
-	//$("#box").slideUp("slow");
-	
-	//efeitos JqueryUI
-	//$("#box").hide("slide", { direction: "up" }, 500);
-	//$("#box").hide("explode", { pieces: 16 }, 1200);
-	
-	if(document.getElementById("box").style.display != 'none'){
+	// document.getElementById("box").style.display = 'none';
+	// $("#box").hide("slow");
+	// $("#box").slideUp("slow");
+
+	// efeitos JqueryUI
+	// $("#box").hide("slide", { direction: "up" }, 500);
+	// $("#box").hide("explode", { pieces: 16 }, 1200);
+
+	if (document.getElementById("box").style.display != 'none') {
 		$("#box").hide("puff", {}, 500);
 	}
-	
-	
+
 	removeBlackout();
 
 }
@@ -182,50 +181,42 @@ function ativaContagem() {
 	}, 1000);
 }
 
-//desabilita menu de opcoes ao clicar no botao direito
-function desabilitaMenu(e)
-{
-if (window.Event)
-{
-if (e.which == 2 || e.which == 3)
-return false;
-}
-else
-{
-event.cancelBubble = true;
-event.returnValue = false;
-return false;
-}
+// desabilita menu de opcoes ao clicar no botao direito
+function desabilitaMenu(e) {
+	if (window.Event) {
+		if (e.which == 2 || e.which == 3)
+			return false;
+	} else {
+		event.cancelBubble = true;
+		event.returnValue = false;
+		return false;
+	}
 }
 
-//desabilita botao direito
-function desabilitaBotaoDireito(e)
-{
-if (window.Event)
-{
-if (e.which == 2 || e.which == 3)
-return false;
-}
-else
-if (event.button == 2 || event.button == 3)
-{
-event.cancelBubble = true;
-event.returnValue = false;
-return false;
-}
+// desabilita botao direito
+function desabilitaBotaoDireito(e) {
+	if (window.Event) {
+		if (e.which == 2 || e.which == 3)
+			return false;
+	} else if (event.button == 2 || event.button == 3) {
+		event.cancelBubble = true;
+		event.returnValue = false;
+		return false;
+	}
 }
 
-
-function disableButtonRight(){
-	//desabilita botao direito do mouse
-	if ( window.Event )
-	document.captureEvents(Event.MOUSEUP);
-	if ( document.layers )
-	document.captureEvents(Event.MOUSEDOWN);
+function disableButtonRight() {
+	// desabilita botao direito do mouse
+	if (window.Event)
+		document.captureEvents(Event.MOUSEUP);
+	if (document.layers)
+		document.captureEvents(Event.MOUSEDOWN);
 
 	document.oncontextmenu = desabilitaMenu;
 	document.onmousedown = desabilitaBotaoDireito;
 	document.onmouseup = desabilitaBotaoDireito;
 }
 
-
+$(document).ready(function() {
+	disableButtonRight();
+});
