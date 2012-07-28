@@ -627,13 +627,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 .questao img {
-	float: left;
+	/*float: left;*/
+	_float: left;
 }
 
 .questao .texto_questao {
 	float: left;
 	/*width: 750px;*/
-	width: 79%;
+	width: 79%;	
 }
 
 .questao .texto_questao h4 {
@@ -676,7 +677,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 #blackout {
 	width: 100%;
 	height: 100%;
-	position: absolute;
+	
+  position: absolute;
 	z-index: 150;
 	padding: 150px;
 	background:
@@ -887,6 +889,7 @@ a.botaoWhite {
 a.botaoGoogleBlue,input[type="submit"].botaoGoogleBlue,button.botaoGoogleBlue,#select.botaoGoogleBlue
 	{
 	cursor: pointer;
+	
 	background-color: #4D90FE;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe),
 		to(#4787ed) );
@@ -905,7 +908,8 @@ a.botaoGoogleBlue,input[type="submit"].botaoGoogleBlue,button.botaoGoogleBlue,#s
 	-webkit-user-select: none;
 	color: white;
 	font-weight: bold;
-
+	
+	
 	/*display: block;	
 width: 186px;
 height: 25px;
@@ -1183,7 +1187,7 @@ thead th {
 	right: 0;
 	margin-right: 5px;
 	z-index: 50;
-	_text-align: right;
+	*text-align: right;
 }
 
 #info_user span {
@@ -1229,6 +1233,8 @@ thead th {
 	padding: 10px;
 	margin-top: 10px;
 	width: auto;
+	_width: 320px;
+	*width: 320px;
 	background: white;
 	position: absolute;
 	right: 0;

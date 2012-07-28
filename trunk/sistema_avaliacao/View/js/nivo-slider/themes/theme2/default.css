@@ -12,6 +12,7 @@ Author URI: http://dev7studios.com
 	background: #fff url(loading.gif) no-repeat 50% 50%;
 	margin-bottom: 50px;
 	overflow: visible;
+	_overflow: hidden;
 }
 
 .theme-default .nivoSlider img {
@@ -64,6 +65,11 @@ Author URI: http://dev7studios.com
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5),
 		to(#f1f1f1) );
 	background-image: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+	
+	/*---hacks---*/
+	_background: #fafafa;
+	_top:200px;/*ie6*/
+	_border:1px solid #777;
 	
 	border: 1px solid rgba(0, 0, 0, 0.1);
 -moz-border-radius: 2px;

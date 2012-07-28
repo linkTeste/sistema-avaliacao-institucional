@@ -38,7 +38,7 @@ if($menu_caps){
 			href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoes.php");?>"
 			title="Avalia&ccedil;&otilde;es" <?php echo $avaliacoes_active;?>><?php echo strtoupper(strtr("Avaliações" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?>
 		</a></li>
-		<li><a href="../Controller/pageController.php?pg=<?php echo codifica("relatoriosAluno.php");?>" title="Relat&oacute;rios" <?php echo $relatorios_active;?>><?php echo strtoupper(strtr("Relatórios" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?>
+		<!-- <li><a href="../Controller/pageController.php?pg=<?php //echo codifica("relatoriosAluno.php");?>" title="Relat&oacute;rios" <?php //echo $relatorios_active;?>><?php //echo strtoupper(strtr("Relatórios" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?> -->
 		</a></li>
 	</ul>
 	
