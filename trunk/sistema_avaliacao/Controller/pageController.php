@@ -32,9 +32,17 @@ if(isset($_GET["pg"])){
 		$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
 				
 		//joga a pagina ativa na sessao e direciona pra pagina default
-		$_SESSION["s_active_page"] = $page;
+		
+		//se a pagina for diferente de help.php
+		if($page != "help.php"){
+			$_SESSION["s_active_page"] = $page;		
+			header("Location: ".$url_base."system.php".$tokens[2]);
+		}else{
+			header("Location: ".$url_base."help.php");
+		}
+		
 // 		header("Location: ".$url_base."system.php");
-		header("Location: ".$url_base."system.php".$tokens[2]);
+		
 		
 	}
 

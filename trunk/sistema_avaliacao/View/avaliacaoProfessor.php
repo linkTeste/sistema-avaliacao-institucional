@@ -179,7 +179,87 @@ $professor->get($id_professor);
             	<?php 
 				}
             	?>
-            </div>
+            </div><!-- fecha div1 -->
+            	<div class="div2">
+            	<div class="legenda">
+            	<h4>ESCALA DE CONCEITOS</h4>
+            		<div class="legenda_line">
+									<div id="texto_legenda">
+										Quando a questão <span>não for atendida</span>
+									</div>
+									<div class="star_escala">
+										<ul>
+											<li class="star-marked1 png_bg"></li>
+											<li class="star-unmarked2 png_bg"></li>
+											<li class="star-unmarked3 png_bg"></li>
+											<li class="star-unmarked4 png_bg"></li>
+											<li class="star-unmarked5 png_bg"></li>
+										</ul>
+									</div><!-- fecha star_escala -->
+								</div><!-- fecha .legenda_line -->
+            	
+								<div class="legenda_line">
+									<div id="texto_legenda">
+										Questão atendida em <span>até 25%</span> das vezes
+									</div>
+									<div class="star_escala">
+										<ul>
+											<li class="star-marked1 png_bg"></li>
+											<li class="star-marked2 png_bg"></li>
+											<li class="star-unmarked3 png_bg"></li>
+											<li class="star-unmarked4 png_bg"></li>
+											<li class="star-unmarked5 png_bg"></li>
+										</ul>
+									</div><!-- fecha star_escala -->
+								</div><!-- fecha .legenda_line -->
+								
+								<div class="legenda_line">
+									<div id="texto_legenda">
+										Questão atendida em <span>até 50%</span> das vezes
+									</div>
+									<div class="star_escala">
+										<ul>
+											<li class="star-marked1 png_bg"></li>
+											<li class="star-marked2 png_bg"></li>
+											<li class="star-marked3 png_bg"></li>
+											<li class="star-unmarked4 png_bg"></li>
+											<li class="star-unmarked5 png_bg"></li>
+										</ul>
+									</div><!-- fecha star_escala -->
+								</div><!-- fecha .legenda_line -->
+								
+								<div class="legenda_line">
+									<div id="texto_legenda">
+										Questão atendida em <span>até 75%</span> das vezes
+									</div>
+									<div class="star_escala">
+										<ul>
+											<li class="star-marked1 png_bg"></li>
+											<li class="star-marked2 png_bg"></li>
+											<li class="star-marked3 png_bg"></li>
+											<li class="star-marked4 png_bg"></li>
+											<li class="star-unmarked5 png_bg"></li>
+										</ul>
+									</div><!-- fecha star_escala -->
+								</div><!-- fecha .legenda_line -->
+								
+								<div class="legenda_line">
+									<div id="texto_legenda">
+										Questão atendida em <span>até 100%</span> das vezes
+									</div>
+									<div class="star_escala">
+										<ul>
+											<li class="star-marked1 png_bg"></li>
+											<li class="star-marked2 png_bg"></li>
+											<li class="star-marked3 png_bg"></li>
+											<li class="star-marked4 png_bg"></li>
+											<li class="star-marked5 png_bg"></li>
+										</ul>
+									</div><!-- fecha star_escala -->
+								</div><!-- fecha .legenda_line -->
+								
+            	</div><!-- fecha legenda -->
+            </div><!-- div2 -->
         </div>
         
         <form name="form" method="post" action="../Controller/avaliacaoController.php" onsubmit="return verifica()">
@@ -209,7 +289,8 @@ $professor->get($id_professor);
     	// seleciona os dados desejados
     	$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
     	
-    	$questionario->where("qhq.questaoId != null and qu.id = qhq.questaoId");
+//     	$questionario->where("qhq.questaoId != null and qu.id = qhq.questaoId");
+    	$questionario->where("qu.id = qhq.questaoId");
     	$questionario->order("qhq.ordem");
     	// recupera os registros
     	$questionario->find();
