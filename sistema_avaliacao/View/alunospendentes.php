@@ -431,15 +431,16 @@ if(isset($_SESSION["s_periodo"])){
     			
     		}
     		
-    		if($total == $totalP){
+//     		if($total == $totalP){
     		
-    		}else{
+//     		}else{
     		?>
     		</table>
     		</div>
     		    		
     		<?php 
-    		}
+//     		}
+    		  		
 
     		
     	}

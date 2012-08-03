@@ -40,8 +40,8 @@ $email = $usuario_logado->getEmail();
 			<span><?php echo utf8_encode($email);?></span>
 			<br /> <br />
 			</div>
-			<a href="#" class="link_comum">Perfil</a> - <a href="#"
-				class="link_comum">Configura&ccedil;&otilde;es</a>
+<!-- 			<a href="#" class="link_comum">Perfil</a> - <a href="#" -->
+<!-- 				class="link_comum">Configura&ccedil;&otilde;es</a> -->
 			<hr />
 		</div>
 		<a href="../Controller/loginController.php?action=logout" title="Sair"

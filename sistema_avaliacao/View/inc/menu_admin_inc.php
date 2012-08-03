@@ -17,7 +17,7 @@ foreach ($usuario_logado_permissoes as $value) {
 		$class = "";
 	}
 	?>
-    <li><a href="<?php echo $permissao->getLink();?>" class="<?php echo $class;?>" title="<?php echo utf8_encode($permissao->getNome());?>"><?php echo strtoupper(strtr(utf8_encode($permissao->getNome()) ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?></a></li>
+    <li><a href="../Controller/pageController.php?pg=<?php echo codifica($permissao->getLink());?>" class="<?php echo $class;?>" title="<?php echo utf8_encode($permissao->getNome());?>"><?php echo strtoupper(strtr(utf8_encode($permissao->getNome()) ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?></a></li>
     <?php		
     	}    
     ?>	

@@ -63,9 +63,9 @@ if(isset($_SESSION["s_tutorial"])){
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src="js/functions.min.js"></script>
 
-<link rel="stylesheet" href="js/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="js/nivo-slider/themes/theme2/default.css" type="text/css" media="screen" />
-<script type="text/javascript" src="js/nivo-slider/jquery.nivo.slider.js"></script>
+<!-- <link rel="stylesheet" href="js/nivo-slider/nivo-slider.css" type="text/css" media="screen" /> -->
+<!-- <link rel="stylesheet" href="js/nivo-slider/themes/theme2/default.css" type="text/css" media="screen" /> -->
+<!-- <script type="text/javascript" src="js/nivo-slider/jquery.nivo.slider.js"></script> -->
 
 
 <?php 
@@ -257,7 +257,8 @@ position: absolute; right: 15px; top:35px;">Fechar</a>
 			<br />
 
 			<div style="margin: 0 auto; width: 280px;">
-			<a href="../Controller/tutorialController.php?action=ativar&tut_id=<?php echo "1";?>&page=index.php" class="botao botaoGoogleBlue" style="margin: 0; float: left; width: 115px; ">Ver Instruções</a>
+			<a href="../Controller/pageController.php?pg=<?php echo codifica("help.php");?>" class="botao botaoGoogleBlue" style="margin: 0; float: left; width: 115px; " target="_blank1">Ver Instruções</a>
+			<!-- <a href="../Controller/tutorialController.php?action=ativar&tut_id=<?php //echo "1";?>&page=index.php" class="botao botaoGoogleBlue" style="margin: 0; float: left; width: 115px; ">Ver Instruções</a> -->
 				<a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoes.php");?>" class="botao botaoGoogleBlue" style="width: 115px; margin: 0; ">Começar Avaliação</a>
 				
 			

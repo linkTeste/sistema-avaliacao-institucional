@@ -11,7 +11,7 @@
 
 #wrapper {
 	margin: 0 auto;
-	margin-top: 25px;
+	/*margin-top: 25px;*/
 	/*width: 950px;*/
 	width: 95%;
 	color: #333;
@@ -146,6 +146,35 @@
 	padding: 5px;
 }
 
+.legenda #texto_legenda {
+	padding-top: 4px;
+	float: left;
+}
+
+.legenda .star_escala {
+	width: auto;
+}
+
+.legenda #texto_legenda span {
+	font-weight: bold;
+}
+
+.legenda .legenda_line {
+	height: 24px;
+}
+
+.legenda .star_escala ul li {
+	display: block;
+	float: left;
+	/*height: 50px;*/
+	height: 24px;
+	width: 24px;
+	text-align: center;
+	/*padding: 5px;*/
+	margin: 0;
+	padding: 0;
+}
+
 .star_escala ul li.star-marked1 {
 	cursor: pointer;
 	background: url(images/star-marked1.png) bottom no-repeat;
@@ -194,6 +223,57 @@
 .star_escala ul li.star-unmarked5 {
 	cursor: pointer;
 	background: url(images/star-unmarked5.png) bottom no-repeat;
+}
+
+/*estrelas menores*/
+.legenda .star_escala ul li.star-marked1 {
+	cursor: pointer;
+	background: url(images/star-marked1-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-marked2 {
+	cursor: pointer;
+	background: url(images/star-marked2-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-marked3 {
+	cursor: pointer;
+	background: url(images/star-marked3-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-marked4 {
+	cursor: pointer;
+	background: url(images/star-marked4-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-marked5 {
+	cursor: pointer;
+	background: url(images/star-marked5-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-unmarked1 {
+	cursor: pointer;
+	background: url(images/star-unmarked1-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-unmarked2 {
+	cursor: pointer;
+	background: url(images/star-unmarked2-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-unmarked3 {
+	cursor: pointer;
+	background: url(images/star-unmarked3-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-unmarked4 {
+	cursor: pointer;
+	background: url(images/star-unmarked4-mini.png) top no-repeat;
+}
+
+.legenda .star_escala ul li.star-unmarked5 {
+	cursor: pointer;
+	background: url(images/star-unmarked5-mini.png) top no-repeat;
 }
 
 #footer {
@@ -307,7 +387,27 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', end
 
 #avaliacao_current .div1 {
 	float: left;
-	width: 800px;
+	/*width: 800px;*/
+	width: 50%;
+}
+
+#avaliacao_current .div2 {
+	float: right;
+	width: 50%;
+}
+
+#avaliacao_current .legenda {
+	float: right;
+	border: 1px solid #F3F3F3;
+	padding: 2px;
+	margin: 4px;
+}
+
+#avaliacao_current .legenda h4 {
+	margin-bottom: 0;
+	background: #EEA70F;
+	color: white;
+	text-align: center;
 }
 
 #avaliacao_current .div1 h2 {
@@ -626,15 +726,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		*/
 }
 
-.questao img {
-	/*float: left;*/
+.questao img { /*float: left;*/
+	cursor: pointer;
 	_float: left;
 }
 
 .questao .texto_questao {
 	float: left;
 	/*width: 750px;*/
-	width: 79%;	
+	width: 79%;
 }
 
 .questao .texto_questao h4 {
@@ -677,8 +777,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 #blackout {
 	width: 100%;
 	height: 100%;
-	
-  position: absolute;
+	position: absolute;
 	z-index: 150;
 	padding: 150px;
 	background:
@@ -695,7 +794,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(0, 0, 0, 0.5) 100% );
 	background: linear-gradient(top, rgba(69, 72, 77, 0.5) 0%,
 		rgba(0, 0, 0, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(                   
+	filter: progid:DXImageTransform.Microsoft.gradient(      
+		                     
 		                     startColorstr='#8045484d', endColorstr='#80000000',
 		GradientType=0 );
 }
@@ -735,7 +835,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
 	background: linear-gradient(top, rgba(255, 255, 255, 0.5) 0%,
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(                   
+	filter: progid:DXImageTransform.Microsoft.gradient(      
+		                     
 		                     startColorstr='#80ffffff', endColorstr='#80ededed',
 		GradientType=0 );
 	-webkit-border-radius: 10px;
@@ -889,7 +990,6 @@ a.botaoWhite {
 a.botaoGoogleBlue,input[type="submit"].botaoGoogleBlue,button.botaoGoogleBlue,#select.botaoGoogleBlue
 	{
 	cursor: pointer;
-	
 	background-color: #4D90FE;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe),
 		to(#4787ed) );
@@ -908,8 +1008,7 @@ a.botaoGoogleBlue,input[type="submit"].botaoGoogleBlue,button.botaoGoogleBlue,#s
 	-webkit-user-select: none;
 	color: white;
 	font-weight: bold;
-	
-	
+
 	/*display: block;	
 width: 186px;
 height: 25px;
@@ -1156,19 +1255,19 @@ thead th {
 	margin: 0;
 }
 
-#menu ul li a.active{	
+#menu ul li a.active {
 	color: #960605;
 	border-left: 1px solid #F3F3F3;
 	border-right: 1px solid #F3F3F3;
 	border-bottom: 1px solid white;
 }
 
-#menu ul li a:hover{
+#menu ul li a:hover {
 	color: #960605;
 	font-weight: bold;
 	border-left: 1px solid #F3F3F3;
 	border-right: 1px solid #F3F3F3;
-} 
+}
 
 /*#menu ul li a.home_link {
 	color: white;
@@ -1284,7 +1383,8 @@ thead th {
 		rgba(204, 204, 204, 1) 100% );
 	background: -ms-linear-gradient(top, rgba(238, 238, 238, 1) 0%,
 		rgba(204, 204, 204, 1) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(              
+	filter: progid:DXImageTransform.Microsoft.gradient( 
+		                     
 		                     startColorstr='#eeeeee', endColorstr='#cccccc',
 		GradientType=0 );
 	background: linear-gradient(top, rgba(238, 238, 238, 1) 0%,

@@ -217,28 +217,41 @@ $(document).ready(function() {
                 </tr>
                 <?php
                 	$lista = new Usuario();
+                	$lista->id != 1;
                 	$lista->find();
 					while( $lista->fetch()) {
-						echo "<tr>";
-						echo "<td style='width: 5%'>".$lista->getId()."</td>";
-						echo "<td style='width: 40%'>".utf8_encode($lista->getNome())."</td>";
-						echo "<td style='width: 10%'>".utf8_encode($lista->getLogin())."</td>";
-						echo "<td style='width: 20%'>".$lista->getEmail()."</td>";
-						echo "<td style='width: 15%'>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
 						if($lista->getLogin() != "admin"){
+							echo "<tr>";
+							echo "<td style='width: 5%'>".$lista->getId()."</td>";
+							echo "<td style='width: 40%'>".utf8_encode($lista->getNome())."</td>";
+							echo "<td style='width: 10%'>".utf8_encode($lista->getLogin())."</td>";
+							echo "<td style='width: 20%'>".$lista->getEmail()."</td>";
+							echo "<td style='width: 15%'>".datetime_to_ptbr($lista->getDataCriacao())."</td>";
 							echo "<td style='width: 5%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Usuário'>Editar</a></td>";
-							if($processo_avaliado == "Avaliado"){
-								echo "<td style='width: 5%'>&nbsp</td>";
-							}
-							else{
-								echo "<td style='width: 5%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleRed' title='Remover Usuário'>Excluir</a></td>";
-							}
-						}
-						else{
-							echo "<td style='width: 5%'>&nbsp</td>";
-							echo "<td style='width: 5%'>&nbsp</td>";
+								if($processo_avaliado == "Avaliado"){
+									echo "<td style='width: 5%'>&nbsp</td>";
+								}
+								else{
+									echo "<td style='width: 5%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleRed' title='Remover Usuário'>Excluir</a></td>";
+								}
+							echo "</tr>";
+						}else{
+							
 						}
 						
+// 						if($lista->getLogin() != "admin"){
+// 							echo "<td style='width: 5%'><a href='../Controller/usuarioController.php?action=edit&id=".$lista->getId()."' class='botao_right botaoGoogleGrey' title='Editar Usuário'>Editar</a></td>";
+// 							if($processo_avaliado == "Avaliado"){
+// 								echo "<td style='width: 5%'>&nbsp</td>";
+// 							}
+// 							else{
+// 								echo "<td style='width: 5%'><a href='../Controller/usuarioController.php?action=delete&id=".$lista->getId()."' class='botao_right botaoGoogleRed' title='Remover Usuário'>Excluir</a></td>";
+// 							}
+// 						}
+// 						else{
+// 							echo "<td style='width: 5%'>&nbsp</td>";
+// 							echo "<td style='width: 5%'>&nbsp</td>";
+// 						}					
 						
 						
 						
@@ -276,7 +289,7 @@ $(document).ready(function() {
 //fazer isso na home admin
 //$_SESSION["aluno"] = serialize($aluno);
 //$_SESSION["processo"] = serialize($processo);
-$_SESSION["periodo"] = "2/2011";
+//$_SESSION["periodo"] = "2/2011";
 
 ?>
 </html>

@@ -857,10 +857,13 @@ $(function() {
     else{
     	if($prazo_expirado){
     		?>
+    		<div class="white">
     		<h3>O prazo de Avalia&ccedil;&atilde;o expirou!</h3>
+    		</div>
     		<?php
     	}else{
     		?>
+    		<div class="white">
     		<h3>Inicio do Processo de Avalia&ccedil;&atilde;o em:</h3>
     		<!-- Countdown dashboard start -->
     		<div id="countdown_dashboard">
@@ -896,6 +899,7 @@ $(function() {
     		
     		</div>
     		<!-- Countdown dashboard end -->
+    		</div>
     		<?php
     	}
     }
