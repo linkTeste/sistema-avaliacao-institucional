@@ -150,7 +150,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
    			if(isset($_SESSION["s_theme"])){
    				$theme_active = $_SESSION["s_theme"];
    			}else{
-   				$theme_active = "Blue";
+   				$theme_active = "Red";
    			}
    			
    			
