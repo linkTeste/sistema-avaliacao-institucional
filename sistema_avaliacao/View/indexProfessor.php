@@ -81,15 +81,9 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 			<?php include_once 'inc/menu_prof_inc.php';?>
 
 			<div id="apresentacao">
-				<p>Caro professor,</p>
-				<p>Solicitamos sua participação para auxiliar na avaliação de
-					desempenho dos docentes por entender-se que ela é indispensável
-					para a melhoria contínua das atividades desenvolvidas em sala de
-					aula.</p>
-				<p>Para tanto, é necessário que sua opinião não se baseie em
-					impressões precipitadas ou ditadas pela emoção. Procure avaliar
-					o professor nos quesitos propostos, baseando sua resposta no que é
-					mais constante no comportamento do professor.</p>
+				<p>Prezado professor,</p>	
+				<p>Solicitamos sua colaboração para a melhoria contínua das atividades desenvolvidas na Instituição.</p>
+				<p>Para tanto, pedimos para que leia e responda com atenção as questões.</p>
 			</div>
 			<div id="escala_conceitos_home">
 				<h3>Escala de Conceitos</h3>

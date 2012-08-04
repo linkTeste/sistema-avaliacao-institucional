@@ -156,7 +156,7 @@ $professor->get($id_professor);
 				if($tipo == "Coordenador" && $subtipo == "Instituição" ){
             	?>
             	<div class="photo">
-                	<img src="css/images/avatar/default_instituicao.png" alt="Logotipo da Institui��o" />
+                	<img src="css/images/avatar/default_instituicao.png" alt="Logotipo da Instituição" />
             	</div>
             	<div class="description">
             		<h4>FACULDADE UNICAMPO</h4>
@@ -165,6 +165,21 @@ $professor->get($id_professor);
             	<?php 
 				}
             	?>
+            	
+            	<?php 
+								if($tipo == "Professor" && $subtipo == "Auto-avaliação-professor" ){
+            	?>
+            	<div class="photo">
+                	<img src="<?php echo pegaImagem($professor->getId()); ?>" alt="Foto do Professor" />
+            	</div>
+            	<div class="description">
+            		<h4><?php echo utf8_encode($professor->getNome()); ?></h4>               	
+            		<h4><span>Docente (Auto-avaliação)</span></h4>                
+            	</div>
+            	<?php 
+				}
+            	?>
+            	
             </div><!-- fecha div1 -->
             	<div class="div2">
             	<div class="legenda">

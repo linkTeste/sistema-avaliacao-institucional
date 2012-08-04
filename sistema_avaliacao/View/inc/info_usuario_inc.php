@@ -1,5 +1,6 @@
 <?php
 
+$email = "";
 if(isset($_SESSION["s_aluno"])){
 	$str = $_SESSION["s_aluno"];
 	if($str instanceof Aluno){
@@ -10,12 +11,33 @@ if(isset($_SESSION["s_aluno"])){
 
 	$usuario_logado = $aluno;
 	$id = $usuario_logado->getRa();
+	
+	//pega dados do aluno e monta o formato do email da instituicao
+	$nomeTemp = explode(" ", $usuario_logado->getNome());
+	$primeiroNome = $nomeTemp[0];
+	
+	//remove os acentos pra montar o endereco de email corretamente
+	$primeiroNome = strtolower($primeiroNome);
+	
+	$primeiroNome = ereg_replace("[áàâãª]","a",$primeiroNome);
+	$primeiroNome = ereg_replace("[éèê]","e",$primeiroNome);
+	$primeiroNome = ereg_replace("[óòôõº]","o",$primeiroNome);
+	$primeiroNome = ereg_replace("[úùû]","u",$primeiroNome);
+	$primeiroNome = str_replace("ç","c",$primeiroNome);
+	
+	$email = $primeiroNome.$usuario_logado->getRa()."@faculdadeunicampo.edu.br";
+	
 }else{
 	$id = $usuario_logado->getId();
 }
 
 $nome = $usuario_logado->getNome();
-$email = $usuario_logado->getEmail();
+if($email == ""){
+	$email = $usuario_logado->getEmail();
+}
+
+
+
 
 ?>
 <div id="info_user">

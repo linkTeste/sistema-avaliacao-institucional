@@ -16,12 +16,13 @@
 	width: 95%;
 	color: #333;
 	text-align: justify;
-	width: 95%
+	min-width: 950px;
 }
 
 #header { /*background: #7b0100 url(images/header_bg.png) no-repeat;*/
-	background: url(images/header_bg2.png) repeat-x;
+	/*background: url(images/header_bg2.png) repeat-x;*/
 	height: 109px;
+	background: #f3f3f3;
 }
 
 #header_client_logo {
@@ -34,7 +35,7 @@
 #header_system_logo {
 	background: url(images/header_system_logo.png) no-repeat;
 	height: 109px;
-	width: 332px;
+	width: 341px;
 	position: relative;
 	top: -109px;
 	display: block;
@@ -1282,11 +1283,12 @@ thead th {
 
 #info_user {
 	position: absolute;
+	height: 35px;
 	top: 2px;
 	right: 0;
 	margin-right: 5px;
 	z-index: 50;
-	*text-align: right;
+	/*text-align: right;*/
 }
 
 #info_user span {
@@ -1295,6 +1297,7 @@ thead th {
 	color: #666;
 }
 
+/*
 #info_user a span.arrow {
 	background: url(images/span_arrow.png) no-repeat;
 	width: 8px;
@@ -1303,6 +1306,16 @@ thead th {
 	top: -32px;
 	margin: 4px;
 	opacity: .5;
+}*/
+
+#info_user a span.arrow {
+background: url(images/span_arrow.png) no-repeat;
+width: 8px;
+height: 36px;
+float: right;
+top: -44px;
+margin: 4px;
+opacity: .5;
 }
 
 #info_user a:hover span.arrow {
