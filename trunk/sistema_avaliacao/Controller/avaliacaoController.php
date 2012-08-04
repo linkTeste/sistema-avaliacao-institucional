@@ -65,6 +65,10 @@ function avaliacaoController() {
 		$_GET = decodeParams($_GET["p"]);
 	}
 	
+	
+	//descobrir aqui o tipo do usuarioLogado
+	$userType = $_SESSION["s_usuario_logado_type"];
+	
 	//fazer o tratamento aqui da codificacao utf-8, iso, etc
 	if(isset($_POST["action"])){
 		$action = $_POST["action"];
@@ -183,18 +187,33 @@ function avaliacaoController() {
 		// 			}
 			
 	
-		if($tipo == "Coordenador"){
+// 		if($tipo == "Coordenador"){
+// 			$page = "avaliacaoCoordenador.php";
+// 		}
+// 		if($tipo == "Professor"){
+// 			$page = "avaliacaoProfessor.php";
+// 		}
+// 		if($tipo == "Funcionário"){
+// 			$page = "avaliacaoFuncionario.php";
+// 		}
+// 		if($tipo == "Aluno"){
+// 			$page = "avaliacao.php";
+// 		}
+
+		if($userType == "Coordenador"){
 			$page = "avaliacaoCoordenador.php";
 		}
-		if($tipo == "Professor"){
+		if($userType == "Professor"){
 			$page = "avaliacaoProfessor.php";
 		}
-		if($tipo == "Funcionário"){
+		if($userType == "Funcionário"){
 			$page = "avaliacaoFuncionario.php";
 		}
-		if($tipo == "Aluno"){
+		if($userType == "Aluno"){
 			$page = "avaliacao.php";
 		}
+		
+		
 			
 		redirectTo($page);
 	}
@@ -462,15 +481,29 @@ function avaliacaoController() {
 // 			$page = "avaliacoesProfessor.php";
 // 		}
 		
-		if($tipo == "Coordenador"){
+		
+		
+// 		if($tipo == "Coordenador"){
+// 			$page = "avaliacoesCoordenador.php";
+// 		}
+// 		if($tipo == "Professor"){
+// 			$page = "avaliacoesProfessor.php";
+// 		}
+// 		if($tipo == "Aluno"){
+// 			$page = "avaliacoes.php";
+// 		}
+
+		if($userType == "Coordenador"){
 			$page = "avaliacoesCoordenador.php";
 		}
-		if($tipo == "Professor"){
+		if($userType == "Professor"){
 			$page = "avaliacoesProfessor.php";
 		}
-		if($tipo == "Aluno"){
+		if($userType == "Aluno"){
 			$page = "avaliacoes.php";
 		}
+		
+		
 			
 		redirectTo($page);
 

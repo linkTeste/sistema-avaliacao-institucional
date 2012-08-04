@@ -59,12 +59,12 @@ if($menu_caps){
 	<ul>
 		<li><a
 			href="../Controller/pageController.php?pg=<?php echo codifica("index.php");?>"
-			title="P&aacute;gina Inicial" class="home_link">P&aacute;gina Inicial</a>
+			title="P&aacute;gina Inicial" <?php echo $index_active;?>>P&aacute;gina Inicial</a>
 		</li>
 		<li><a
 			href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoes.php");?>"
-			title="Avalia&ccedil;&otilde;es">Avalia&ccedil;&otilde;es</a></li>
-		<li><a href="#" title="Relat&oacute;rios">Relat&oacute;rios</a></li>
+			title="Avalia&ccedil;&otilde;es" <?php echo $avaliacoes_active;?>>Avalia&ccedil;&otilde;es</a></li>
+<!-- 		<li><a href="#" title="Relat&oacute;rios">Relat&oacute;rios</a></li> -->
 	</ul>
 	
 	

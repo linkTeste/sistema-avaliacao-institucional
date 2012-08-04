@@ -71,6 +71,15 @@ function loginController() {
 		$action = $_GET["action"];
 	}
 
+	if($action == "recuperar"){
+		if(isset($_POST["usuario"])){
+			$login = $_POST["usuario"];
+		}
+		
+		recoveryPassword($login);
+		
+	}
+	
 	if($action == "logar"){
 
 		//primeiro zera a sessao por seguran�a
@@ -96,6 +105,7 @@ function loginController() {
 			//registra log
 			registraLog($usuarioLogado->getRa(), $type);
 			
+			$_SESSION["s_usuario_logado_type"] = $type;
 			$_SESSION["s_aluno"] = serialize($usuarioLogado);		
 			
 			
@@ -109,6 +119,7 @@ function loginController() {
 				//registra log
 				registraLog($usuarioLogado->getId(), $type);
 				
+				$_SESSION["s_usuario_logado_type"] = $type;
 				$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
 
 				//obtem as permissoes do usuario logado e joga na sessao
@@ -133,7 +144,8 @@ function loginController() {
 					//verifica se ele � coordenador
 					if($usuarioLogado->getIscoordenador() == true){
 						$type = "Coordenador";
-						$page = "indexCoordenador.php";
+						$page = "indexCoordenador.php";						
+						
 					}else{
 						$type = "Professor";
 						$page = "indexProfessor.php";
@@ -142,6 +154,7 @@ function loginController() {
 					//registra log
 					registraLog($usuarioLogado->getId(), $type);
 					
+					$_SESSION["s_usuario_logado_type"] = $type;
 					$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
 					
 					
@@ -154,6 +167,7 @@ function loginController() {
 						//registra log
 						registraLog($usuarioLogado->getId(), $type);
 					
+						$_SESSION["s_usuario_logado_type"] = $type;
 						$_SESSION["s_usuario_logado"] = serialize($usuarioLogado);
 										
 						$page = "indexFuncionario.php";
@@ -163,31 +177,6 @@ function loginController() {
 			}
 		}
 
-		// 		if(tipo == "aluno"){
-		// 			//se for aluno
-		// 			//prepara o aluno e joga na sessao
-		// 			$aluno = isAluno();
-			
-		// 			$_SESSION["s_aluno"] = serialize($aluno);
-			
-		// 			//redirecionar pra index
-		// 			$page = "index.php";
-			
-			
-
-		// 		}
-
-		// 		if(tipo == "usuario"){
-		// 			//se for um usuario adm
-		// 			$usuario = isUsuario();
-			
-		// 			$_SESSION["s_usuario_logado"] = serialize($usuario);
-			
-		// 			//redirecionar pra index admin
-		// 			$page = "usuarios.php";
-			
-			
-		// 		}
 
 
 
@@ -421,6 +410,79 @@ function registraLog($usuarioId, $tipoUsuario) {
 	$log->save();
 }
 
+
+/**
+* @name recoveryPassword
+* @author Fabio Baía
+* @since 03/08/2012 13:14:08
+* funcao para recuperação de senha
+**/
+function recoveryPassword($param) {
+	
+	$usuario = new Aluno;
+	$usuario->ra = $param;
+	
+	$qtd = $usuario->find(true);
+	//encontra o usuario
+	//pega o nome dele, extrai o primeiro nome
+	//concatena o ra+primeironome+@faculdadeunicampo.edu.br
+	
+	
+	//msg os dados de acesso foram enviados para <<email do individuo>>
+	
+	if($qtd == 0){
+		return false;
+	}
+	else{
+		$nome = explode(" ", $usuario->getNome());
+		$primeiroNome = $nome[0];
+		$to = $primeiroNome.$usuario->getRa()."@faculdadeunicampo.edu.br";
+		
+		//envia email
+		$assunto = "Dados para acessar o Sistema de Avaliação";
+		$msg = "Seus dados de acesso são: <br />";
+		$msg .= "Usuario: ".$usuario->getLogin()."<br />";
+		$msg .= "Senha: ".$usuario->getSenha()."<br />";
+		
+		$msg .= "<br />Atenciosamente,<br />";
+		$msg .= "Faculdade Unicampo.<br />";
+		
+		
+		$status_envio = sendEmail($to, $assunto, $msg);
+		
+		$msg_status;
+		if ($status_envio!=true){
+			$msg_status = "Ocorreu um erro ao enviar a mensagem";
+			//die();
+		}else{
+			$msg_status = "Os dados de acesso ao Sistema de avaliação foram enviados para o e-mail ".$to;
+		}
+	}
+	
+	//redireciona para pagina de login
+	$_SESSION["mensagem"] = $msg_status;
+	$page = "login.php";
+	redirectTo($page);
+	
+}
+
+/**
+* @name sendEmail
+* @author Fabio Baía
+* @since 03/08/2012 14:10:40
+* envia email
+**/
+function sendEmail($to, $assunto, $msg) {
+	
+	$headers = "MIME-Version: 1.0\r\n";
+	$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
+	$headers .= "From: UNICAMPO <avaliacao@faculdadeunicampo.edu.br> \r\n";
+	
+	$send_check=mail($to,$assunto,$msg,$headers);
+	
+	return $send_check;
+		
+}
 
 //}
 

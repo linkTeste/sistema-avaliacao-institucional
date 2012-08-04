@@ -151,7 +151,7 @@ if(isset($_SESSION["s_periodo"])){
     	if(isset($_POST["semestre-selecionado"]) && $_POST["semestre-selecionado"] != ""){
     		//filtro por semestre
     		$ss = $_POST["semestre-selecionado"];    		
-    		$semestre_escolhido = $ss."º SEMESTRE";
+    		$semestre_escolhido = utf8_decode($ss."º SEMESTRE");
 //     		$semestre_escolhido = $ss;
     		$where_semestre = "and turma.serie = '".$semestre_escolhido."'";
     		$where_semestre2 = "and t.serie = '".$semestre_escolhido."'";
@@ -258,7 +258,7 @@ if(isset($_SESSION["s_periodo"])){
     		<?php
     		 		
     		while($turmaA->fetch()) {
-    			$value = explode("º", $turmaA->serie);
+    			$value = explode("º", utf8_encode($turmaA->serie));
     			if($turmaA->serie != ""){
     		?>
     		<option value="<?php echo $value[0];?>"><?php echo utf8_encode($turmaA->serie);?></option>
@@ -607,13 +607,13 @@ if(isset($_SESSION["s_periodo"])){
 // 		$awe->setOrdem($value);
     	
     	
-    	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES PENDENTES: ".$qtd_pendente;
+    	//echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES PENDENTES: ".$qtd_pendente;
     	echo "<br />";
-    	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
+    	//echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
     	echo "<br />";
-    	echo "TOTAL DE ALUNOS Q NÃO CONCLUIRAM A AVALIAÇÃO: ".$qtd_alunos;
+    	echo "TOTAL DE ALUNOS QUE NÃO CONCLUIRAM A AVALIAÇÃO: ".$qtd_alunos;
     	echo "<br />";
-    	echo "TOTAL DE ALUNOS CONCLUIRAM A AVALIAÇÃO: ".$qtd_alunos_avaliaram;  	
+    	echo "TOTAL DE ALUNOS QUE CONCLUIRAM A AVALIAÇÃO: ".$qtd_alunos_avaliaram;  	
     	
     	
     	?>

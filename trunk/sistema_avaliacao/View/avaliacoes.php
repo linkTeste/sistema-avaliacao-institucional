@@ -440,7 +440,7 @@ $(function() {
     	</div>
     	
     	<!-- <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Lab_<?php //echo utf8_encode($lab->getNome());?>"  title="Avaliar o Laboratório de <?php //echo $lab->getNome();?>" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
-    	<a href="../Controller/avaliacaoController.php?p=<?php echo codifica("action=avaliar&tipo=Aluno&subtipo=Lab_".utf8_encode($lab->getNome()));?>"  title="Avaliar o Laboratório de <?php echo $lab->getNome();?>" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
+    	<a href="../Controller/avaliacaoController.php?p=<?php echo codifica("action=avaliar&tipo=Aluno&subtipo=Lab_".utf8_encode($lab->getNome()));?>"  title="Avaliar o Laboratório de <?php echo utf8_encode($lab->getNome());?>" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
     	
     	</div>
     	<?php
