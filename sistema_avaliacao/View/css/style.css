@@ -46,6 +46,11 @@
 	min-height: 300px;
 }
 
+#content_tutorial {
+	width: 810px;
+	margin: 0 auto;
+}
+
 #content h3 { /*font-family: 'Merienda One', cursive;*/
 	font-size: 16px;
 	padding: 10px;
@@ -795,7 +800,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(0, 0, 0, 0.5) 100% );
 	background: linear-gradient(top, rgba(69, 72, 77, 0.5) 0%,
 		rgba(0, 0, 0, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(      
+	filter: progid:DXImageTransform.Microsoft.gradient(       
 		                     
 		                     startColorstr='#8045484d', endColorstr='#80000000',
 		GradientType=0 );
@@ -836,7 +841,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
 	background: linear-gradient(top, rgba(255, 255, 255, 0.5) 0%,
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(      
+	filter: progid:DXImageTransform.Microsoft.gradient(       
 		                     
 		                     startColorstr='#80ffffff', endColorstr='#80ededed',
 		GradientType=0 );
@@ -1307,15 +1312,14 @@ thead th {
 	margin: 4px;
 	opacity: .5;
 }*/
-
 #info_user a span.arrow {
-background: url(images/span_arrow.png) no-repeat;
-width: 8px;
-height: 36px;
-float: right;
-top: -44px;
-margin: 4px;
-opacity: .5;
+	background: url(images/span_arrow.png) no-repeat;
+	width: 8px;
+	height: 36px;
+	float: right;
+	top: -44px;
+	margin: 4px;
+	opacity: .5;
 }
 
 #info_user a:hover span.arrow {
@@ -1396,7 +1400,7 @@ opacity: .5;
 		rgba(204, 204, 204, 1) 100% );
 	background: -ms-linear-gradient(top, rgba(238, 238, 238, 1) 0%,
 		rgba(204, 204, 204, 1) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient( 
+	filter: progid:DXImageTransform.Microsoft.gradient(  
 		                     
 		                     startColorstr='#eeeeee', endColorstr='#cccccc',
 		GradientType=0 );

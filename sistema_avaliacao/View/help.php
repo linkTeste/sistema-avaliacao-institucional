@@ -19,7 +19,7 @@
 		<div id="content">
 			<div class="white">
 <!-- 				<h3>Siga as etapas abaixo para realizar sua avaliação:</h3> -->
-				<div align="center">
+				<div id="content_tutorial">
 				  <img src="css/images/tutorials/tutoriais_topo.jpg" />
 					<img src="css/images/tutorials/tutoriais_step1.jpg" />
 					<img src="css/images/tutorials/tutoriais_step2.jpg" />
