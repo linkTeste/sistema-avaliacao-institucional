@@ -131,7 +131,7 @@ $(function() {
 </script>
 
 <?php include_once 'inc/ie_bugfixes_inc.php';?>
-
+<?php include_once 'inc/analytics_inc.php';?>
 </head>
 
 <body style="background: #fafafa;">
@@ -162,19 +162,7 @@ $(function() {
 	
 	
 <?php } ?>
-<!-- <div id="menu_usuario">
-		<ul>
-			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
-					Unicampo</a></li>
-			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
-					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php //echo $aluno->getNome();?> - <a
-				href="../Controller/loginController.php?action=logout">Sair</a>
-			</li>
-			
-		</ul>
-	</div>
-	 -->
+
 <div id="wrapper" class="container">
 <?php if(isset($_GET['status'])){	?>
     <div id="status">
@@ -239,104 +227,7 @@ $(function() {
     	$instituicao_foi_avaliada = $alunoB->find(true);
     	//FIM verificacao avaliacao instituicao
     	
-    	//verifica se o sistema foi avaliado
-//     	$alunoD = new Aluno();
-//     	$alunoD->get($ra);
-    	
-//     	$alunoD->alias('aD');
-    	
-//     	$tD = new Turma();
-//     	$avD = new Avaliacao();
-//     	$alunoD->join($tD,'INNER','tD');
-    	
-//     	$alunoD->join($avD, 'INNER', 'avD', "ra", "avaliador");
-//     	$alunoD->select("tD.periodoLetivo, avD.dataAvaliacao, aD.ra, avD.avaliador");
-//     	$alunoD->where("tD.periodoLetivo = '".$periodo_atual."' and avD.itemAvaliado= 'Sistema' and aD.ra = avD.avaliador");
-//     	$alunoD->groupBy("avD.itemAvaliado");
-    	
-//     	$sistema_foi_avaliado = $alunoD->find(true);
-    	//FIM verificacao avaliacao sistema
-    	
-    	//verifica se a DIREÇÃO foi avaliada
-//     	$alunoDirecao = new Aluno();
-//     	$alunoDirecao->get($ra);
-    	
-//     	$alunoDirecao->alias('aDirecao');
-    	
-//     	$tDirecao = new Turma();
-//     	$avDirecao = new Avaliacao();
-//     	$alunoDirecao->join($tDirecao,'INNER','tDirecao');
-    	
-//     	//ra = id na tabela aluno
-//     	//avaliador = correspondente na tabela avaliacao
-//     	$alunoDirecao->join($avDirecao, 'INNER', 'avDirecao', "ra", "avaliador");
-//     	$alunoDirecao->select("tDirecao.periodoLetivo, avDirecao.dataAvaliacao, aDirecao.ra, avDirecao.avaliador");
-//     	$alunoDirecao->where("tDirecao.periodoLetivo = '".$periodo_atual."' and avDirecao.itemAvaliado= 'Direção' and aDirecao.ra = avDirecao.avaliador");
-//     	$alunoDirecao->groupBy("avDirecao.itemAvaliado");
-    	
-//     	$direcao_foi_avaliada = $alunoDirecao->find(true);
-    	//FIM verificacao avaliacao DIREÇÃO
-    	
-    	//verifica se a SECRETARIA foi avaliada --------------------------------------------------------------
-//     	$alunoSecretaria = new Aluno();
-//     	$alunoSecretaria->get($ra);
-    	 
-//     	$alunoSecretaria->alias('aSecretaria');
-    	 
-//     	$tSecretaria = new Turma();
-//     	$avSecretaria = new Avaliacao();
-//     	$alunoSecretaria->join($tSecretaria,'INNER','tSecretaria');
-    	 
-//     	//ra = id na tabela aluno
-//     	//avaliador = correspondente na tabela avaliacao
-//     	$alunoSecretaria->join($avSecretaria, 'INNER', 'avSecretaria', "ra", "avaliador");
-//     	$alunoSecretaria->select("tSecretaria.periodoLetivo, avSecretaria.dataAvaliacao, aSecretaria.ra, avSecretaria.avaliador");
-//     	$alunoSecretaria->where("tSecretaria.periodoLetivo = '".$periodo_atual."' and avSecretaria.itemAvaliado= 'Direção' and aSecretaria.ra = avSecretaria.avaliador");
-//     	$alunoSecretaria->groupBy("avSecretaria.itemAvaliado");
-    	 
-//     	$Secretaria_foi_avaliada = $alunoSecretaria->find(true);
-    	//FIM verificacao avaliacao SECRETARIA
-    	
-    	//verifica se a BIBLIOTECA foi avaliada --------------------------------------------------------------
-//     	$alunoBiblioteca = new Aluno();
-//     	$alunoBiblioteca->get($ra);
-    	
-//     	$alunoBiblioteca->alias('aBiblioteca');
-    	
-//     	$tBiblioteca = new Turma();
-//     	$avBiblioteca = new Avaliacao();
-//     	$alunoBiblioteca->join($tBiblioteca,'INNER','tBiblioteca');
-    	
-//     	//ra = id na tabela aluno
-//     	//avaliador = correspondente na tabela avaliacao
-//     	$alunoBiblioteca->join($avBiblioteca, 'INNER', 'avBiblioteca', "ra", "avaliador");
-//     	$alunoBiblioteca->select("tBiblioteca.periodoLetivo, avBiblioteca.dataAvaliacao, aBiblioteca.ra, avBiblioteca.avaliador");
-//     	$alunoBiblioteca->where("tBiblioteca.periodoLetivo = '".$periodo_atual."' and avBiblioteca.itemAvaliado= 'Direção' and aBiblioteca.ra = avBiblioteca.avaliador");
-//     	$alunoBiblioteca->groupBy("avBiblioteca.itemAvaliado");
-    	
-//     	$Biblioteca_foi_avaliada = $alunoBiblioteca->find(true);
-    	//FIM verificacao avaliacao BIBLIOTECA
-    	
-    	//verifica se a TI foi avaliada --------------------------------------------------------------
-//     	$alunoTI = new Aluno();
-//     	$alunoTI->get($ra);
-    	
-//     	$alunoTI->alias('aTI');
-    	
-//     	$tTI = new Turma();
-//     	$avTI = new Avaliacao();
-//     	$alunoTI->join($tTI,'INNER','tTI');
-    	
-//     	//ra = id na tabela aluno
-//     	//avaliador = correspondente na tabela avaliacao
-//     	$alunoTI->join($avTI, 'INNER', 'avTI', "ra", "avaliador");
-//     	$alunoTI->select("tTI.periodoLetivo, avTI.dataAvaliacao, aTI.ra, avTI.avaliador");
-//     	$alunoTI->where("tTI.periodoLetivo = '".$periodo_atual."' and avTI.itemAvaliado= 'Direção' and aTI.ra = avTI.avaliador");
-//     	$alunoTI->groupBy("avTI.itemAvaliado");
-    	
-//     	$TI_foi_avaliada = $alunoTI->find(true);
-    	//FIM verificacao avaliacao TI
-    	
+    	    	
     	//verifica quais laboratorios o aluno usa
     	$turmasDoAluno_array[] = array();
     	
@@ -439,7 +330,6 @@ $(function() {
     	</div>
     	</div>
     	
-    	<!-- <a href="../Controller/avaliacaoController.php?action=avaliar&tipo=Aluno&subtipo=Lab_<?php //echo utf8_encode($lab->getNome());?>"  title="Avaliar o Laboratório de <?php //echo $lab->getNome();?>" class="botao_right btn_avaliacao botaoWhite">Avaliar</a> -->
     	<a href="../Controller/avaliacaoController.php?p=<?php echo codifica("action=avaliar&tipo=Aluno&subtipo=Lab_".utf8_encode($lab->getNome()));?>"  title="Avaliar o Laboratório de <?php echo utf8_encode($lab->getNome());?>" class="botao_right btn_avaliacao botaoWhite">Avaliar</a>
     	
     	</div>
@@ -555,41 +445,9 @@ $(function() {
     	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId, t.periodoLetivo, t.curso, tha.avaliado");
     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and tha.turmaIdTurma = t.idTurma and tha.avaliado is null");
     	
-//     	$aluno->join($av, 'INNER', 'av');
-//     	$aluno->select("t.idTurma, t.nomeDisciplina, t.professorId");
-//     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av where av.alunoRa = '".$ra."')");
-    	
-    	//todos alunos
-//     	$aluno->where("t.periodoLetivo = '".$periodo_atual."' and t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
-//     	$aluno->where("t.idTurma not in(SELECT av.turmaIdTurma FROM avaliacao av)");
-    	    	
-    	$aluno->groupBy("t.idTurma");
+			$aluno->groupBy("t.idTurma");
     	 
-    	// recupera os registros
-//     	$aluno->find();
-    	
-    	
-//     	if($aluno->fetch() == 0){
-//     	  		//� necessario pegar dados do aluno NOVAMENTE
-//     		$aluno = new Aluno();
-// 			$aluno->get($ra);
-    		    		
-//     		$t1 = new Turma();
-//     		//$av = new Avaliacao();
-//     		// une as classes
-//     		$aluno->join($t1,'INNER','t1');
-    		
-//     		//teste
-// //     		$aluno->join($tha1,'INNER','tha1');    		 
-// //     		$aluno->select("t1.idTurma, t1.nomeDisciplina, t1.professorId, t1.periodoLetivo, t1.curso, tha1.avaliado");
-// //     		$aluno->where("t1.periodoLetivo = '".$periodo_atual."' and tha1.turmaIdTurma = t1.idTurma and tha1.avaliado != 'Avaliado'");
-    		   		
-//     		//faz consulta diferenciada sem o JOIN e sem SUBSELECT no WHERE
-//     		$aluno->select("t1.idTurma, t1.nomeDisciplina, t1.professorId");
-//     		$aluno->where("t1.periodoLetivo = '".$periodo_atual."'");
-    		
-//     		$aluno->groupBy("t1.idTurma");
-//     	}
+
     	
     	$qtd = $aluno->find();
 //     	echo $qtd;
@@ -632,7 +490,7 @@ $(function() {
 
     	
     	if($aluno->fetch() == ""){
-    		echo "<h4>Nenhuma avalia&ccedil;&atilde;o pendente</h4>";
+    		echo "<h4>Você concluiu todas as avaliações. A instituição agradece a sua colaboração.</h4>";
     	}
     	
     	

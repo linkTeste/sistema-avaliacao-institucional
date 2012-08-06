@@ -113,7 +113,7 @@ $(document).ready(function() {
 </script>
 <?php }?>
 <?php include_once 'inc/ie_bugfixes_inc.php';?>
-
+<?php include_once 'inc/analytics_inc.php';?>
 </head>
 
 <body style="background: #fafafa;">

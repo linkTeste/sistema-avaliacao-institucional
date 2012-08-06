@@ -103,6 +103,7 @@ $professor->get($id_professor);
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.raty.js"></script>
+<?php include_once 'inc/analytics_inc.php';?>
 </head>
 
 <body style="background: #fafafa;">

@@ -93,6 +93,7 @@ $professor->get($id_professor);
 <script type="text/javascript" src="js/jquery.raty.js"></script>
 
 <?php include_once 'inc/ie_bugfixes_inc.php';?>
+<?php include_once 'inc/analytics_inc.php';?>
 </head>
 
 <body style="background: #fafafa;">
