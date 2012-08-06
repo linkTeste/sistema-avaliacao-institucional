@@ -123,7 +123,7 @@ $(function() {
 	});
 });
 </script>
-
+<?php include_once 'inc/analytics_inc.php';?>
 </head>
 
 <body style="background: #fafafa;">

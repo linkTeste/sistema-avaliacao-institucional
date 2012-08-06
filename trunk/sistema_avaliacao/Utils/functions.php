@@ -183,8 +183,10 @@ function decodeParams($paramString) {
 * função que redireciona pra uma pagina específica
 **/
 function redirectTo($page) {
-	$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
-	// 	header("Location: ".$url_base.$page);
+	//obs: alterado pra funcionar entre os subsistemas unicampo
+// 	$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
+	$url_base = "http://ca.faculdadeunicampo.edu.br/sistema_avaliacao/View/";
+	
 
 	//joga a pagina ativa na sessao e direciona pro controller de paginas
 	$_SESSION["s_active_page"] = $page;

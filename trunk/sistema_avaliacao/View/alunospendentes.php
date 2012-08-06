@@ -85,7 +85,7 @@ if(isset($_SESSION["s_periodo"])){
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
+<?php include_once 'inc/analytics_inc.php';?>
 </head>
 
 <body style="background: #fafafa;">

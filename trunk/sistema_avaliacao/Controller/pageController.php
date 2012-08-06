@@ -29,7 +29,10 @@ if(isset($_GET["pg"])){
 		//pega a page
 		$page = $tokens[1];
 		
-		$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
+		//obs: mudei a url base pra funcionar entre os subsistemas unicampo
+		//$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
+		$url_base = "http://ca.faculdadeunicampo.edu.br/sistema_avaliacao/View/";
+		
 				
 		//joga a pagina ativa na sessao e direciona pra pagina default
 		

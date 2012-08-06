@@ -104,23 +104,11 @@ $professor->get($id_professor);
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.raty.js"></script>
+<?php include_once 'inc/analytics_inc.php';?>
 </head>
 
 <body style="background: #fafafa;">
-<!-- 
-	<div id="menu_usuario">
-		<ul>
-			<li><a href="http://www.faculdadeunicampo.edu.br/" target="_blank">Faculdade
-					Unicampo</a></li>
-			<li><a href="http://mail.faculdadeunicampo.edu.br/" target="_blank">E-mail
-					Unicampo</a></li>
-			<li id="username">Ol&aacute;, <?php //echo utf8_encode($usuario_logado->getNome());?> - <a
-				href="../Controller/loginController.php?action=logout">Sair</a>
-			</li>
-			
-		</ul>
-	</div>
-	 -->
+
 <div id="wrapper" class="container">
 	<?php include_once 'inc/header_inc.php';?>
     <div id="content">
