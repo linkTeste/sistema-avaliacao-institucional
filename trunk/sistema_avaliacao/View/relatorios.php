@@ -49,33 +49,33 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 
 // funcoes de relatorios
 // log
-$lista = new Log();
-$lista->alias("l");
+// $lista = new Log();
+// $lista->alias("l");
 
-$prof = new Professor();
-$u = new Usuario();
-$a = new Aluno();
+// $prof = new Professor();
+// $u = new Usuario();
+// $a = new Aluno();
 
-$lista->join($prof, 'LEFT', 'prof', "usuario", "id");
-$lista->join($u, 'LEFT', 'u', "usuario", "id");
-$lista->join($a, 'LEFT', 'a', "usuario", "ra");
+// $lista->join($prof, 'LEFT', 'prof', "usuario", "id");
+// $lista->join($u, 'LEFT', 'u', "usuario", "id");
+// $lista->join($a, 'LEFT', 'a', "usuario", "ra");
 
-$lista->select("l.id, l.usuario, l.hora, l.ip, l.tipoUsuario,
-                	prof.nome as prof_nome, prof.id as prof_id, 
-                	u.id as u_id, u.nome as u_nome,
-                	a.ra as a_id, a.nome as a_nome, count(*) as total, DATE(hora) as dia");
-$lista->where("l.usuario != '1'");
-$lista->order("dia ASC");
-$lista->groupBy("dia");
-$lista->find();
+// $lista->select("l.id, l.usuario, l.hora, l.ip, l.tipoUsuario,
+//                 	prof.nome as prof_nome, prof.id as prof_id, 
+//                 	u.id as u_id, u.nome as u_nome,
+//                 	a.ra as a_id, a.nome as a_nome, count(*) as total, DATE(hora) as dia");
+// $lista->where("l.usuario != '1'");
+// $lista->order("dia ASC");
+// $lista->groupBy("dia");
+// $lista->find();
 
-$array_relatorio_log = array();
-$it = 0;
-while( $lista->fetch()) {
-	$array_relatorio_log[$it]["dia"] = $lista->dia;
-	$array_relatorio_log[$it]["qtd"] = $lista->total;
-	$it++;
-}
+// $array_relatorio_log = array();
+// $it = 0;
+// while( $lista->fetch()) {
+// 	$array_relatorio_log[$it]["dia"] = $lista->dia;
+// 	$array_relatorio_log[$it]["qtd"] = $lista->total;
+// 	$it++;
+// }
 
 //print_r($array_relatorio_log);
 
@@ -141,7 +141,7 @@ function disciplinasGeralNotas() {
  * @since 06/07/2012 13:25:27
  * insert a description here
  **/
-function questoesNotas() {
+/*function questoesNotas() {
 	// 	use faculdadeunica05;
 	// 	select id, questionario_has_questao_questionario_id, nota, processo_avaliacao_id, item_avaliado, avaliador, tipo_avaliacao, subtipo_avaliacao from avaliacao where tipo_avaliacao = 'Aluno' and subtipo_avaliacao = 'Professor/Disciplina'
 	// 	and questionario_has_questao_questao_id = 121;
@@ -239,9 +239,9 @@ function questoesNotas() {
 						"nota2" => $nota2,
 						"nota1" => $nota1,
 						"media" => $media,
-						/*"soma" => $soma,
-						"qtd" => $qtd_questoes,
-						"qtdAV" => $qtd_avaliadores,*/
+						/*"soma" => $soma,//
+						"qtd" => $qtd_questoes,//
+						"qtdAV" => $qtd_avaliadores,//
 						"tipo_avaliacao" => $av->tipoAvaliacao,
 						"subtipo_avaliacao" => $av->subtipoAvaliacao);
 		}
@@ -251,7 +251,7 @@ function questoesNotas() {
 	//print_r($results);
 	
 	return  $results;
-}
+}*/
 
 /**
 * @name questoesNotas2
@@ -259,7 +259,7 @@ function questoesNotas() {
 * @since 09/07/2012 13:33:59
 * insert a description here
 **/
-function questoesNotas2() {
+/*function questoesNotas2() {
 	// 	use faculdadeunica05;
 	// 	select id, questionario_has_questao_questionario_id, nota, processo_avaliacao_id, item_avaliado, avaliador, tipo_avaliacao, subtipo_avaliacao from avaliacao where tipo_avaliacao = 'Aluno' and subtipo_avaliacao = 'Professor/Disciplina'
 	// 	and questionario_has_questao_questao_id = 121;
@@ -366,9 +366,9 @@ function questoesNotas2() {
 						"nota2" => $nota2,
 						"nota1" => $nota1,
 						"media" => 5,
-			/*"soma" => $soma,
-			 "qtd" => $qtd_questoes,
-			"qtdAV" => $qtd_avaliadores,*/
+			/*"soma" => $soma,//
+			 "qtd" => $qtd_questoes,//
+			"qtdAV" => $qtd_avaliadores,//
 						"tipo_avaliacao" => $av->tipoAvaliacao,
 						"subtipo_avaliacao" => $av->subtipoAvaliacao);
 		}
@@ -379,8 +379,9 @@ function questoesNotas2() {
 
 	return  $results;
 }
+*/
 
-function disciplinasMelhoresNotasCombo() {
+/*function disciplinasMelhoresNotasCombo() {
 
 	$avaliacoes;
 	$av = new Avaliacao();
@@ -487,7 +488,9 @@ function disciplinasMelhoresNotasCombo() {
 	return $avaliacoes;
 
 }
+*/
 
+/*
 function disciplinasPioresNotas() {
 
 	$avaliacoes;
@@ -517,7 +520,9 @@ function disciplinasPioresNotas() {
 
 	return $avaliacoes;
 }
+*/
 
+/*
 function cursosGeralNotas() {
 
 	$avaliacoes;
@@ -545,6 +550,9 @@ function cursosGeralNotas() {
 	return $avaliacoes;
 }
 
+*/
+
+/*
 function labsGeralNotas() {
 
 	$avaliacoes;
@@ -570,44 +578,13 @@ function labsGeralNotas() {
 
 	return $avaliacoes;
 }
+*/
 
-
-function discoveryInfoTurma($id, $info) {
-	$infoRetorno;
-
-	$turma = new Turma();
-
-
-	if($info == "nomeDisciplina"){
-		$turma->get($id);
-		$infoRetorno = $turma->nomeDisciplina;
-	}
-	if($info == "nomeProfessor"){
-		$turma->get($id);
-		$infoRetorno = $turma->professorId;
-	}
-	if($info == "nomeCoordenador"){
-		$turma->get("curso", $id);
-		$infoRetorno = $turma->coordenadorId;
-	}
-	if($info == "nomeCurso"){
-		$turma->get("curso", $id);
-		$infoRetorno = $turma->curso;
-	}
-
-	return $infoRetorno;
-}
-
-
-//   	  $arr = questoesNotas();
-//   	  echo sizeof($arr);
-
-// 			questoesNotas2();
-//   	  exit;
 
 
 
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -634,10 +611,21 @@ function discoveryInfoTurma($id, $info) {
       // #00CD00 verde google
       // #CD0000 vermelho google
       
+      <?php 
+      if(isset($_SESSION["s_active_chart"]) && $_SESSION["s_active_chart"] != ""){
+      	
+      	$chart = $_SESSION["s_active_chart"];
+      	echo $chart;
+      	
+      }
+      ?>
+      
+
+/*
       function drawTeste(){
     	// Create and populate the data table.
     	  var data = google.visualization.arrayToDataTable([
-    	                                              	  
+ */   	                                              	  
     	  <?php
 //     	  var data = google.visualization.arrayToDataTable([
 //           ['Month', '5 estrelas', '4 estrelas', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
@@ -648,6 +636,7 @@ function discoveryInfoTurma($id, $info) {
 //           ['2008/09',  136,      691,         629,             1026,          366,      569.6]
 //         ]);    	  
     	  
+    	  /*
     	  $arr1 = disciplinasMelhoresNotasCombo(); 
     	    	  	$i = 0; 
     	    	  	echo "[";
@@ -675,10 +664,13 @@ function discoveryInfoTurma($id, $info) {
     	    				echo ", ".$m;
     	    			}
     	    		}
-    	    		echo "]";    	    		
+    	    		echo "]";  
+    	    		
+    	    		  	    		*/
     	    		
     	    		?> 
-    	    		  
+
+/*
     	    		]); 	    		
 
     	  // Create and draw the visualization.
@@ -688,12 +680,12 @@ function discoveryInfoTurma($id, $info) {
 		  chart.draw(data,
     	           {title:"Disciplinas - Geral",
     	            height:300,
-    	            /*colors: ['#920300'],*/
+    	            //colors: ['#920300'],//
     	            hAxis: {title: "Disciplina"},
     	            vAxis:{title: 'Nota',
         	               maxValue: 10,
         	               minValue: 0
-        	               /*gridlines:{count:10}*/
+        	               //gridlines:{count:10}//
  	               		},
  	               	pointSize: 5,
  	                allowHtml: true
@@ -701,13 +693,19 @@ function discoveryInfoTurma($id, $info) {
     	      );
       }
 
+         */
+
+/*
       function drawDisciplinasMelhoresNotas(){
         	// Create and populate the data table.
         	  var data = new google.visualization.DataTable();
               data.addColumn('string', 'Disciplina');
               data.addColumn('number', 'Media');
               //data.addColumn({type:'string',role:'tooltip'});
+              
+    */
         	  <?php
+        	  /*
         	  $arr1 = disciplinasPioresNotas();
         	    	  	echo 'data.addRows('.count($arr1).');';
         	    	  	$i = 0; 
@@ -724,8 +722,9 @@ function discoveryInfoTurma($id, $info) {
 //         	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
         	    					
         	    		}
+        	    		*/
         	    		?>    	    		
-
+/*
         	  // Create and draw the visualization.
         	  //graficos possíveis pra esses dados
         	  //Area - Line - Bar - Column
@@ -738,7 +737,7 @@ function discoveryInfoTurma($id, $info) {
         	            vAxis:{title: 'Nota',
             	               maxValue: 10,
             	               minValue: 0
-            	               /*gridlines:{count:10}*/
+            	               /*gridlines:{count:10}//
      	               		},
      	               	pointSize: 5,
      	                allowHtml: true
@@ -746,7 +745,9 @@ function discoveryInfoTurma($id, $info) {
         	      );
           }
    
+*/
 
+/*
 	  function drawDashBoard(){
 		// Create and populate the data table.
        /*var data = google.visualization.arrayToDataTable([
@@ -755,7 +756,7 @@ function discoveryInfoTurma($id, $info) {
           ['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
           ['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
           ['Filosofia',  3,      5,       2,             1,           8,     3.8]
-       ]);*/
+       ]);//
 
       	
       	var data = new google.visualization.DataTable();
@@ -767,8 +768,9 @@ function discoveryInfoTurma($id, $info) {
         data.addColumn('number', '1 estrela');
         data.addColumn('number', 'Média');
         
-
+*/
         <?php
+        /*
 //   	    $arr1 = disciplinasMelhoresNotasCombo();
             $arr1 = questoesNotas2();
   	    	  	echo 'data.addRows('.sizeof($arr1).');';
@@ -788,10 +790,11 @@ function discoveryInfoTurma($id, $info) {
   	    					
   	    		}
   	    		
+  	    		*/
   	    		?> 
        
         	   
-
+/*
       	    		
       	    		var barChart = new google.visualization.ChartWrapper({
       	    		    'chartType': 'ColumnChart',
@@ -856,7 +859,10 @@ function discoveryInfoTurma($id, $info) {
       	    		
 			
       }
+*/
 
+
+/*
       
       function drawDisciplinasMelhoresNotasCombo(){
       	// Create and populate the data table.
@@ -869,7 +875,11 @@ function discoveryInfoTurma($id, $info) {
             data.addColumn('number', '1 estrela');
             data.addColumn('number', 'Media');
             //data.addColumn({type:'string',role:'tooltip'});
+            
+         */
       	  <?php
+      	  
+      	  /*
       	  $arr1 = disciplinasMelhoresNotasCombo();
       	     	  	//echo 'data.addRows('.count($arr1).');';
       	    	  	echo 'data.addRows(6);';
@@ -894,8 +904,10 @@ function discoveryInfoTurma($id, $info) {
 //       	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
       	    					
       	    		}
+      	    		
+      	    		*/
       	    		?>    	    		
-
+/*
       	  // Create and draw the visualization.
       	  //graficos possíveis pra esses dados
       	  //Area - Line - Bar - Column
@@ -903,13 +915,13 @@ function discoveryInfoTurma($id, $info) {
   		  chart.draw(data,
       	           {title:"Disciplinas - Melhores Notas - Combo",
       	            height:300,
-      	            /*colors: ['#920300'],*/
-      	            /*colors: ['#8B1A1A','#8B2323','#CD3333','#EE3B3B','#FF4040','#228B22'],*/
+      	            /*colors: ['#920300'],
+      	            colors: ['#8B1A1A','#8B2323','#CD3333','#EE3B3B','#FF4040','#228B22'],//
       	            hAxis: {title: "Disciplina"},
       	            vAxis:{title: 'Nota',
           	               maxValue: 10,
           	               minValue: 0
-          	               /*gridlines:{count:10}*/
+          	               //gridlines:{count:10}//
    	               		},
    	               	seriesType: "bars",
    	          		series: {5: {type: "line"}},
@@ -920,14 +932,20 @@ function discoveryInfoTurma($id, $info) {
       	      );
         }
 
-      
+*/
+
+/*
       function drawDisciplinasPioresNotas(){
       	// Create and populate the data table.
       	  var data = new google.visualization.DataTable();
             data.addColumn('string', 'Disciplina');
             data.addColumn('number', 'Media');
             //data.addColumn({type:'string',role:'tooltip'});
+            
+ */
       	  <?php
+      	  
+      	  /*
       	  $arr1 = disciplinasPioresNotas();
       	    	  	echo 'data.addRows('.count($arr1).');';
       	    	  	$i = 0; 
@@ -944,8 +962,10 @@ function discoveryInfoTurma($id, $info) {
 //       	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
       	    					
       	    		}
+      	    		
+      	    		*/
       	    		?>    	    		
-
+/*
       	  // Create and draw the visualization.
       	  //graficos possíveis pra esses dados
       	  //Area - Line - Bar - Column
@@ -958,7 +978,7 @@ function discoveryInfoTurma($id, $info) {
       	            vAxis:{title: 'Nota',
       	            	   maxValue: 10,
           	               minValue: 0
-          	               /*gridlines:{count:10}*/
+          	               /*gridlines:{count:10}//
    	               		},
    	               	pointSize: 5,
    	                allowHtml: true
@@ -966,13 +986,20 @@ function discoveryInfoTurma($id, $info) {
       	      );
         }
 
+*/
+
+
+/*
       function drawCursosGeralNotas(){
         	// Create and populate the data table.
         	  var data = new google.visualization.DataTable();
               data.addColumn('string', 'Curso');
               data.addColumn('number', 'Media');
               //data.addColumn({type:'string',role:'tooltip'});
+              
+         */
         	  <?php
+        	  /*
         	  $arr1 = cursosGeralNotas();
         	    	  	echo 'data.addRows('.count($arr1).');';
         	    	  	$i = 0; 
@@ -989,8 +1016,10 @@ function discoveryInfoTurma($id, $info) {
 //         	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
         	    					
         	    		}
+        	    		
+        	    		*/
         	    		?>    	    		
-
+/*
         	  // Create and draw the visualization.
         	  //graficos possíveis pra esses dados
         	  //Area - Line - Bar - Column
@@ -1003,7 +1032,7 @@ function discoveryInfoTurma($id, $info) {
         	            vAxis:{title: 'Nota',
         	            	   maxValue: 10,
             	               minValue: 0
-            	               /*gridlines:{count:10}*/
+            	               //gridlines:{count:10}//
      	               		},
      	               	pointSize: 5,
      	                allowHtml: true
@@ -1011,91 +1040,10 @@ function discoveryInfoTurma($id, $info) {
         	      );
           }
 
-      function drawLabsGeralNotas(){
-      	// Create and populate the data table.
-      	  var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Laboratório');
-            data.addColumn('number', 'Media');
-            //data.addColumn({type:'string',role:'tooltip'});
-      	  <?php
-      	  $arr1 = labsGeralNotas();
-      	    	  	echo 'data.addRows('.count($arr1).');';
-      	    	  	$i = 0; 
-      	    		for($i; $i <count($arr1); $i++){
-      	    			$d = utf8_encode($arr1[$i]["nomeLaboratorio"]);
-      	    			$m = escalaDecimal($arr1[$i]["media"]);
-      	    			
-//       	    			$htmlTooltip = utf8_encode($arr1[$i]["nomeProfessor"]).'\n';
-//       	    			$htmlTooltip .= utf8_encode($arr1[$i]["nomeDisciplina"]).'\n';
-//       	    			$htmlTooltip .= "Nota: ".escalaDecimal($arr1[$i]["media"]);
-      	    			
-      	    			echo 'data.setValue('.$i.', 0, \''.$d.'\');';
-      	    			echo 'data.setValue('.$i.', 1, '.$m.');';   
-//       	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
-      	    					
-      	    		}
-      	    		?>    	    		
+  */
 
-      	  // Create and draw the visualization.
-      	  //graficos possíveis pra esses dados
-      	  //Area - Line - Bar - Column
-      	  chart = new google.visualization.ColumnChart(document.getElementById('chartLabsGeralNotas'));
-  		  chart.draw(data,
-      	           {title:"Laboratorios - Geral",
-      	            height:300,
-      	            colors: ['#920300'],
-      	            hAxis: {title: "Laboratório"},
-      	            vAxis:{title: 'Nota',
-      	            	   maxValue: 10,
-          	               minValue: 0
-          	               /*gridlines:{count:10}*/
-   	               		},
-   	               	pointSize: 5,
-   	                allowHtml: true
-      	           }
-      	      );
-        }
-      
-      function drawChart() {
 
-    	  var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Dia');
-          data.addColumn('number', 'Acessos');
-    	  <?php
-    	  	echo 'data.addRows('.count($array_relatorio_log).');';
-    	  	$i = 0; 
-    		for($i; $i <count($array_relatorio_log); $i++){
-    			$d = date_to_ptbr($array_relatorio_log[$i]["dia"]);
-    			$t = $array_relatorio_log[$i]["qtd"];
-    			
-    			echo 'data.setValue('.$i.', 0, \''.$d.'\');';
-    			echo 'data.setValue('.$i.', 1, '.$t.');';       	
-    					
-    		}
-    		?>
-        
-
-        var options = {
-          title: 'Quantidade de Acessos',
-          hAxis:{title:'Dias'},
-          vAxis:{title:'Acessos'},
-          height: 300,
-          pointSize: 5
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        //drawProfessor();
-        //drawDisciplinasMelhoresNotas();
-        
-        //drawDisciplinasMelhoresNotasCombo();
-        //drawDisciplinasPioresNotas();
-        //drawCursosGeralNotas();
-        //drawLabsGeralNotas();
-        
-        drawDashBoard();
-      }
-      
+  
       
     </script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
@@ -1105,26 +1053,9 @@ function discoveryInfoTurma($id, $info) {
 
 <body style="background: #fafafa;">
 
-
-
-
-
-
-
-
-
 <?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
-	
-	
-	
-	
-	
-	
-	
-		
-	
-	
+
 	
 <?php } ?>
 
@@ -1140,15 +1071,16 @@ function discoveryInfoTurma($id, $info) {
 
         <h3>Relat&oacute;rios</h3>
         
+        <ul>
+        	<li><a href="../Controller/relatorioController.php?relatorio_id=1">Acessos</a></li>
+        	<li><a href="../Controller/relatorioController.php?relatorio_id=2">Laboratorios</a></li>
+        	<li><a href="../Controller/relatorioController.php?relatorio_id=3">Disciplinas</a></li>
+        </ul>
+        
 <!--         <div id="questionarios"> -->
 
-        		<div id="chart_div" style="width: 900px; height: 300px;"></div>
-<!--       		<div id="chart1" style="width: 900px; height: 300px;"></div>
-        		<div id="chartDisciplinasMelhoresNotas" style="width: 900px; height: 300px;"></div>
-        		<div id="chartDisciplinasMelhoresNotasCombo" style="width: 900px; height: 300px;"></div>
-        		<div id="chartDisciplinasPioresNotas" style="width: 900px; height: 300px;"></div>
-        		<div id="chartCursosGeralNotas" style="width: 900px; height: 300px;"></div>
-        		<div id="chartLabsGeralNotas" style="width: 900px; height: 300px;"></div> -->
+        		<div id="chart_div" style="width: '100%'; height: 300px;"></div>
+
         		<div id="dashboard">
       
 		            <div id="control1"></div>

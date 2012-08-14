@@ -451,6 +451,23 @@ function isUsuario($login, $senha) {
 		return false;
 	}
 	else{
+		
+		//pega todos os cursos da instituicao
+		$turma = new Turma();
+		$turma->alias("turma");
+		$turma->select("turma.curso, turma.coordenadorId");
+		$turma->group("turma.curso");
+		$qtdCursos = $turma->find();
+		
+		
+		$cursos_coordenados = array();
+		while( $turma->fetch()) {
+			$cursos_coordenados[] = $turma->curso;
+		}
+		
+		$_SESSION["s_cursos_coordenados"] = $cursos_coordenados;
+		
+		
 		//encontrou retorna o usuario
 		return $usuarioLogado;
 	}
