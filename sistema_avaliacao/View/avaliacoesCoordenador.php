@@ -598,9 +598,12 @@ $(function() {
     
     	}
 
-    	if($coordenadores_avaliados->fetch() != "" && $professores_avaliados->fetch() != "" && $auto_avaliacao_realizada != 0 && $instituicao_foi_avaliada != 0){
-    		echo "<h4>Não existem avaliações pendentes.</h4>";
+    	if($avaliou_tudo == true){
+    		echo "<h4>Você concluiu todas as avaliações. A instituição agradece a sua colaboração.</h4>";
     	}
+//     	if($coordenadores_avaliados->fetch() != "" && $professores_avaliados->fetch() != "" && $auto_avaliacao_realizada != 0 && $instituicao_foi_avaliada != 0){
+//     		echo "<h4>Não existem avaliações pendentes.</h4>";
+//     	}
     	
     	?>
     	

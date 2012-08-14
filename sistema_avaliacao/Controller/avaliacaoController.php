@@ -313,6 +313,9 @@ function avaliacaoController() {
 			if($subtipo == "Auto-avaliação-professor"){
 				$item_avaliado = $usuarioLogado->getId();
 			}
+			if(substr($subtipo, 0, 4) == "Lab_"){
+				$item_avaliado = utf8_decode($subtipo);
+			}
 		
 			$avaliador = $usuarioLogado->getId();
 		

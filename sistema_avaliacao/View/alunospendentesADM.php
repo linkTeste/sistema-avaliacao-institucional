@@ -7,6 +7,7 @@ require '../lumine-conf.php';
 $cfg = new Lumine_Configuration( $lumineConfig );
 
 require_once '../system/application/models/dao/Aluno.php';
+require_once '../system/application/models/dao/Usuario.php';
 require_once '../system/application/models/dao/Turma.php';
 require_once '../system/application/models/dao/TurmaHasAluno.php';
 require_once '../system/application/models/dao/Professor.php';
@@ -151,7 +152,9 @@ google.load("visualization", "1", {
     	}
     	else{
     		//pega o primeiro curso como sendo o default
-    		$where_curso = "and turma.curso='".$cursos_coordenados[0]."'";
+    		//$where_curso = "and turma.curso='".$cursos_coordenados[0]."'";
+    		//pega todos os cursos
+    		$where_curso = "";
     	}
     	
     	if(isset($_POST["turma-selecionada"]) && $_POST["turma-selecionada"] != ""){
