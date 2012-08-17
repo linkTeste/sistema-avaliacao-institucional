@@ -467,8 +467,11 @@ $(function() {
     	    	
     	    	
 		// fecha auto-avaliacao----------------------
+			if(($auto_avaliacao_realizada != 0) && ($instituicao_foi_avaliada != 0) && $coordenadores_avaliados->fetch() != ""){
+    		echo "<h4>Você concluiu todas as avaliações. A instituição agradece a sua colaboração.</h4>";
+    	}
+    	
 
-		
     		
     		
 
@@ -479,6 +482,66 @@ $(function() {
         <br />
         <div class="white">
         <h3>Avaliações Realizadas</h3>
+
+      <?php
+        //verifica avaliacoes dos laboratorios, pendentes
+        for ($i = 0; $i < sizeof($laboratorios); $i++) {
+        	if($laboratorios[$i]["usado"] == "sim"){
+        		$lab_avaliado = 0;
+        		 
+        		$lab = new Laboratorio();
+        		$lab->get($laboratorios[$i]["id"]);
+        		 
+        		//verifica se foi avaliado
+        		$professorC = new Professor();
+        		$professorC->get($id_professor);
+        		 
+        		$professorC->alias('pC');
+        		 
+        		$tC = new Turma();
+        		$avC = new Avaliacao();
+        		$professorC->join($tC,'INNER','tC');
+        		 
+        		//ra = id na taCela aluno
+        		//avaliador = correspondente na taCela avaliacao
+        		$professorC->join($avC, 'INNER', 'avC', "id", "avaliador");
+        		$professorC->select("tC.periodoLetivo, avC.dataAvaliacao, pC.id, avC.avaliador");
+        		$professorC->where("tC.periodoLetivo = '".$periodo_atual."' and avC.itemAvaliado= 'Lab_".$lab->getNome()."' and pC.id = avC.avaliador");
+        		$professorC->groupBy("avC.itemAvaliado");
+        		        		 
+        			$lab_avaliado = $professorC->find(true);
+        			if($lab_avaliado == 0){
+        				$laboratorios[$i]["avaliado"] = "não";
+        			}else{
+        				$laboratorios[$i]["avaliado"] = "sim";
+        			}
+        			 
+        			 
+        			if($laboratorios[$i]["avaliado"] == "sim"){
+        ?>
+        <div id="avaliacao_box">
+        <div class="div1">
+        <div class="photo">
+        <img src="css/images/avatar/default_instituicao.png" alt="" />
+        </div>
+        <div class="description">
+        <h4>FACULDADE UNICAMPO</h4>
+        <h4><span>Laboratorio de <?php echo utf8_encode($lab->getNome())?></span></h4>
+                </div>
+                </div>
+                
+                <div class="div2">
+                <img class="ok" src="css/images/img-ok.png" /><br />
+                <h4>Avaliado em:</h4>
+                <h4><?php echo datetime_to_ptbr($professorC->data_avaliacao);?></h4>
+                    	</div>
+                    	    	
+                    	</div>
+                <?php			
+                		}//fecha IF
+                	}//fecha IF
+                }//fecha FOR
+                ?>
         <?php
         
         
@@ -544,7 +607,7 @@ $(function() {
 			    	    	<div class="div2">
 			    	    		<img class="ok" src="css/images/img-ok.png" /><br />
 			    	    	    <h4>Avaliado em:</h4>
-			    	    	    <h4><?php echo $coordenadores_avaliados->data_avaliacao;?></h4>
+			    	    	    <h4><?php echo datetime_to_ptbr($coordenadores_avaliados->data_avaliacao);?></h4>
 			    	    	</div>
 			    	    	    	
 			    	    	</div>
