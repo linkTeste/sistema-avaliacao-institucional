@@ -1,4 +1,5 @@
 <?php
+
 ///obs: os requires devem vir antes da sessao
 require '../lumine/Lumine.php';
 require '../lumine-conf.php';

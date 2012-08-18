@@ -88,8 +88,8 @@ function avaliacaoController() {
 		if(isset($_GET["subtipo"])){
 			$subtipo = $_GET["subtipo"];
 		}
-
-					
+		
+							
 		if($subtipo == "Professor/Disciplina"){
 			//pega a turma
 			if(isset($_GET["turma"])){
@@ -206,7 +206,7 @@ function avaliacaoController() {
 		if($userType == "Professor"){
 			$page = "avaliacaoProfessor.php";
 		}
-		if($userType == "Funcionário"){
+		if($userType == "Funcionario"){
 			$page = "avaliacaoFuncionario.php";
 		}
 		if($userType == "Aluno"){
@@ -501,6 +501,9 @@ function avaliacaoController() {
 		}
 		if($userType == "Professor"){
 			$page = "avaliacoesProfessor.php";
+		}
+		if($userType == "Funcionario"){
+			$page = "avaliacoesFuncionario.php";
 		}
 		if($userType == "Aluno"){
 			$page = "avaliacoes.php";

@@ -177,9 +177,10 @@ if(isset($_SESSION["s_usuario_logado"])){
 
 			<br />
 
-			<!--<a href="avaliacoes.php" class="btn-comecar-avaliacao" title="Começar Avaliação"></a>-->
-			<a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoesFuncionario.php");?>" class="botao botaoGoogleBlue">Começar
-				Avaliação</a>
+			<div style="margin: 0 auto; width: 280px;">
+				<a href="../Controller/pageController.php?pg=<?php echo codifica("help.php");?>" class="botao botaoGoogleBlue" style="margin: 0; float: left; width: 115px; " target="_blank1">Ver Instruções</a>
+				<a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoesFuncionario.php");?>" class="botao botaoGoogleBlue" style="width: 115px; margin: 0; ">Começar Avaliação</a>
+			</div>
 			<div class="clear"></div>
 			<br />
 		</div>
