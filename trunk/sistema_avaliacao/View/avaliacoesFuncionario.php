@@ -220,6 +220,7 @@ $(function() {
     		//debug
 //     		echo "instituicao foi avaliada";
     	}else{
+    		
     	?>
     	<div id="avaliacao_box">
     	<div class="div1">
@@ -243,7 +244,7 @@ $(function() {
     	    	
     	<?php
     	if($instituicao_foi_avaliada != 0){
-    		echo "Nenhuma avalia&ccedil;&atilde;o pendente";
+    		echo "<h4>Você concluiu todas as avaliações. A instituição agradece a sua colaboração.</h4>";
     	}
     	
     	

@@ -25,6 +25,10 @@ if($menu_caps){
 	<ul>
 	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("indexFuncionario.php");?>" title="P&aacute;gina Inicial" <?php echo $index_active;?>><?php echo strtoupper(strtr("Página Inicial" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?></a></li>
 	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoesFuncionario.php");?>" title="Avalia&ccedil;&otilde;es" <?php echo $avaliacoes_active;?>><?php echo strtoupper(strtr("Avaliações" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?></a></li>
+	<li><a
+			href="../Controller/pageController.php?pg=<?php echo codifica("help.php");?>" target="_blank1"
+			title="Ajuda"><?php echo strtoupper(strtr("Ajuda" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?>
+		</a></li>
 	</ul>
 	<?php include_once 'inc/info_usuario_inc.php';?>
 				</div>

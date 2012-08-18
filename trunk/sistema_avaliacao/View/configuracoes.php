@@ -185,6 +185,14 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
         		<li>Fechar Processo de Avaliação</li>
         		<li>Prorrogar Processo de Avaliação</li>
         	</ul>
+        	
+        	<div>
+        		<h3>Senhas: </h3>
+        		<?php
+        			echo passwordGenerator();
+        			echo "<br />";
+        		?>
+        	</div>
            </div>
         </div><!-- fecha div white -->
         
