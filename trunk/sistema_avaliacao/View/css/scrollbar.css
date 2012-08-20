@@ -8,24 +8,34 @@
 	
 */
 /* ----------- Estilização para barra deixar barra de rolagem igual à do Gmail ---------------------------------- */
-html::-webkit-scrollbar, textarea::-webkit-scrollbar {
+html::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+div::-webkit-scrollbar {
 	width:11px;
 	height:11px;
 	/*background: #EFEFEF;*/ /*Cor do fundo da barra*/
 	background: #fff;
 }
-html::-webkit-scrollbar-corner, textarea::-webkit-scrollbar-corner {
+html::-webkit-scrollbar-corner,
+textarea::-webkit-scrollbar-corner,
+div::-webkit-scrollbar-corner {
 	background: #fff;
 }
-html::-webkit-scrollbar-button:vertical, textarea::-webkit-scrollbar-button:vertical {
+html::-webkit-scrollbar-button:vertical,
+textarea::-webkit-scrollbar-button:vertical,
+div::-webkit-scrollbar-button:vertical {
 	height:1px;
 	display:block;
 }
-html::-webkit-scrollbar-button:horizontal, textarea::-webkit-scrollbar-button:horizontal {
+html::-webkit-scrollbar-button:horizontal,
+textarea::-webkit-scrollbar-button:horizontal,
+div::-webkit-scrollbar-button:horizontal {
 	width:1px;
 	display:block;
 }
-html::-webkit-scrollbar-thumb:vertical, textarea::-webkit-scrollbar-thumb:vertical {
+html::-webkit-scrollbar-thumb:vertical,
+textarea::-webkit-scrollbar-thumb:vertical,
+div::-webkit-scrollbar-thumb:vertical {
 	/*background-image: url(LINK DA IMAGEM );*/
 	/*background: #cdcdcd;*/
 	background-color: rgba(0,0,0,0.2);
@@ -35,12 +45,16 @@ html::-webkit-scrollbar-thumb:vertical, textarea::-webkit-scrollbar-thumb:vertic
 	border-right:none;
 	/*-webkit-border-radius: 8px;*/
 }
-html::-webkit-scrollbar-thumb:vertical:hover, textarea::-webkit-scrollbar-thumb:vertical:hover {
+html::-webkit-scrollbar-thumb:vertical:hover,
+textarea::-webkit-scrollbar-thumb:vertical:hover,
+div::-webkit-scrollbar-thumb:vertical:hover {
 	/*background-image: url(LINK DA IMAGEM );*/
 	background: #909090;
 		
 }
-html::-webkit-scrollbar-thumb:horizontal, textarea::-webkit-scrollbar-thumb:horizontal {
+html::-webkit-scrollbar-thumb:horizontal,
+textarea::-webkit-scrollbar-thumb:horizontal,
+div::-webkit-scrollbar-thumb:horizontal {
 	/*background-image: url(LINK DA IMAGEM );*/
 	/*background: #cdcdcd;*/
 	background-color: rgba(0,0,0,0.2);
@@ -49,34 +63,50 @@ html::-webkit-scrollbar-thumb:horizontal, textarea::-webkit-scrollbar-thumb:hori
 	/*border: 1px solid #A2A2A2;*/
 	border-bottom: none;
 }
-html::-webkit-scrollbar-thumb:horizontal:hover, textarea::-webkit-scrollbar-thumb:horizontal:hover {
+html::-webkit-scrollbar-thumb:horizontal:hover,
+textarea::-webkit-scrollbar-thumb:horizontal:hover,
+div::-webkit-scrollbar-thumb:horizontal:hover {
 	background: #909090;
 }
 
-html::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb  {
+html::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb  {
 	/*background-image: url(LINK DA IMAGEM );*/
 }
-html::-webkit-scrollbar-thumb:hover, textarea::-webkit-scrollbar-thumb:hover {
+html::-webkit-scrollbar-thumb:hover,
+textarea::-webkit-scrollbar-thumb:hover,
+div::-webkit-scrollbar-thumb:hover {
 	/*background-image: url(LINK DA IMAGEM );*/
 	border: 1px solid  #727272;
 }
-html::-webkit-scrollbar-track-piece, textarea::-webkit-scrollbar-track-piece {
+html::-webkit-scrollbar-track-piece,
+textarea::-webkit-scrollbar-track-piece,
+div::-webkit-scrollbar-track-piece {
 	background: none;
 }
-html::-webkit-scrollbar:vertical, textarea::-webkit-scrollbar:vertical {
+html::-webkit-scrollbar:vertical,
+textarea::-webkit-scrollbar:vertical,
+div::-webkit-scrollbar:vertical {
 	/*border-left: 1px solid #A2A2A2;*/
 }
 
 /*Fabio*/
-html::-webkit-scrollbar:vertical:hover, textarea::-webkit-scrollbar:vertical:hover {
+html::-webkit-scrollbar:vertical:hover, 
+textarea::-webkit-scrollbar:vertical:hover,
+div::-webkit-scrollbar:vertical:hover {
 	border-left: 1px solid #DADADA;
 	background: #F2F2F2;
 }
 /*--------*/
-html::-webkit-scrollbar:horizontal, textarea::-webkit-scrollbar:horizontal {
+html::-webkit-scrollbar:horizontal, 
+textarea::-webkit-scrollbar:horizontal,
+div::-webkit-scrollbar:horizontal {
 	/*border-top: 1px solid #DADADA;*/
 } 
-html::-webkit-scrollbar:horizontal:hover, textarea::-webkit-scrollbar:horizontal:hover {
+html::-webkit-scrollbar:horizontal:hover, 
+textarea::-webkit-scrollbar:horizontal:hover,
+div::-webkit-scrollbar:horizontal:hover{
 	border-top: 1px solid #DADADA;
 } 
 /* -------------------------------- Fim da Estilização da Barra de Rolagem -------------------------------------------------*/

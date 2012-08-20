@@ -120,6 +120,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
         <div id="questionarios">
         <h3>Aparência</h3>
         
+        <div id="themes">
         <?php
         $themes = array();
 			
@@ -176,23 +177,30 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
    						}
    						?>           
         	<br style="clear: both;" />
+        	</div>
         	<hr />
         	
+        	<div id="alertas_config">
         	<h3>Alertas</h3>
-        	
-        	<ul>
-        		<li>Abrir Processo de Avaliação</li>
-        		<li>Fechar Processo de Avaliação</li>
-        		<li>Prorrogar Processo de Avaliação</li>
-        	</ul>
-        	
-        	<div>
-        		<h3>Senhas: </h3>
-        		<?php
-        			echo passwordGenerator();
-        			echo "<br />";
-        		?>
+        	<p>Enviar email para usuário quando:</p>
+        	<label>Abrir processo de avaliação
+        		<input type="checkbox" value="1" />
+        	</label><br />
+        	<label>Fechar processo de avaliação
+        		<input type="checkbox" value="1" />
+        	</label><br />
+        	<label>Prorrogar processo de avaliação
+        		<input type="checkbox" value="1" />
+        	</label><br />
         	</div>
+        	
+<!--         	<div> -->
+<!--         		<h3>Senhas: </h3> -->
+         		<?php
+//         			echo passwordGenerator();
+//         			echo "<br />";
+        		?>
+<!--         	</div> -->
            </div>
         </div><!-- fecha div white -->
         
