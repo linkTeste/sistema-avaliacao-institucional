@@ -1072,9 +1072,12 @@ function labsGeralNotas() {
         <h3>Relat&oacute;rios</h3>
         
         <ul>
-        	<li><a href="../Controller/relatorioController.php?relatorio_id=1">Acessos</a></li>
-        	<li><a href="../Controller/relatorioController.php?relatorio_id=2">Laboratorios</a></li>
-        	<li><a href="../Controller/relatorioController.php?relatorio_id=3">Disciplinas</a></li>
+        	<li><a href="../Controller/relatorioController.php?relatorio_id=1">Acessos(Pronto)</a></li>
+        	<li><a href="../Controller/relatorioController.php?relatorio_id=2">Laboratorios(Em desenvolvimento)</a></li>
+        	<li><a href="../Controller/relatorioController.php?relatorio_id=3">Disciplinas(Em desenvolvimento)</a></li>
+        	<li>Cursos(Em desenvolvimento)</li>
+        	<li>Professores(Em desenvolvimento)</li>
+        	<li>Comentários(Em desenvolvimento)</li>
         </ul>
         
 <!--         <div id="questionarios"> -->

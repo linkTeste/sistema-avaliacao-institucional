@@ -800,7 +800,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(0, 0, 0, 0.5) 100% );
 	background: linear-gradient(top, rgba(69, 72, 77, 0.5) 0%,
 		rgba(0, 0, 0, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(          
+	filter: progid:DXImageTransform.Microsoft.gradient(           
 		                     
 		                     startColorstr='#8045484d', endColorstr='#80000000',
 		GradientType=0 );
@@ -841,7 +841,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
 	background: linear-gradient(top, rgba(255, 255, 255, 0.5) 0%,
 		rgba(246, 246, 246, 0.5) 47%, rgba(237, 237, 237, 0.5) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(          
+	filter: progid:DXImageTransform.Microsoft.gradient(           
 		                     
 		                     startColorstr='#80ffffff', endColorstr='#80ededed',
 		GradientType=0 );
@@ -1400,7 +1400,7 @@ thead th {
 		rgba(204, 204, 204, 1) 100% );
 	background: -ms-linear-gradient(top, rgba(238, 238, 238, 1) 0%,
 		rgba(204, 204, 204, 1) 100% );
-	filter: progid:DXImageTransform.Microsoft.gradient(     
+	filter: progid:DXImageTransform.Microsoft.gradient(      
 		                     
 		                     startColorstr='#eeeeee', endColorstr='#cccccc',
 		GradientType=0 );
@@ -1675,6 +1675,11 @@ jquery-checkbox {
 }
 
 /* ------- Themes ------*/
+#themes {
+	height: 250px;
+	overflow-y: scroll;
+}
+
 .theme_preview {
 	margin: 15px;
 	border: 1px solid #F3F3F3;
