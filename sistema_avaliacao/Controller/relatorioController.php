@@ -43,7 +43,7 @@ session_start();
  * @since 12/01/2012
  * controller do questionario - respons�vel por tratar as requisi��es via get, post ou session.
  * Controla o fluxo da aplica��o definindo qual p�gina chamar de acordo com a action recebida.
- **/
+**/
 //class questionarioController {
 $action;
 $page;
@@ -61,7 +61,7 @@ avaliacaoController();
  * @author Fabio Ba�a
  * @since 12/01/2012
  * fun��o que verifica a action e direciona para a action espec�fica
- **/
+**/
 function avaliacaoController() {
 	//decodifica o q veio via GET
 	if(isset($_GET["p"])){
@@ -90,7 +90,7 @@ function avaliacaoController() {
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
 	if($relatorio_id == 3){
-		$relatorio = relatorioDisciplina();
+		$relatorio = relatorioDisciplina2();
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
 
@@ -130,9 +130,9 @@ function relatorioAcessos() {
 	$lista->join($a, 'LEFT', 'a', "usuario", "ra");
 
 	$lista->select("l.id, l.usuario, l.hora, l.ip, l.tipoUsuario,
-	                	prof.nome as prof_nome, prof.id as prof_id, 
-	                	u.id as u_id, u.nome as u_nome,
-	                	a.ra as a_id, a.nome as a_nome, count(*) as total, DATE(hora) as dia");
+			prof.nome as prof_nome, prof.id as prof_id,
+			u.id as u_id, u.nome as u_nome,
+			a.ra as a_id, a.nome as a_nome, count(*) as total, DATE(hora) as dia");
 	$lista->where("l.usuario != '1'");
 	$lista->order("dia ASC");
 	$lista->groupBy("dia");
@@ -147,10 +147,10 @@ function relatorioAcessos() {
 	}
 
 	$chart = "function drawChart() {
-	
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', 'Dia');
-		data.addColumn('number', 'Acessos');";
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Dia');
+			data.addColumn('number', 'Acessos');";
 
 	$chart .= 'data.addRows('.count($array_relatorio_log).');';
 
@@ -166,17 +166,17 @@ function relatorioAcessos() {
 
 
 	$chart .= "var options = {
-	          title: 'Quantidade de Acessos',
-	          hAxis:{title:'Dias'},
-	          vAxis:{title:'Acessos'},
-	          height: 300,
-	          pointSize: 5
-	        };";
+			title: 'Quantidade de Acessos',
+			hAxis:{title:'Dias'},
+			vAxis:{title:'Acessos'},
+			height: 300,
+			pointSize: 5
+};";
 
 	$chart .= "var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-	        chart.draw(data, options);
-	        
-	      }";
+			chart.draw(data, options);
+			 
+}";
 
 	return $chart;
 
@@ -213,12 +213,12 @@ function relatorioLaboratorios() {
 
 
 	$chart = "function drawChart(){
-      	  	  var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Laboratório');
-            data.addColumn('number', 'Media');
-            //data.addColumn({type:'string',role:'tooltip'});
-          
-      	  ";
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Laboratório');
+			data.addColumn('number', 'Media');
+			//data.addColumn({type:'string',role:'tooltip'});
+
+			";
 
 	$arr1 = $avaliacoes;
 	$chart .= 'data.addRows('.count($arr1).');';
@@ -241,23 +241,23 @@ function relatorioLaboratorios() {
 	//graficos possíveis pra esses dados
 	//Area - Line - Bar - Column
 	$chart .= "chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-  		  chart.draw(data,
-      	           {title:'Laboratorios - Geral',
-      	            height:300,
-      	            colors: ['#920300'],
-      	            hAxis: {title: 'Laboratório'},
-      	            vAxis:{title: 'Nota',
-      	            	   maxValue: 10,
-          	               minValue: 0
-          	               //gridlines:{count:10}//
-   	               		},
-   	               	pointSize: 5,
-   	                allowHtml: true
-      	           }
-      	      );
-        }
-        
-        ";
+			chart.draw(data,
+			{title:'Laboratorios - Geral',
+			height:300,
+			colors: ['#920300'],
+			hAxis: {title: 'Laboratório'},
+			vAxis:{title: 'Nota',
+			maxValue: 10,
+			minValue: 0
+			//gridlines:{count:10}//
+},
+			pointSize: 5,
+			allowHtml: true
+}
+			);
+}
+
+			";
 
 	return $chart;
 
@@ -281,7 +281,7 @@ function relatorioDisciplina() {
 	$results;
 	$av = new Avaliacao();
 	$av->select("processo_avaliacao_id, questionario_has_questao_questionario_id,
-		questionario_has_questao_questao_id, item_avaliado, nota, tipo_avaliacao, subtipo_avaliacao, avaliador");
+			questionario_has_questao_questao_id, item_avaliado, nota, tipo_avaliacao, subtipo_avaliacao, avaliador");
 
 	$av->where("subtipo_avaliacao = 'Professor/Disciplina' and item_avaliado = 7074");
 
@@ -362,20 +362,20 @@ function relatorioDisciplina() {
 			$media = ($soma/$qtd_questoes)/$qtd_avaliadores;
 
 			$results[$posAtual] = array("processo_avaliacao_id" => $av->processoAvaliacaoId,
-							"questionario_id" => $av->questionarioHasQuestaoQuestionarioId,
-							"questao_id" => $av->questionarioHasQuestaoQuestaoId,
-							"itemAvaliado" => $av->item_avaliado,
-							"nota5" => $nota5,
-							"nota4" => $nota4,
-							"nota3" => $nota3,
-							"nota2" => $nota2,
-							"nota1" => $nota1,
-							"media" => 5,
-			/*"soma" => $soma,
-			 "qtd" => $qtd_questoes,
+					"questionario_id" => $av->questionarioHasQuestaoQuestionarioId,
+					"questao_id" => $av->questionarioHasQuestaoQuestaoId,
+					"itemAvaliado" => $av->item_avaliado,
+					"nota5" => $nota5,
+					"nota4" => $nota4,
+					"nota3" => $nota3,
+					"nota2" => $nota2,
+					"nota1" => $nota1,
+					"media" => 5,
+					/*"soma" => $soma,
+					 "qtd" => $qtd_questoes,
 			"qtdAV" => $qtd_avaliadores,*/
-				"tipo_avaliacao" => $av->tipoAvaliacao,
-				"subtipo_avaliacao" => $av->subtipoAvaliacao);
+					"tipo_avaliacao" => $av->tipoAvaliacao,
+					"subtipo_avaliacao" => $av->subtipoAvaliacao);
 		}
 
 	}
@@ -384,27 +384,27 @@ function relatorioDisciplina() {
 	// Create and populate the data table.
 	/*var data = google.visualization.arrayToDataTable([
 	 ['Disciplina', '5 estrelas', '4 estrelas', '3 estrelas', '2 estrelas', '1 estrela', 'Média'],
-	['Introdução à Administração',  5,      8,         6,             22,           0,      8.2],
-	['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
-	['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
-	['Filosofia',  3,      5,       2,             1,           8,     3.8]
-	]);*/
+			['Introdução à Administração',  5,      8,         6,             22,           0,      8.2],
+			['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
+			['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
+			['Filosofia',  3,      5,       2,             1,           8,     3.8]
+			]);*/
 
 	$chart = "function drawChart(){
-		     	
-      	var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Disciplina');
-        data.addColumn('number', '5 estrelas');
-        data.addColumn('number', '4 estrelas');
-        data.addColumn('number', '3 estrelas');
-        data.addColumn('number', '2 estrelas');
-        data.addColumn('number', '1 estrela');
-        data.addColumn('number', 'Média');
-        
-        ";
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Disciplina');
+			data.addColumn('number', '5 estrelas');
+			data.addColumn('number', '4 estrelas');
+			data.addColumn('number', '3 estrelas');
+			data.addColumn('number', '2 estrelas');
+			data.addColumn('number', '1 estrela');
+			data.addColumn('number', 'Média');
+
+			";
 
 	$arr1 = $results;
-		
+
 	$chart .= 'data.addRows('.sizeof($arr1).');';
 	$i = 0;
 	for($i; $i <sizeof($arr1); $i++){
@@ -424,117 +424,368 @@ function relatorioDisciplina() {
 
 
 	$chart .= "var barChart = new google.visualization.ChartWrapper({
-      	    		    'chartType': 'ColumnChart',
-      	    		    'containerId': 'chart1',
-      	    		    'options': {
-      	    		      'width': 900,
-      	    		      'height': 300,
-      	    		      'hAxis': {'minValue': 0, 'maxValue': 10},
-      	    		      'chartArea': {top: 0, right: 0, bottom: 0},
-      	    		      'series': {5: {type: 'line'}},
-      	    		      'pointSize': 5,
-      	    		      'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF']
-      	    		    }
-      	    		  });
-      	    		  
-								";
+			'chartType': 'ColumnChart',
+			'containerId': 'chart1',
+			'options': {
+			'width': 900,
+			'height': 300,
+			'hAxis': {'minValue': 0, 'maxValue': 10},
+			'chartArea': {top: 0, right: 0, bottom: 0},
+			'series': {5: {type: 'line'}},
+			'pointSize': 5,
+			'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF']
+}
+});
+			 
+			";
 
 	// Define a slider control for the Age column.
 	$chart .= "var slider = new google.visualization.ControlWrapper({
-      	    		    'controlType': 'NumberRangeFilter',
-      	    		    'containerId': 'control1',
-      	    		    'options': {
-      	    		      'filterColumnLabel': 'Média',
-      	    		    'ui': {'labelStacking': 'vertical'}
-      	    		    }
-      	    		  });
-      	    		  
-      	    		  ";
+			'controlType': 'NumberRangeFilter',
+			'containerId': 'control1',
+			'options': {
+			'filterColumnLabel': 'Média',
+			'ui': {'labelStacking': 'vertical'}
+}
+});
+			 
+			";
 
 	// Define a category picker control for the Gender column
 	$chart .= "var categoryPicker = new google.visualization.ControlWrapper({
-      	    		    'controlType': 'CategoryFilter',
-      	    		    'containerId': 'control2',
-      	    		    'options': {
-      	    		      'filterColumnLabel': 'Disciplina',
-      	    		      'ui': {
-      	    		      'labelStacking': 'vertical',
-      	    		        'allowTyping': false,
-      	    		        'allowMultiple': true
-      	    		      }
-      	    		    }
-      	    		  });      	    		  
-      	    		  
-      	    		  ";
+			'controlType': 'CategoryFilter',
+			'containerId': 'control2',
+			'options': {
+			'filterColumnLabel': 'Disciplina',
+			'ui': {
+			'labelStacking': 'vertical',
+			'allowTyping': false,
+			'allowMultiple': true
+}
+}
+});
+			 
+			";
 
 	// Define a table
 	$chart .= "var table = new google.visualization.ChartWrapper({
-      	    		    'chartType': 'Table',
-      	    		    'containerId': 'chart2',
-      	    		    'options': {
-      	    		      'width': '900px',
-      	    		      'allowHtml': true
-      	    		    }
-      	    		  });
-      	    		  
-      	    		  ";
+			'chartType': 'Table',
+			'containerId': 'chart2',
+			'options': {
+			'width': '900px',
+			'allowHtml': true
+}
+});
+			 
+			";
 
 	$chart .= "var formatter = new google.visualization.ColorFormat();
-      	    	  formatter.addRange(0, 5, '#CC0000', null);
-      	    	  formatter.addRange(5, 10, '#006600', null);
-      	    	  formatter.format(data, 6); // Apply formatter to second column
-      	    	  
-      	    	  ";
+			formatter.addRange(0, 5, '#CC0000', null);
+			formatter.addRange(5, 10, '#006600', null);
+			formatter.format(data, 6); // Apply formatter to second column
+
+			";
 
 	// Create a dashboard
 	$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard')).
-      	    		      // Establish bindings, declaring the both the slider and the category
-      	    		      // picker will drive both charts.
-      	    		      bind([slider, categoryPicker], [barChart, table]).
-      	    		      // Draw the entire dashboard.
-      	    		      draw(data);
-      	    		      }
-      	  ";  	
+			// Establish bindings, declaring the both the slider and the category
+			// picker will drive both charts.
+			bind([slider, categoryPicker], [barChart, table]).
+			// Draw the entire dashboard.
+			draw(data);
+}
+			";
 	return $chart;
+
+}
+
+
+/**
+ * @name relatorioDisciplina
+ * @author Fabio Ba�a
+ * @since 05/09/2012 17:35:31
+ * insert a description here
+ **/
+function relatorioDisciplina2() {
+
+	// o q eu preciso:
+	// id do ProcessoAvaliacao
+	// Curso
+	// instrumento(tipo de avaliacao)
+	// avaliador
+	// questionario usado
+
+	$processo_id = 2;
+	$quest_id = 21;
+	$tipo_avaliacao = "Aluno";
+	$subtipo_avaliacao = "Instituição";
+	$item_avaliado = "Instituição";
+
+	$questionario = new Questionario();
+	$questionario->get($quest_id);
+	$questionario->alias('q');
+	$q = new Questao();
+	$qhq = new QuestionarioHasQuestao();
+
+	$questionario->join($q,'INNER','qu');
+	$questionario->join($qhq,'INNER','qhq');
+
+	$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+
+	$questionario->where("qu.id = qhq.questaoId");
+	$questionario->order("qhq.ordem");
+
+	$questionario->find();
+
+	while( $questionario->fetch() ) {
+
+		$av = new Avaliacao();
+		$av->select("processo_avaliacao_id, questionario_has_questao_questionario_id,
+				questionario_has_questao_questao_id, item_avaliado, nota, tipo_avaliacao, subtipo_avaliacao, avaliador");
+
+		$av->where("processo_avaliacao_id = '$processo_id' and tipo_avaliacao = '$tipo_avaliacao'
+				and subtipo_avaliacao = '$subtipo_avaliacao' and item_avaliado = '$item_avaliado'
+				and questionario_has_questao_questao_id = '$questionario->id' ");
+
+		$av->order("nota ASC");
+		$av->find();
+
+		//
+		$nota5 = 0;
+		$nota4 = 0;
+		$nota3 = 0;
+		$nota2 = 0;
+		$nota1 = 0;
+
+		$soma = 0;
+
+		$qtd_avaliadores = 0;
+		while ($av->fetch()) {
+			switch ($av->nota) {
+				case 5:
+					$nota5++;
+					$soma += 5;
+					break;
+				case 4:
+					$nota4++;
+					$soma += 4;
+					break;
+				case 3:
+					$nota3++;
+					$soma += 3;
+					break;
+				case 2:
+					$nota2++;
+					$soma += 2;
+					break;
+				case 1:
+					$nota1++;
+					$soma += 1;
+					break;
+			}
+			
+			$qtd_avaliadores++;
+				
+		}
 		
-}
-
-
-function discoveryInfoTurma($id, $info) {
-
-	$infoRetorno;
-	
-	$turma = new Turma();
-
-
-	if($info == "nomeDisciplina"){	
-	
-		$turma->get($id);
-		$infoRetorno = $turma->nomeDisciplina;
-
-}
-	if($info == "nomeProfessor"){
+		$resposta[] = array("processo_avaliacao_id" => $processo_id,
+				"questionario_id" => $quest_id,
+				"questao_id" => $questionario->id,
+				"questao_texto" => trim($questionario->texto),
+				"itemAvaliado" => $item_avaliado,
+				"nota5" => $nota5,
+				"nota4" => $nota4,
+				"nota3" => $nota3,
+				"nota2" => $nota2,
+				"nota1" => $nota1,
+				"media" => $soma/$qtd_avaliadores,
+				"tipo_avaliacao" => $tipo_avaliacao,
+				"subtipo_avaliacao" => $subtipo_avaliacao);
 		
-$turma->get($id);
-		$infoRetorno = $turma->professorId;
-	
-}
-	if($info == "nomeCoordenador"){
 		
-$turma->get("curso", $id);
-		$infoRetorno = $turma->coordenadorId;
-	
-}
-	if($info == "nomeCurso"){
+
 		
-$turma->get("curso", $id);
-		$infoRetorno = $turma->curso;
-	
-}
-
-	return $infoRetorno;
-
-}
+			//
 
 
-?>
+
+		}
+
+		//debug
+		//foreach ($resposta as $resp){
+		//	print_r($resp);
+		//	echo "<br />";
+		//}
+		//print_r($resposta);
+		//exit;
+
+
+		// Create and populate the data table.
+		/*var data = google.visualization.arrayToDataTable([
+		 ['Disciplina', '5 estrelas', '4 estrelas', '3 estrelas', '2 estrelas', '1 estrela', 'Média'],
+				['Introdução à Administração',  5,      8,         6,             22,           0,      8.2],
+				['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
+				['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
+				['Filosofia',  3,      5,       2,             1,           8,     3.8]
+				]);*/
+
+		$chart = "function drawChart(){
+
+				var data = new google.visualization.DataTable();
+				data.addColumn('string', 'Questao');
+				data.addColumn('number', '5 estrelas');
+				data.addColumn('number', '4 estrelas');
+				data.addColumn('number', '3 estrelas');
+				data.addColumn('number', '2 estrelas');
+				data.addColumn('number', '1 estrela');
+				data.addColumn('number', 'Media');
+
+				";
+
+		$arr1 = $resposta;
+
+		$chart .= 'data.addRows('.sizeof($arr1).');';
+		$i = 0;
+		for($i; $i <sizeof($arr1); $i++){
+			$d = utf8_encode($arr1[$i]["questao_texto"]);
+			//$m = escalaDecimal($arr1[$i]["media"]);
+			$m = $arr1[$i]["media"];
+			
+			$item = $arr1[$i]["tipo_avaliacao"];
+
+			$chart .=  'data.setValue('.$i.', 0, \''.$d.'\');';
+			$chart .=  'data.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
+			$chart .=  'data.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
+			$chart .=  'data.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
+			$chart .=  'data.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
+			$chart .=  'data.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
+			$chart .=  'data.setValue('.$i.', 6, '.$m.');';
+			
+			//print_r($arr1[$i]);
+
+		}
+
+
+		$chart .= "var barChart = new google.visualization.ChartWrapper({
+				'chartType': 'ColumnChart',
+				'containerId': 'chart1',
+				'options': {
+				'width': '100%',
+				'height': 400,
+				'hAxis': {'minValue': 0, 'maxValue': 10},
+				'chartArea': {top: 0, right: 0, bottom: 0},
+				'series': {5: {type: 'line'}},
+				'pointSize': 5,
+				'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF']
+	}
+	});
+
+				";
+
+		// Define a slider control for the Age column.
+		$chart .= "var slider = new google.visualization.ControlWrapper({
+				'controlType': 'NumberRangeFilter',
+				'containerId': 'control1',
+				'options': {
+				'filterColumnLabel': 'Media',
+				'ui': {'labelStacking': 'vertical'}
+	}
+	});
+
+				";
+
+		// Define a category picker control for the Gender column
+		$chart .= "var categoryPicker = new google.visualization.ControlWrapper({
+				'controlType': 'CategoryFilter',
+				'containerId': 'control2',
+				'options': {
+				'filterColumnLabel': 'Questao',
+				'ui': {
+				'labelStacking': 'vertical',
+				'allowTyping': false,
+				'allowMultiple': true
+	}
+	}
+	});
+
+				";
+
+		// Define a table
+		$chart .= "var table = new google.visualization.ChartWrapper({
+				'chartType': 'Table',
+				'containerId': 'chart2',
+				'options': {
+				'width': '900px',
+				'allowHtml': true
+	}
+	});
+
+				";
+
+		$chart .= "var formatter = new google.visualization.ColorFormat();
+				formatter.addRange(0, 3.9, '#CC0000', null);
+				formatter.addRange(3.9, 5, '#006600', null);
+				formatter.format(data, 6); 
+
+				";
+		
+		$chart .= "var formatter2 = new google.visualization.NumberFormat(
+				{pattern: '#.##'});
+				formatter2.format(data, 6);
+		
+				";
+
+		
+		
+		// Create a dashboard
+		$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard')).
+				// Establish bindings, declaring the both the slider and the category
+				// picker will drive both charts.
+				bind([slider, categoryPicker], [barChart, table]).
+				// Draw the entire dashboard.
+				draw(data);
+	}
+				";
+		return $chart;
+
+	}
+
+
+	function discoveryInfoTurma($id, $info) {
+
+		$infoRetorno;
+
+		$turma = new Turma();
+
+
+		if($info == "nomeDisciplina"){
+
+			$turma->get($id);
+			$infoRetorno = $turma->nomeDisciplina;
+
+		}
+		if($info == "nomeProfessor"){
+
+			$turma->get($id);
+			$infoRetorno = $turma->professorId;
+
+		}
+		if($info == "nomeCoordenador"){
+
+			$turma->get("curso", $id);
+			$infoRetorno = $turma->coordenadorId;
+
+		}
+		if($info == "nomeCurso"){
+
+			$turma->get("curso", $id);
+			$infoRetorno = $turma->curso;
+
+		}
+
+		return $infoRetorno;
+
+	}
+
+
+	?>

@@ -1080,6 +1080,15 @@ function labsGeralNotas() {
         	<li>Comentários(Em desenvolvimento)</li>
         </ul>
         
+        <br />
+        <ul>
+        	<li><a href="">Curso de Psicologia</a></li>
+        	<li><a href="">Curso de Enfermagem</a></li>
+        	<li><a href="">Curso de Serviço Social</a></li>
+        	<li><a href="">Curso de Gestão Comercial</a></li>
+        	<li><a href="">Curso de Gestão de Cooperativas</a></li>
+        </ul>
+        
 <!--         <div id="questionarios"> -->
 
         		<div id="chart_div" style="width: '100%'; height: 300px;"></div>
