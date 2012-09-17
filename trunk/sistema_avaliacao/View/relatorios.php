@@ -61,7 +61,7 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
 // $lista->join($a, 'LEFT', 'a', "usuario", "ra");
 
 // $lista->select("l.id, l.usuario, l.hora, l.ip, l.tipoUsuario,
-//                 	prof.nome as prof_nome, prof.id as prof_id, 
+//                 	prof.nome as prof_nome, prof.id as prof_id,
 //                 	u.id as u_id, u.nome as u_nome,
 //                 	a.ra as a_id, a.nome as a_nome, count(*) as total, DATE(hora) as dia");
 // $lista->where("l.usuario != '1'");
@@ -120,12 +120,12 @@ function disciplinasGeralNotas() {
 		// 			$avaliacoes[]["qtd_notas"] = $av->qtdNotas;
 			
 		$avaliacoes[] = array("itemAvaliado" => $av->itemAvaliado,
-			"nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
-			"nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
-			"somas" => $av->soma,
-			"qtd_notas" => $av->qtdNotas,
-			"avg" => $av->soma/$av->qtdNotas,
-			"media" => $av->average);
+				"nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
+				"nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
+				"somas" => $av->soma,
+				"qtd_notas" => $av->qtdNotas,
+				"avg" => $av->soma/$av->qtdNotas,
+				"media" => $av->average);
 	}
 	//print_r($avaliacoes);
 
@@ -142,443 +142,443 @@ function disciplinasGeralNotas() {
  * insert a description here
  **/
 /*function questoesNotas() {
-	// 	use faculdadeunica05;
-	// 	select id, questionario_has_questao_questionario_id, nota, processo_avaliacao_id, item_avaliado, avaliador, tipo_avaliacao, subtipo_avaliacao from avaliacao where tipo_avaliacao = 'Aluno' and subtipo_avaliacao = 'Professor/Disciplina'
-	// 	and questionario_has_questao_questao_id = 121;
+ // 	use faculdadeunica05;
+// 	select id, questionario_has_questao_questionario_id, nota, processo_avaliacao_id, item_avaliado, avaliador, tipo_avaliacao, subtipo_avaliacao from avaliacao where tipo_avaliacao = 'Aluno' and subtipo_avaliacao = 'Professor/Disciplina'
+// 	and questionario_has_questao_questao_id = 121;
 
-	$results;
-	$av = new Avaliacao();
-	$av->select("processo_avaliacao_id, questionario_has_questao_questionario_id,
-	questionario_has_questao_questao_id, item_avaliado, nota, tipo_avaliacao, subtipo_avaliacao, avaliador");
-	
-	$av->where("subtipo_avaliacao = 'Professor/Disciplina'");
+$results;
+$av = new Avaliacao();
+$av->select("processo_avaliacao_id, questionario_has_questao_questionario_id,
+		questionario_has_questao_questao_id, item_avaliado, nota, tipo_avaliacao, subtipo_avaliacao, avaliador");
 
-	$av->order("item_avaliado ASC");
-	$av->find();
+$av->where("subtipo_avaliacao = 'Professor/Disciplina'");
 
-	$it = null;
-	$pos = 0;
-	$posAtual = 0;
-	
-	$nota5 = 0;
-	$nota4 = 0;
-	$nota3 = 0;
-	$nota2 = 0;
-	$nota1 = 0;
-	
-	$soma = 0;
-	
-	$avaliadorAtual = null;
-	$qtd_avaliadores = 0;
-	
-	while ($av->fetch()) {
-		//se o item da vez for nulo recebe o item_avaliado do resultset
-		if($it == null || $it != $av->itemAvaliado){
-			$it = $av->itemAvaliado;
-			
-			//zera as notas
-			$nota5 = 0;
-			$nota4 = 0;
-			$nota3 = 0;
-			$nota2 = 0;
-			$nota1 = 0;
-			
-				$media = 0;			
-			$soma = 0;
-			
-			$posAtual = $pos;	
+$av->order("item_avaliado ASC");
+$av->find();
 
-			//obs
-			$pos++;
-		}
-		
-		if($it == $av->itemAvaliado){
-			
-			$avaliadores = new Avaliacao();
-			$avaliadores->setItemAvaliado($av->itemAvaliado);
-			$avaliadores->group("avaliador");
-			$qtd_avaliadores = $avaliadores->find();		
-			
-			switch ($av->nota) {
-				case 5:
-					$nota5++;
-					$soma += 5;
-					break;
-				case 4:
-					$nota4++;
-					$soma += 4;
-					break;
-				case 3:
-					$nota3++;
-					$soma += 3;
-					break;
-				case 2:
-					$nota2++;
-					$soma += 2;
-					break;
-				case 1:
-					$nota1++;
-					$soma += 1;
-					break;					
-			}
-			
-			//descobre o numero de questoes do questionario
-			$qhq = new QuestionarioHasQuestao();
-			$qhq->setQuestionarioId($av->questionarioHasQuestaoQuestionarioId);
-			$qtd_questoes = $qhq->find();
-			
-			$media = ($soma/$qtd_questoes)/$qtd_avaliadores;
-			
-			$results[$posAtual] = array("processo_avaliacao_id" => $av->processoAvaliacaoId,
-						"questionario_id" => $av->questionarioHasQuestaoQuestionarioId,
-						"questao_id" => $av->questionarioHasQuestaoQuestaoId,
-						"itemAvaliado" => $av->itemAvaliado,
-						"nota5" => $nota5,
-						"nota4" => $nota4,
-						"nota3" => $nota3,
-						"nota2" => $nota2,
-						"nota1" => $nota1,
-						"media" => $media,
-						/*"soma" => $soma,//
-						"qtd" => $qtd_questoes,//
-						"qtdAV" => $qtd_avaliadores,//
-						"tipo_avaliacao" => $av->tipoAvaliacao,
-						"subtipo_avaliacao" => $av->subtipoAvaliacao);
-		}
-		
-	}
-	//debug
-	//print_r($results);
+$it = null;
+$pos = 0;
+$posAtual = 0;
+
+$nota5 = 0;
+$nota4 = 0;
+$nota3 = 0;
+$nota2 = 0;
+$nota1 = 0;
+
+$soma = 0;
+
+$avaliadorAtual = null;
+$qtd_avaliadores = 0;
+
+while ($av->fetch()) {
+//se o item da vez for nulo recebe o item_avaliado do resultset
+if($it == null || $it != $av->itemAvaliado){
+$it = $av->itemAvaliado;
 	
-	return  $results;
+//zera as notas
+$nota5 = 0;
+$nota4 = 0;
+$nota3 = 0;
+$nota2 = 0;
+$nota1 = 0;
+	
+$media = 0;
+$soma = 0;
+	
+$posAtual = $pos;
+
+//obs
+$pos++;
+}
+
+if($it == $av->itemAvaliado){
+	
+$avaliadores = new Avaliacao();
+$avaliadores->setItemAvaliado($av->itemAvaliado);
+$avaliadores->group("avaliador");
+$qtd_avaliadores = $avaliadores->find();
+	
+switch ($av->nota) {
+case 5:
+$nota5++;
+$soma += 5;
+break;
+case 4:
+$nota4++;
+$soma += 4;
+break;
+case 3:
+$nota3++;
+$soma += 3;
+break;
+case 2:
+$nota2++;
+$soma += 2;
+break;
+case 1:
+$nota1++;
+$soma += 1;
+break;
+}
+	
+//descobre o numero de questoes do questionario
+$qhq = new QuestionarioHasQuestao();
+$qhq->setQuestionarioId($av->questionarioHasQuestaoQuestionarioId);
+$qtd_questoes = $qhq->find();
+	
+$media = ($soma/$qtd_questoes)/$qtd_avaliadores;
+	
+$results[$posAtual] = array("processo_avaliacao_id" => $av->processoAvaliacaoId,
+"questionario_id" => $av->questionarioHasQuestaoQuestionarioId,
+"questao_id" => $av->questionarioHasQuestaoQuestaoId,
+"itemAvaliado" => $av->itemAvaliado,
+"nota5" => $nota5,
+"nota4" => $nota4,
+"nota3" => $nota3,
+"nota2" => $nota2,
+"nota1" => $nota1,
+"media" => $media,
+/*"soma" => $soma,//
+"qtd" => $qtd_questoes,//
+"qtdAV" => $qtd_avaliadores,//
+"tipo_avaliacao" => $av->tipoAvaliacao,
+"subtipo_avaliacao" => $av->subtipoAvaliacao);
+}
+
+}
+//debug
+//print_r($results);
+
+return  $results;
 }*/
 
 /**
-* @name questoesNotas2
-* @author Fabio Baía
-* @since 09/07/2012 13:33:59
-* insert a description here
-**/
+ * @name questoesNotas2
+ * @author Fabio Baía
+ * @since 09/07/2012 13:33:59
+ * insert a description here
+ **/
 /*function questoesNotas2() {
-	// 	use faculdadeunica05;
-	// 	select id, questionario_has_questao_questionario_id, nota, processo_avaliacao_id, item_avaliado, avaliador, tipo_avaliacao, subtipo_avaliacao from avaliacao where tipo_avaliacao = 'Aluno' and subtipo_avaliacao = 'Professor/Disciplina'
-	// 	and questionario_has_questao_questao_id = 121;
-	
-	
-// o q eu preciso:
-// id do ProcessoAvaliacao
-// Curso
-// instrumento(tipo de avaliacao)
-// avaliador
-// questionario usado
+ // 	use faculdadeunica05;
+ // 	select id, questionario_has_questao_questionario_id, nota, processo_avaliacao_id, item_avaliado, avaliador, tipo_avaliacao, subtipo_avaliacao from avaliacao where tipo_avaliacao = 'Aluno' and subtipo_avaliacao = 'Professor/Disciplina'
+ // 	and questionario_has_questao_questao_id = 121;
 
 
-	$results;
-	$av = new Avaliacao();
-	$av->select("processo_avaliacao_id, questionario_has_questao_questionario_id,
-	questionario_has_questao_questao_id, item_avaliado, nota, tipo_avaliacao, subtipo_avaliacao, avaliador");
+ // o q eu preciso:
+ // id do ProcessoAvaliacao
+ // Curso
+ // instrumento(tipo de avaliacao)
+ // avaliador
+ // questionario usado
 
-	$av->where("subtipo_avaliacao = 'Professor/Disciplina' and item_avaliado = 7074");
 
-	$av->order("questionario_has_questao_questao_id ASC, item_avaliado ASC");
-	$av->find();
+ $results;
+ $av = new Avaliacao();
+ $av->select("processo_avaliacao_id, questionario_has_questao_questionario_id,
+ questionario_has_questao_questao_id, item_avaliado, nota, tipo_avaliacao, subtipo_avaliacao, avaliador");
 
-	$it = null;
-	$pos = 0;
-	$posAtual = 0;
+ $av->where("subtipo_avaliacao = 'Professor/Disciplina' and item_avaliado = 7074");
 
-	$nota5 = 0;
-	$nota4 = 0;
-	$nota3 = 0;
-	$nota2 = 0;
-	$nota1 = 0;
+ $av->order("questionario_has_questao_questao_id ASC, item_avaliado ASC");
+ $av->find();
 
-	$soma = 0;
+ $it = null;
+ $pos = 0;
+ $posAtual = 0;
 
-	$avaliadorAtual = null;
-	$qtd_avaliadores = 0;
+ $nota5 = 0;
+ $nota4 = 0;
+ $nota3 = 0;
+ $nota2 = 0;
+ $nota1 = 0;
 
-	while ($av->fetch()) {
-		//se o item da vez for nulo recebe o item_avaliado do resultset
-		if($it == null || $it != $av->questionario_has_questao_questao_id){
-			$it = $av->questionario_has_questao_questao_id;
-				
-			//zera as notas
-			$nota5 = 0;
-			$nota4 = 0;
-			$nota3 = 0;
-			$nota2 = 0;
-			$nota1 = 0;
-				
-			$media = 0;
-			$soma = 0;
-				
-			$posAtual = $pos;
+ $soma = 0;
 
-			//obs
-			$pos++;
-		}
+ $avaliadorAtual = null;
+ $qtd_avaliadores = 0;
 
-		if($it == $av->questionario_has_questao_questao_id){
-				
-			$avaliadores = new Avaliacao();
-			$avaliadores->setQuestionarioHasQuestaoQuestaoId($av->questionario_has_questao_questao_id);
-			$avaliadores->group("avaliador");
-			$qtd_avaliadores = $avaliadores->find();
-				
-			switch ($av->nota) {
-				case 5:
-					$nota5++;
-					$soma += 5;
-					break;
-				case 4:
-					$nota4++;
-					$soma += 4;
-					break;
-				case 3:
-					$nota3++;
-					$soma += 3;
-					break;
-				case 2:
-					$nota2++;
-					$soma += 2;
-					break;
-				case 1:
-					$nota1++;
-					$soma += 1;
-					break;
-			}
-				
-			//descobre o numero de questoes do questionario
-			$qhq = new QuestionarioHasQuestao();
-			$qhq->setQuestionarioId($av->questionarioHasQuestaoQuestionarioId);
-			$qtd_questoes = $qhq->find();
-				
-			$media = ($soma/$qtd_questoes)/$qtd_avaliadores;
-				
-			$results[$posAtual] = array("processo_avaliacao_id" => $av->processoAvaliacaoId,
-						"questionario_id" => $av->questionarioHasQuestaoQuestionarioId,
-						"questao_id" => $av->questionarioHasQuestaoQuestaoId,
-						"itemAvaliado" => $av->item_avaliado,
-						"nota5" => $nota5,
-						"nota4" => $nota4,
-						"nota3" => $nota3,
-						"nota2" => $nota2,
-						"nota1" => $nota1,
-						"media" => 5,
-			/*"soma" => $soma,//
-			 "qtd" => $qtd_questoes,//
-			"qtdAV" => $qtd_avaliadores,//
-						"tipo_avaliacao" => $av->tipoAvaliacao,
-						"subtipo_avaliacao" => $av->subtipoAvaliacao);
-		}
+ while ($av->fetch()) {
+ //se o item da vez for nulo recebe o item_avaliado do resultset
+ if($it == null || $it != $av->questionario_has_questao_questao_id){
+ $it = $av->questionario_has_questao_questao_id;
 
-	}
-	//debug
-	//print_r($results);
+ //zera as notas
+ $nota5 = 0;
+ $nota4 = 0;
+ $nota3 = 0;
+ $nota2 = 0;
+ $nota1 = 0;
 
-	return  $results;
-}
-*/
+ $media = 0;
+ $soma = 0;
+
+ $posAtual = $pos;
+
+ //obs
+ $pos++;
+ }
+
+ if($it == $av->questionario_has_questao_questao_id){
+
+ $avaliadores = new Avaliacao();
+ $avaliadores->setQuestionarioHasQuestaoQuestaoId($av->questionario_has_questao_questao_id);
+ $avaliadores->group("avaliador");
+ $qtd_avaliadores = $avaliadores->find();
+
+ switch ($av->nota) {
+ case 5:
+ $nota5++;
+ $soma += 5;
+ break;
+ case 4:
+ $nota4++;
+ $soma += 4;
+ break;
+ case 3:
+ $nota3++;
+ $soma += 3;
+ break;
+ case 2:
+ $nota2++;
+ $soma += 2;
+ break;
+ case 1:
+ $nota1++;
+ $soma += 1;
+ break;
+ }
+
+ //descobre o numero de questoes do questionario
+ $qhq = new QuestionarioHasQuestao();
+ $qhq->setQuestionarioId($av->questionarioHasQuestaoQuestionarioId);
+ $qtd_questoes = $qhq->find();
+
+ $media = ($soma/$qtd_questoes)/$qtd_avaliadores;
+
+ $results[$posAtual] = array("processo_avaliacao_id" => $av->processoAvaliacaoId,
+ "questionario_id" => $av->questionarioHasQuestaoQuestionarioId,
+ "questao_id" => $av->questionarioHasQuestaoQuestaoId,
+ "itemAvaliado" => $av->item_avaliado,
+ "nota5" => $nota5,
+ "nota4" => $nota4,
+ "nota3" => $nota3,
+ "nota2" => $nota2,
+ "nota1" => $nota1,
+ "media" => 5,
+ /*"soma" => $soma,//
+ "qtd" => $qtd_questoes,//
+ "qtdAV" => $qtd_avaliadores,//
+ "tipo_avaliacao" => $av->tipoAvaliacao,
+ "subtipo_avaliacao" => $av->subtipoAvaliacao);
+ }
+
+ }
+ //debug
+ //print_r($results);
+
+ return  $results;
+ }
+ */
 
 /*function disciplinasMelhoresNotasCombo() {
 
-	$avaliacoes;
-	$av = new Avaliacao();
-	$av->alias("av");
-	$av->select("item_avaliado,questionario_has_questao_questao_id, nota, count(nota) as qtdNotas, avg(nota) as average");
+$avaliacoes;
+$av = new Avaliacao();
+$av->alias("av");
+$av->select("item_avaliado,questionario_has_questao_questao_id, nota, count(nota) as qtdNotas, avg(nota) as average");
 
-	$av->where("subtipo_avaliacao = 'Professor/Disciplina'");
-	// 	$av->group("item_avaliado, nota");
-	$av->group("questionario_has_questao_questao_id, item_avaliado, nota");
+$av->where("subtipo_avaliacao = 'Professor/Disciplina'");
+// 	$av->group("item_avaliado, nota");
+$av->group("questionario_has_questao_questao_id, item_avaliado, nota");
 
-	//usar o order e o limit pra pegar as "melhores" e as "piores" notas
-	//$av->order("average DESC");
-	//$av->limit(0,3);
+//usar o order e o limit pra pegar as "melhores" e as "piores" notas
+//$av->order("average DESC");
+//$av->limit(0,3);
 
-	$av->find();
-	// 	echo $qtd;
-	// 	exit;
-	$pos = 0;
-	$posAtual = 0;
-	$star5 = 0;
-	$star4 = 0;
-	$star3 = 0;
-	$star2 = 0;
-	$star1 = 0;
-	while ($av->fetch()) {
+$av->find();
+// 	echo $qtd;
+// 	exit;
+$pos = 0;
+$posAtual = 0;
+$star5 = 0;
+$star4 = 0;
+$star3 = 0;
+$star2 = 0;
+$star1 = 0;
+while ($av->fetch()) {
 
-		if($pos == 0){
-			$item_de_vez = $av->itemAvaliado;
-			$posAtual = $pos;
-		}
+if($pos == 0){
+$item_de_vez = $av->itemAvaliado;
+$posAtual = $pos;
+}
 
-		if($item_de_vez == $av->itemAvaliado){
-			$somaGeral = ($star5*5 + $star4*4 + $star3*3 + $star2*2 + $star1*1);
-			$qtdGeral = ($star5 + $star4 + $star3 + $star2 + $star1);
-				
-			switch ($av->nota) {
-				case 5:
-					$star5 = $av->qtdNotas;
-					break;
-				case 4:
-					$star4 = $av->qtdNotas;
-					break;
-				case 3:
-					$star3 = $av->qtdNotas;
-					break;
-				case 2:
-					$star2 = $av->qtdNotas;
-					break;
-				case 1:
-					$star1 = $av->qtdNotas;
-					break;
-			}
-				
-			$avaliacoes[$posAtual] = array("itemAvaliado" => $av->itemAvaliado,
-													"nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
-													"nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
-													"nota5" => $star5,
-													"nota4" => $star4,
-													"nota3" => $star3,
-													"nota2" => $star2,
-													"nota1" => $star1,
-													"media" => $somaGeral/10);
-		}else{
-			$item_de_vez = $av->itemAvaliado;
-				
-			$somaGeral = ($star5*5 + $star4*4 + $star3*3 + $star2*2 + $star1*1);
-			$qtdGeral = ($star5 + $star4 + $star3 + $star2 + $star1);
+if($item_de_vez == $av->itemAvaliado){
+$somaGeral = ($star5*5 + $star4*4 + $star3*3 + $star2*2 + $star1*1);
+$qtdGeral = ($star5 + $star4 + $star3 + $star2 + $star1);
 
-			switch ($av->nota) {
-				case 5:
-					$star5 = $av->qtdNotas;
-					break;
-				case 4:
-					$star4 = $av->qtdNotas;
-					break;
-				case 3:
-					$star3 = $av->qtdNotas;
-					break;
-				case 2:
-					$star2 = $av->qtdNotas;
-					break;
-				case 1:
-					$star1 = $av->qtdNotas;
-					break;
-			}
+switch ($av->nota) {
+case 5:
+$star5 = $av->qtdNotas;
+break;
+case 4:
+$star4 = $av->qtdNotas;
+break;
+case 3:
+$star3 = $av->qtdNotas;
+break;
+case 2:
+$star2 = $av->qtdNotas;
+break;
+case 1:
+$star1 = $av->qtdNotas;
+break;
+}
 
-			$avaliacoes[$posAtual] = array("itemAvaliado" => $av->itemAvaliado,
-																		"nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
-																		"nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
-																		"nota5" => $star5,
-																		"nota4" => $star4,
-																		"nota3" => $star3,
-																		"nota2" => $star2,
-																		"nota1" => $star1,
-																		"media" => $somaGeral/5);
-				
-			$posAtual++;
-		}
-		
-		$pos++;
+$avaliacoes[$posAtual] = array("itemAvaliado" => $av->itemAvaliado,
+"nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
+"nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
+"nota5" => $star5,
+"nota4" => $star4,
+"nota3" => $star3,
+"nota2" => $star2,
+"nota1" => $star1,
+"media" => $somaGeral/10);
+}else{
+$item_de_vez = $av->itemAvaliado;
 
-	}
+$somaGeral = ($star5*5 + $star4*4 + $star3*3 + $star2*2 + $star1*1);
+$qtdGeral = ($star5 + $star4 + $star3 + $star2 + $star1);
 
-	return $avaliacoes;
+switch ($av->nota) {
+case 5:
+$star5 = $av->qtdNotas;
+break;
+case 4:
+$star4 = $av->qtdNotas;
+break;
+case 3:
+$star3 = $av->qtdNotas;
+break;
+case 2:
+$star2 = $av->qtdNotas;
+break;
+case 1:
+$star1 = $av->qtdNotas;
+break;
+}
+
+$avaliacoes[$posAtual] = array("itemAvaliado" => $av->itemAvaliado,
+"nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
+"nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
+"nota5" => $star5,
+"nota4" => $star4,
+"nota3" => $star3,
+"nota2" => $star2,
+"nota1" => $star1,
+"media" => $somaGeral/5);
+
+$posAtual++;
+}
+
+$pos++;
+
+}
+
+return $avaliacoes;
 
 }
 */
 
 /*
-function disciplinasPioresNotas() {
+ function disciplinasPioresNotas() {
 
-	$avaliacoes;
-	$av = new Avaliacao();
-	$av->alias("av");
-	$av->select("item_avaliado, sum(nota) as soma, count(nota) as qtdNotas, avg(nota) as average");
+ $avaliacoes;
+ $av = new Avaliacao();
+ $av->alias("av");
+ $av->select("item_avaliado, sum(nota) as soma, count(nota) as qtdNotas, avg(nota) as average");
 
-	$av->where("subtipo_avaliacao = 'Professor/Disciplina'");
-	$av->group("item_avaliado");
+ $av->where("subtipo_avaliacao = 'Professor/Disciplina'");
+ $av->group("item_avaliado");
 
-	//usar o order e o limit pra pegar as "melhores" e as "piores" notas
-	$av->order("average ASC");
-	$av->limit(0,3);
+ //usar o order e o limit pra pegar as "melhores" e as "piores" notas
+ $av->order("average ASC");
+ $av->limit(0,3);
 
-	$av->find();
-	// 	echo $qtd;
-	// 	exit;
-	while ($av->fetch()) {
-		$avaliacoes[] = array("itemAvaliado" => $av->itemAvaliado,
-			"nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
-			"nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
-			"somas" => $av->soma,
-			"qtd_notas" => $av->qtdNotas,
-			"avg" => $av->soma/$av->qtdNotas,
-			"media" => $av->average);
-	}
+ $av->find();
+ // 	echo $qtd;
+ // 	exit;
+ while ($av->fetch()) {
+ $avaliacoes[] = array("itemAvaliado" => $av->itemAvaliado,
+ "nomeDisciplina" => discoveryInfoTurma($av->itemAvaliado, "nomeDisciplina"),
+ "nomeProfessor" => discoveryInfoTurma($av->itemAvaliado, "nomeProfessor"),
+ "somas" => $av->soma,
+ "qtd_notas" => $av->qtdNotas,
+ "avg" => $av->soma/$av->qtdNotas,
+ "media" => $av->average);
+ }
 
-	return $avaliacoes;
-}
-*/
-
-/*
-function cursosGeralNotas() {
-
-	$avaliacoes;
-	$av = new Avaliacao();
-	$av->alias("av");
-	//$av->select("item_avaliado, sum(nota) as soma, count(nota) as qtdNotas, avg(nota) as average");
-	$av->select("item_avaliado, avg(nota) as average");
-
-	$av->where("subtipo_avaliacao = 'Curso/Coordenador'");
-	$av->group("item_avaliado");
-
-	//usar o order e o limit pra pegar as "melhores" e as "piores" notas
-	$av->order("average DESC");
-
-	$av->find();
-	// 	echo $qtd;
-	// 	exit;
-	while ($av->fetch()) {
-		$avaliacoes[] = array("itemAvaliado" => $av->itemAvaliado,
-			"nomeCurso" => discoveryInfoTurma($av->itemAvaliado, "nomeCurso"),
-			"nomeCoordenador" => discoveryInfoTurma($av->itemAvaliado, "nomeCoordenador"),
-			"media" => $av->average);
-	}
-
-	return $avaliacoes;
-}
-
-*/
+ return $avaliacoes;
+ }
+ */
 
 /*
-function labsGeralNotas() {
+ function cursosGeralNotas() {
 
-	$avaliacoes;
-	$av = new Avaliacao();
-	$av->alias("av");
-	//$av->select("item_avaliado, sum(nota) as soma, count(nota) as qtdNotas, avg(nota) as average");
-	$av->select("item_avaliado, avg(nota) as average");
+ $avaliacoes;
+ $av = new Avaliacao();
+ $av->alias("av");
+ //$av->select("item_avaliado, sum(nota) as soma, count(nota) as qtdNotas, avg(nota) as average");
+ $av->select("item_avaliado, avg(nota) as average");
 
-	$av->where("subtipo_avaliacao like 'Lab_%'");
-	$av->group("item_avaliado");
+ $av->where("subtipo_avaliacao = 'Curso/Coordenador'");
+ $av->group("item_avaliado");
 
-	//usar o order e o limit pra pegar as "melhores" e as "piores" notas
-	$av->order("average DESC");
+ //usar o order e o limit pra pegar as "melhores" e as "piores" notas
+ $av->order("average DESC");
 
-	$av->find();
-	// 	echo $qtd;
-	// 	exit;
-	while ($av->fetch()) {
-		$avaliacoes[] = array("itemAvaliado" => $av->itemAvaliado,
-			"nomeLaboratorio" => $av->itemAvaliado,
-			"media" => $av->average);
-	}
+ $av->find();
+ // 	echo $qtd;
+ // 	exit;
+ while ($av->fetch()) {
+ $avaliacoes[] = array("itemAvaliado" => $av->itemAvaliado,
+ "nomeCurso" => discoveryInfoTurma($av->itemAvaliado, "nomeCurso"),
+ "nomeCoordenador" => discoveryInfoTurma($av->itemAvaliado, "nomeCoordenador"),
+ "media" => $av->average);
+ }
 
-	return $avaliacoes;
-}
-*/
+ return $avaliacoes;
+ }
+
+ */
+
+/*
+ function labsGeralNotas() {
+
+ $avaliacoes;
+ $av = new Avaliacao();
+ $av->alias("av");
+ //$av->select("item_avaliado, sum(nota) as soma, count(nota) as qtdNotas, avg(nota) as average");
+ $av->select("item_avaliado, avg(nota) as average");
+
+ $av->where("subtipo_avaliacao like 'Lab_%'");
+ $av->group("item_avaliado");
+
+ //usar o order e o limit pra pegar as "melhores" e as "piores" notas
+ $av->order("average DESC");
+
+ $av->find();
+ // 	echo $qtd;
+ // 	exit;
+ while ($av->fetch()) {
+ $avaliacoes[] = array("itemAvaliado" => $av->itemAvaliado,
+ "nomeLaboratorio" => $av->itemAvaliado,
+ "media" => $av->average);
+ }
+
+ return $avaliacoes;
+ }
+ */
 
 
 
@@ -592,6 +592,7 @@ function labsGeralNotas() {
 <title>Sistema de Avaliação Institucional - Relatorios</title>
 <link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
+<link href="css/blueprint/print.css" rel="stylesheet" type="text/css" media="print"/>
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <?php include_once 'inc/theme_inc.php';?>
@@ -1053,65 +1054,283 @@ function labsGeralNotas() {
 
 <body style="background: #fafafa;">
 
-<?php if(($new == true) || $edit == true){	?>
+	<?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
 
-	
-<?php } ?>
 
-<div id="wrapper" class="container">
+	<?php } ?>
 
-	<?php include_once 'inc/header_inc.php';?> 
-    <div id="content">
-    <?php include_once 'inc/menu_admin_inc.php';?>       
-    
-    <div class="white">
-		<br />
-        
+	<div id="wrapper" class="container">
 
-        <h3>Relat&oacute;rios</h3>
-        
+		<?php include_once 'inc/header_inc.php';?>
+		<div id="content">
+			<?php include_once 'inc/menu_admin_inc.php';?>
+
+			<div class="white">
+				<br />
+
+
+				<h3>Relat&oacute;rios</h3>
+
+				<!--
         <ul>
         	<li><a href="../Controller/relatorioController.php?relatorio_id=1">Acessos(Pronto)</a></li>
         	<li><a href="../Controller/relatorioController.php?relatorio_id=2">Laboratorios(Em desenvolvimento)</a></li>
         	<li><a href="../Controller/relatorioController.php?relatorio_id=3">Disciplinas(Em desenvolvimento)</a></li>
+        	<li><a href="../Controller/relatorioController.php?relatorio_id=4">com filtros</a></li>
         	<li>Cursos(Em desenvolvimento)</li>
         	<li>Professores(Em desenvolvimento)</li>
         	<li>Comentários(Em desenvolvimento)</li>
         </ul>
-        
-        <br />
-        <ul>
-        	<li><a href="">Curso de Psicologia</a></li>
-        	<li><a href="">Curso de Enfermagem</a></li>
-        	<li><a href="">Curso de Serviço Social</a></li>
-        	<li><a href="">Curso de Gestão Comercial</a></li>
-        	<li><a href="">Curso de Gestão de Cooperativas</a></li>
-        </ul>
-        
-<!--         <div id="questionarios"> -->
+         -->
 
-        		<div id="chart_div" style="width: '100%'; height: 300px;"></div>
+			<div id="rel_menus">
+				<h4>Questionario Institucional</h4>
+				<br />
+				<div class="relatorio_box">
+					<ul>
+						<li>Psicologia
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia&semestre=1">Psicologia
+										- 1 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia&semestre=3">Psicologia
+										- 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia&semestre=5">Psicologia
+										- 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia">Psicologia
+										- Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
 
-        		<div id="dashboard">
-      
-		            <div id="control1"></div>
-		            <div id="control2"></div>
-		            <div id="control3"></div>
-		          	<br />
-		          	<br />         
-		            <div id="chart1"></div>
-		            <div id="chart2"></div>
-		            <div id="chart3"></div>
-          
-    		    </div>
-        	
-        
-<!--         </div> -->
-        </div><!-- fecha div white -->
-        
-    </div>
+				<div class="relatorio_box">
+					<ul>
+						<li>Enfermagem
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem&semestre=1">Enfermagem
+										- 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem&semestre=3">Enfermagem
+										- 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem&semestre=5">Enfermagem
+										- 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem">Enfermagem
+										- Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="relatorio_box">
+					<ul>
+						<li>Serviço Social
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social&semestre=1">Serviço
+										Social - 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social&semestre=3">Serviço
+										Social - 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social&semestre=5">Serviço
+										Social - 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social">Serviço
+										Social - Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="relatorio_box">
+					<ul>
+						<li>Gestão Comercial
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial&semestre=1">Gestão
+										Comercial - 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial&semestre=3">Gestão
+										Comercial - 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial&semestre=5">Gestão
+										Comercial - 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial">Gestão
+										Comercial - Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="relatorio_box">
+					<ul>
+						<li>Gestão de Cooperativas
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas&semestre=1">Gestão
+										de Cooperativas - 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas&semestre=3">Gestão
+										de Cooperativas - 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas&semestre=5">Gestão
+										de Cooperativas - 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas">Gestão
+										de Cooperativas - Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<br style="clear: both" />
+
+				<h4>Questionario Coordenador</h4>
+				<br />
+				<div class="relatorio_box">
+					<ul>
+						<li>Psicologia
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia&semestre=1">Psicologia
+										- 1 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia&semestre=3">Psicologia
+										- 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia&semestre=5">Psicologia
+										- 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia">Psicologia
+										- Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="relatorio_box">
+					<ul>
+						<li>Enfermagem
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem&semestre=1">Enfermagem
+										- 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem&semestre=3">Enfermagem
+										- 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem&semestre=5">Enfermagem
+										- 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem">Enfermagem
+										- Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="relatorio_box">
+					<ul>
+						<li>Serviço Social
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social&semestre=1">Serviço
+										Social - 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social&semestre=3">Serviço
+										Social - 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social&semestre=5">Serviço
+										Social - 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social">Serviço
+										Social - Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="relatorio_box">
+					<ul>
+						<li>Gestão Comercial
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial&semestre=1">Gestão
+										Comercial - 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial&semestre=3">Gestão
+										Comercial - 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial&semestre=5">Gestão
+										Comercial - 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial">Gestão
+										Comercial - Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="relatorio_box">
+					<ul>
+						<li>Gestão de Cooperativas
+							<ul>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas&semestre=1">Gestão
+										de Cooperativas - 1 periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas&semestre=3">Gestão
+										de Cooperativas - 3 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas&semestre=5">Gestão
+										de Cooperativas - 5 Periodo</a></li>
+								<li><a
+									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas">Gestão
+										de Cooperativas - Geral</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				</div><!-- rel menus -->
+
+				<br style="clear: both" />
+
+				<!--         <div id="questionarios"> -->
+
+				<!-- <div id="chart_div" style="width: '100%'; height: 300px;"></div> -->
+				<h3><?php echo $_SESSION["s_rel_name"]; ?></h3>
+
+
+					<div id="dashboard">
+
+					<div id="control1"></div>
+					<div id="control2"></div>
+					<div id="control3"></div>
+					<br />
+					<br />
+					<div id="chart1"></div>
+					<div id="chart2"></div>
+					<div id="chart3"></div>
+
+					</div>
+
+
+					<!--         </div> -->
+					</div><!-- fecha div white -->
+
+					</div>
     <?php include_once 'inc/footer_inc.php';?>
-</div>
+			
+			</div>
+
 </body>
 </html>

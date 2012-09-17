@@ -73,6 +73,7 @@ if(isset($_SESSION["s_questionario"])){
 <title>Sistema de Avaliação Institucional - Questionário</title>
 <link href="css/blueprint/ie.css" rel="stylesheet" type="text/css" />
 <link href="css/blueprint/screen.css" rel="stylesheet" type="text/css" />
+<link href="css/blueprint/print.css" rel="stylesheet" type="text/css" media="print"/>
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <?php include_once 'inc/theme_inc.php';?>

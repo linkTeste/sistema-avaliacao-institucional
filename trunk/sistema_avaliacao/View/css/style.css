@@ -1719,3 +1719,8 @@ jquery-checkbox {
 #comentarios .comentario span {
 	font-style: italic;
 }
+
+.relatorio_box {
+	width: 250px;
+	float: left;
+}
