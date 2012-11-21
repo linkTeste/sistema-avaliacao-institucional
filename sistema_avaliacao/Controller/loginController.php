@@ -176,7 +176,7 @@ function loginController() {
 					
 				$_SESSION["s_usuario_logado_permissoes"] = $permissoes;
 
-				$page = "usuarios.php";
+				$page = "home.php";
 					
 			}else{
 				$usuarioLogado = isProfessor($login, $senha);
@@ -306,7 +306,7 @@ function login($login, $senha) {
 
 			$_SESSION["s_usuario_logado_permissoes"] = $permissoes;
 
-			$page = "usuarios.php";
+			$page = "relatorios.php";
 
 		}else{
 			$usuarioLogado = isProfessor($login, $senha);

@@ -111,13 +111,14 @@ if(isset($_SESSION["s_usuario_logado_permissoes"])){
         <div id="comentarios">
         <?php 
 $comentarios = new Comentarios();
+$comentarios->tipoAvaliacao = "Aluno";
+$comentarios->itemAvaliado = "Instituição";
 $comentarios->find();
 
 while ($comentarios->fetch()) {
 	?>
 	<div class="comentario">
 		<p><?php echo $comentarios->getComentario();?></p>
-		<span><?php echo $comentarios->getItemAvaliado();?></span>
 	</div>
 	<?php
 }

@@ -595,6 +595,89 @@ return $avaliacoes;
 <link href="css/blueprint/print.css" rel="stylesheet" type="text/css" media="print"/>
 <link href="css/scrollbar.css" rel="stylesheet" type="text/css" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+<style>
+					        	ul.vertical {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 240px; /* Width of Menu Items */
+	border-bottom: 1px solid #ccc;
+	}
+	
+ul.vertical li {
+	position: relative;
+	}
+	
+ul.vertical li ul {
+	position: absolute;
+	left: 149px; /* Set 1px less than menu width */
+	top: 0;
+	display: none;
+	list-style: none;
+	width: 200px;
+	}
+
+/* Styles for Menu Items */
+ul.vertical li a {
+	display: block;
+	text-decoration: none;
+	color: #777;
+	background: #fff; /* IE6 Bug */
+	padding: 5px;
+	border: 1px solid #ccc; /* IE6 Bug */
+	border-bottom: 0;
+	}
+	
+ul.vertical li a:hover {
+	text-decoration: none;
+	color: #333;
+	background: #f3f3f3;
+	}
+	
+/* Holly Hack. IE Requirement \*/
+* html ul.vertical li { float: left; height: 1%; }
+* html ul.vertical li a { height: 1%; }
+/* End */
+
+ul.vertical li:hover ul, ul.vertical li.over ul { display: block; } /* The magic */
+
+#rel_menus{
+	background: #FAFAFA;
+	padding: 10px;
+	height: 157px;
+	margin: 10px;
+}
+
+.box_op{
+	border: 1px solid #f3f3f3;
+	background: #fff;
+	padding: 10px;
+	width: auto;
+	float: left;
+	height: 135px;
+	overflow-y: scroll;
+}
+
+.box_op h4{
+	margin: 0;
+	padding: 5px;
+	text-align: center;
+	color: #777;
+}
+
+.box_op a{
+	text-decoration: none;
+	padding: 4px;
+	display: block;
+}
+
+.box_op a.chart{
+	text-decoration: none;
+	background: url(css/images/chart.png) no-repeat;
+	padding-left: 25px;
+}
+					        	
+					        	</style>
 <?php include_once 'inc/theme_inc.php';?>
 <link
 	href='http://fonts.googleapis.com/css?family=Merienda+One|Amaranth'
@@ -622,426 +705,6 @@ return $avaliacoes;
       ?>
       
 
-/*
-      function drawTeste(){
-    	// Create and populate the data table.
-    	  var data = google.visualization.arrayToDataTable([
- */   	                                              	  
-    	  <?php
-//     	  var data = google.visualization.arrayToDataTable([
-//           ['Month', '5 estrelas', '4 estrelas', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
-//           ['2004/05',  165,      938,         522,             998,           450,      614.6],
-//           ['2005/06',  135,      1120,        599,             1268,          288,      682],
-//           ['2006/07',  157,      1167,        587,             807,           397,      623],
-//           ['2007/08',  139,      1110,        615,             968,           215,      609.4],
-//           ['2008/09',  136,      691,         629,             1026,          366,      569.6]
-//         ]);    	  
-    	  
-    	  /*
-    	  $arr1 = disciplinasMelhoresNotasCombo(); 
-    	    	  	$i = 0; 
-    	    	  	echo "[";
-    	    		for($i; $i <count($arr1); $i++){
-    	    			$d = utf8_encode($arr1[$i]["nomeDisciplina"]);
-    	    			
-    	    			 
-    	    			//se for a primeira linha...
-    	    			if($i == 0){
-    	    				echo "'".$d."'";
-    	    			}else{
-    	    				echo ", '".$d."'";
-    	    			}  	
-    	    		}
-    	    		
-    	    		echo "],[";
-    	    		$i = 0;
-    	    		for($i; $i <count($arr1); $i++){
-    	    			$m = escalaDecimal($arr1[$i]["media"]);
-    	    		
-    	    			//se for a primeira linha...
-    	    			if($i == 0){
-    	    				echo $m;
-    	    			}else{
-    	    				echo ", ".$m;
-    	    			}
-    	    		}
-    	    		echo "]";  
-    	    		
-    	    		  	    		*/
-    	    		
-    	    		?> 
-
-/*
-    	    		]); 	    		
-
-    	  // Create and draw the visualization.
-    	  //graficos possíveis pra esses dados
-    	  //Area - Line - Bar - Column
-    	  chart = new google.visualization.ColumnChart(document.getElementById('chart1'));
-		  chart.draw(data,
-    	           {title:"Disciplinas - Geral",
-    	            height:300,
-    	            //colors: ['#920300'],//
-    	            hAxis: {title: "Disciplina"},
-    	            vAxis:{title: 'Nota',
-        	               maxValue: 10,
-        	               minValue: 0
-        	               //gridlines:{count:10}//
- 	               		},
- 	               	pointSize: 5,
- 	                allowHtml: true
-    	           }
-    	      );
-      }
-
-         */
-
-/*
-      function drawDisciplinasMelhoresNotas(){
-        	// Create and populate the data table.
-        	  var data = new google.visualization.DataTable();
-              data.addColumn('string', 'Disciplina');
-              data.addColumn('number', 'Media');
-              //data.addColumn({type:'string',role:'tooltip'});
-              
-    */
-        	  <?php
-        	  /*
-        	  $arr1 = disciplinasPioresNotas();
-        	    	  	echo 'data.addRows('.count($arr1).');';
-        	    	  	$i = 0; 
-        	    		for($i; $i <count($arr1); $i++){
-        	    			$d = utf8_encode($arr1[$i]["nomeDisciplina"]);
-        	    			$m = escalaDecimal($arr1[$i]["media"]);
-        	    			
-//         	    			$htmlTooltip = utf8_encode($arr1[$i]["nomeProfessor"]).'\n';
-//         	    			$htmlTooltip .= utf8_encode($arr1[$i]["nomeDisciplina"]).'\n';
-//         	    			$htmlTooltip .= "Nota: ".escalaDecimal($arr1[$i]["media"]);
-        	    			
-        	    			echo 'data.setValue('.$i.', 0, \''.$d.'\');';
-        	    			echo 'data.setValue('.$i.', 1, '.$m.');';   
-//         	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
-        	    					
-        	    		}
-        	    		*/
-        	    		?>    	    		
-/*
-        	  // Create and draw the visualization.
-        	  //graficos possíveis pra esses dados
-        	  //Area - Line - Bar - Column
-        	  chart = new google.visualization.ColumnChart(document.getElementById('chartDisciplinasMelhoresNotas'));
-    		  chart.draw(data,
-        	           {title:"Disciplinas - Melhores Notas",
-        	            height:300,
-        	            colors: ['#920300'],
-        	            hAxis: {title: "Disciplina"},
-        	            vAxis:{title: 'Nota',
-            	               maxValue: 10,
-            	               minValue: 0
-            	               /*gridlines:{count:10}//
-     	               		},
-     	               	pointSize: 5,
-     	                allowHtml: true
-        	           }
-        	      );
-          }
-   
-*/
-
-/*
-	  function drawDashBoard(){
-		// Create and populate the data table.
-       /*var data = google.visualization.arrayToDataTable([
-          ['Disciplina', '5 estrelas', '4 estrelas', '3 estrelas', '2 estrelas', '1 estrela', 'Média'],
-          ['Introdução à Administração',  5,      8,         6,             22,           0,      8.2],
-          ['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
-          ['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
-          ['Filosofia',  3,      5,       2,             1,           8,     3.8]
-       ]);//
-
-      	
-      	var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Disciplina');
-        data.addColumn('number', '5 estrelas');
-        data.addColumn('number', '4 estrelas');
-        data.addColumn('number', '3 estrelas');
-        data.addColumn('number', '2 estrelas');
-        data.addColumn('number', '1 estrela');
-        data.addColumn('number', 'Média');
-        
-*/
-        <?php
-        /*
-//   	    $arr1 = disciplinasMelhoresNotasCombo();
-            $arr1 = questoesNotas2();
-  	    	  	echo 'data.addRows('.sizeof($arr1).');';
-  	    	  	$i = 0; 
-  	    		for($i; $i <sizeof($arr1); $i++){
-//   	    			$d = utf8_encode($arr1[$i]["nomeDisciplina"]);
-  	    			$d = utf8_encode($arr1[$i]["itemAvaliado"]);
-  	    			$m = escalaDecimal($arr1[$i]["media"]);
-  	    			
-  	    			echo 'data.setValue('.$i.', 0, \''.$d.'\');';
-  	    			echo 'data.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
-  	    			echo 'data.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
-  	    			echo 'data.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
-  	    			echo 'data.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
-  	    			echo 'data.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
-  	    			echo 'data.setValue('.$i.', 6, '.$m.');';    	    			
-  	    					
-  	    		}
-  	    		
-  	    		*/
-  	    		?> 
-       
-        	   
-/*
-      	    		
-      	    		var barChart = new google.visualization.ChartWrapper({
-      	    		    'chartType': 'ColumnChart',
-      	    		    'containerId': 'chart1',
-      	    		    'options': {
-      	    		      'width': 900,
-      	    		      'height': 300,
-      	    		      'hAxis': {'minValue': 0, 'maxValue': 10},
-      	    		      'chartArea': {top: 0, right: 0, bottom: 0},
-      	    		      'series': {5: {type: 'line'}},
-      	    		      'pointSize': 5,
-      	    		      'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF']
-      	    		    }
-      	    		  });
-
-      	    		// Define a slider control for the Age column.
-      	    		  var slider = new google.visualization.ControlWrapper({
-      	    		    'controlType': 'NumberRangeFilter',
-      	    		    'containerId': 'control1',
-      	    		    'options': {
-      	    		      'filterColumnLabel': 'Média',
-      	    		    'ui': {'labelStacking': 'vertical'}
-      	    		    }
-      	    		  });
-
-      	    		  // Define a category picker control for the Gender column
-      	    		  var categoryPicker = new google.visualization.ControlWrapper({
-      	    		    'controlType': 'CategoryFilter',
-      	    		    'containerId': 'control2',
-      	    		    'options': {
-      	    		      'filterColumnLabel': 'Disciplina',
-      	    		      'ui': {
-      	    		      'labelStacking': 'vertical',
-      	    		        'allowTyping': false,
-      	    		        'allowMultiple': true
-      	    		      }
-      	    		    }
-      	    		  });
-      	    		  
-      	    		// Define a table
-      	    		  var table = new google.visualization.ChartWrapper({
-      	    		    'chartType': 'Table',
-      	    		    'containerId': 'chart2',
-      	    		    'options': {
-      	    		      'width': '900px',
-      	    		      'allowHtml': true
-      	    		    }
-      	    		  });
-
-      	    		var formatter = new google.visualization.ColorFormat();
-      	    	  formatter.addRange(0, 5, '#CC0000', null);
-      	    	  formatter.addRange(5, 10, '#006600', null);
-      	    	  formatter.format(data, 6); // Apply formatter to second column
-      	    	  
-      	    		// Create a dashboard
-      	    		  new google.visualization.Dashboard(document.getElementById('dashboard')).
-      	    		      // Establish bindings, declaring the both the slider and the category
-      	    		      // picker will drive both charts.
-      	    		      bind([slider, categoryPicker], [barChart, table]).
-      	    		      // Draw the entire dashboard.
-      	    		      draw(data);
-      	    		
-			
-      }
-*/
-
-
-/*
-      
-      function drawDisciplinasMelhoresNotasCombo(){
-      	// Create and populate the data table.
-      	  var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Disciplina');
-            data.addColumn('number', '5 estrelas');
-            data.addColumn('number', '4 estrelas');
-            data.addColumn('number', '3 estrelas');
-            data.addColumn('number', '2 estrelas');
-            data.addColumn('number', '1 estrela');
-            data.addColumn('number', 'Media');
-            //data.addColumn({type:'string',role:'tooltip'});
-            
-         */
-      	  <?php
-      	  
-      	  /*
-      	  $arr1 = disciplinasMelhoresNotasCombo();
-      	     	  	//echo 'data.addRows('.count($arr1).');';
-      	    	  	echo 'data.addRows(6);';
-      	    	  	$i = 0; 
-      	    		for($i; $i <6; $i++){
-      	    			$d = utf8_encode($arr1[$i]["nomeDisciplina"]);
-      	    			$m = escalaDecimal($arr1[$i]["media"]);
-      	    			
-      	    			$nota = $arr1[$i]["nota"];
-      	    			
-//       	    			$htmlTooltip = utf8_encode($arr1[$i]["nomeProfessor"]).'\n';
-//       	    			$htmlTooltip .= utf8_encode($arr1[$i]["nomeDisciplina"]).'\n';
-//       	    			$htmlTooltip .= "Nota: ".escalaDecimal($arr1[$i]["media"]);
-      	    			
-      	    			echo 'data.setValue('.$i.', 0, \''.$d.'\');';
-      	    			echo 'data.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
-      	    			echo 'data.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
-      	    			echo 'data.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
-      	    			echo 'data.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
-      	    			echo 'data.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
-      	    			echo 'data.setValue('.$i.', 6, '.$m.');';   
-//       	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
-      	    					
-      	    		}
-      	    		
-      	    		*/
-      	    		?>    	    		
-/*
-      	  // Create and draw the visualization.
-      	  //graficos possíveis pra esses dados
-      	  //Area - Line - Bar - Column
-      	  chart = new google.visualization.ColumnChart(document.getElementById('chartDisciplinasMelhoresNotasCombo'));
-  		  chart.draw(data,
-      	           {title:"Disciplinas - Melhores Notas - Combo",
-      	            height:300,
-      	            /*colors: ['#920300'],
-      	            colors: ['#8B1A1A','#8B2323','#CD3333','#EE3B3B','#FF4040','#228B22'],//
-      	            hAxis: {title: "Disciplina"},
-      	            vAxis:{title: 'Nota',
-          	               maxValue: 10,
-          	               minValue: 0
-          	               //gridlines:{count:10}//
-   	               		},
-   	               	seriesType: "bars",
-   	          		series: {5: {type: "line"}},
-   	               	pointSize: 5,
-   	                allowHtml: true  
-      	           }	             	
-      	           
-      	      );
-        }
-
-*/
-
-/*
-      function drawDisciplinasPioresNotas(){
-      	// Create and populate the data table.
-      	  var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Disciplina');
-            data.addColumn('number', 'Media');
-            //data.addColumn({type:'string',role:'tooltip'});
-            
- */
-      	  <?php
-      	  
-      	  /*
-      	  $arr1 = disciplinasPioresNotas();
-      	    	  	echo 'data.addRows('.count($arr1).');';
-      	    	  	$i = 0; 
-      	    		for($i; $i <count($arr1); $i++){
-      	    			$d = utf8_encode($arr1[$i]["nomeDisciplina"]);
-      	    			$m = escalaDecimal($arr1[$i]["media"]);
-      	    			
-//       	    			$htmlTooltip = utf8_encode($arr1[$i]["nomeProfessor"]).'\n';
-//       	    			$htmlTooltip .= utf8_encode($arr1[$i]["nomeDisciplina"]).'\n';
-//       	    			$htmlTooltip .= "Nota: ".escalaDecimal($arr1[$i]["media"]);
-      	    			
-      	    			echo 'data.setValue('.$i.', 0, \''.$d.'\');';
-      	    			echo 'data.setValue('.$i.', 1, '.$m.');';   
-//       	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
-      	    					
-      	    		}
-      	    		
-      	    		*/
-      	    		?>    	    		
-/*
-      	  // Create and draw the visualization.
-      	  //graficos possíveis pra esses dados
-      	  //Area - Line - Bar - Column
-      	  chart = new google.visualization.ColumnChart(document.getElementById('chartDisciplinasPioresNotas'));
-  		  chart.draw(data,
-      	           {title:"Disciplinas - Piores Notas",
-      	            height:300,
-      	            colors: ['#920300'],
-      	            hAxis: {title: "Disciplina"},
-      	            vAxis:{title: 'Nota',
-      	            	   maxValue: 10,
-          	               minValue: 0
-          	               /*gridlines:{count:10}//
-   	               		},
-   	               	pointSize: 5,
-   	                allowHtml: true
-      	           }
-      	      );
-        }
-
-*/
-
-
-/*
-      function drawCursosGeralNotas(){
-        	// Create and populate the data table.
-        	  var data = new google.visualization.DataTable();
-              data.addColumn('string', 'Curso');
-              data.addColumn('number', 'Media');
-              //data.addColumn({type:'string',role:'tooltip'});
-              
-         */
-        	  <?php
-        	  /*
-        	  $arr1 = cursosGeralNotas();
-        	    	  	echo 'data.addRows('.count($arr1).');';
-        	    	  	$i = 0; 
-        	    		for($i; $i <count($arr1); $i++){
-        	    			$d = utf8_encode($arr1[$i]["nomeCurso"]);
-        	    			$m = escalaDecimal($arr1[$i]["media"]);
-        	    			
-//         	    			$htmlTooltip = utf8_encode($arr1[$i]["nomeProfessor"]).'\n';
-//         	    			$htmlTooltip .= utf8_encode($arr1[$i]["nomeDisciplina"]).'\n';
-//         	    			$htmlTooltip .= "Nota: ".escalaDecimal($arr1[$i]["media"]);
-        	    			
-        	    			echo 'data.setValue('.$i.', 0, \''.$d.'\');';
-        	    			echo 'data.setValue('.$i.', 1, '.$m.');';   
-//         	    			echo 'data.setValue('.$i.', 2, \''.$htmlTooltip.'\');';       	    			
-        	    					
-        	    		}
-        	    		
-        	    		*/
-        	    		?>    	    		
-/*
-        	  // Create and draw the visualization.
-        	  //graficos possíveis pra esses dados
-        	  //Area - Line - Bar - Column
-        	  chart = new google.visualization.ColumnChart(document.getElementById('chartCursosGeralNotas'));
-    		  chart.draw(data,
-        	           {title:"Cursos - Geral",
-        	            height:300,
-        	            colors: ['#920300'],
-        	            hAxis: {title: "Curso"},
-        	            vAxis:{title: 'Nota',
-        	            	   maxValue: 10,
-            	               minValue: 0
-            	               //gridlines:{count:10}//
-     	               		},
-     	               	pointSize: 5,
-     	                allowHtml: true
-        	           }
-        	      );
-          }
-
-  */
 
 
   
@@ -1049,7 +712,118 @@ return $avaliacoes;
     </script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.selectboxes.js"></script>
+<script type="text/javascript">
+var box; //guarda a box q vai ser atualizada
 
+var req_2;
+function loadXMLDoc_2(url){
+ 	req_2 = null;
+
+	if (window.XMLHttpRequest) {
+ 		req_2 = new XMLHttpRequest();
+		req_2.onreadystatechange = processReqChange_2; 
+                		
+		req_2.open("GET", url, true);
+ 		req_2.send(null);
+
+	} else if (window.ActiveXObject) {
+		try {
+				req_2 = new ActiveXObject("Msxml2.XMLHTTP.4.0");
+			} catch(e) {
+		try {
+				req_2 = new ActiveXObject("Msxml2.XMLHTTP.3.0");
+			} catch(e) {
+		try {
+				req_2 = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch(e) {
+		try {
+				req_2 = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch(e) {
+		req_2 = false;
+					}
+					}
+					}
+					}
+
+	if (req_2) {
+ 		
+		req_2.onreadystatechange = processReqChange_2();
+		req_2.open("GET", url, true);
+ 		req_2.send();
+	}
+	}
+}
+
+function drawOnBox(){
+	var boxToDraw = "box_opt"+box;
+
+	for(var i = 1; i <= 5; i++){
+		
+		if(i>box){
+			var boxToDel = "box_opt"+i;
+			document.getElementById(boxToDel).innerHTML = "";
+		}
+	}
+	document.getElementById(boxToDraw).innerHTML = req_2.responseText;
+	
+}
+
+function processReqChange_2(){
+	
+	if (req_2.readyState == 4) {
+		if (req_2.status == 200) {
+			drawOnBox();
+			//document.getElementById("box_opt").innerHTML = req_2.responseText;
+		} else {
+			alert("Houve um problema ao obter os dados:\n" + req_2.statusText);
+		}
+	}
+
+	if (req_2.readyState == 2) {
+		if (req_2.status == 200) {
+			var boxToDraw = "box_opt"+box;
+			document.getElementById(boxToDraw).innerHTML = "Carregando...";
+		} else {
+			alert("Houve um problema ao obter os dados:\n" + req_2.statusText);
+		}
+	}
+}
+
+
+function loadOptions(filtro, param){
+	//alert(param);
+	//loadXMLDoc_2("../Controller/relatorioController.php?action=load&avaliador="+param);
+	loadXMLDoc_2("../Controller/relatorioController.php?action=load&filtro="+filtro+"&param="+param);
+	box = filtro+1;
+	marcaOpcao(filtro, param);
+
+	//verifica se tem grafico e chama a funcao abaixo
+}
+
+function marcaOpcao(filtro, param){
+
+	var op = "op"+filtro;
+	var n = param.replace(" ", "_");
+	var id = op+"_"+n;
+
+	//primeiro limpa as demais opcoes
+	//$(".box_op > a").css("color", "#777");
+	
+	var x = "#box_opt"+filtro+" > .box_op > a";
+	$(x).css("color", "#06C");
+	$(x).css("background", "#fff");
+
+	//$(id).css("background", "#fafafa");
+	document.getElementById(id).style.color = "#fff";
+	document.getElementById(id).style.background = "#333";
+
+	//alert("testaaaaaaaaaaando>>> "+id);
+}
+
+//fazer funcao pra carregar chart com ajax aqui
+
+
+</script>
 </head>
 
 <body style="background: #fafafa;">
@@ -1072,245 +846,69 @@ return $avaliacoes;
 
 				<h3>Relat&oacute;rios</h3>
 
-				<!--
-        <ul>
-        	<li><a href="../Controller/relatorioController.php?relatorio_id=1">Acessos(Pronto)</a></li>
-        	<li><a href="../Controller/relatorioController.php?relatorio_id=2">Laboratorios(Em desenvolvimento)</a></li>
-        	<li><a href="../Controller/relatorioController.php?relatorio_id=3">Disciplinas(Em desenvolvimento)</a></li>
-        	<li><a href="../Controller/relatorioController.php?relatorio_id=4">com filtros</a></li>
-        	<li>Cursos(Em desenvolvimento)</li>
-        	<li>Professores(Em desenvolvimento)</li>
-        	<li>Comentários(Em desenvolvimento)</li>
-        </ul>
-         -->
-
 			<div id="rel_menus">
-				<h4>Questionario Institucional</h4>
-				<br />
-				<div class="relatorio_box">
-					<ul>
-						<li>Psicologia
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia&semestre=1">Psicologia
-										- 1 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia&semestre=3">Psicologia
-										- 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia&semestre=5">Psicologia
-										- 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Psicologia">Psicologia
-										- Geral</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
+			
+			<?php
+				$ip = "189.26.80.175";
+				//echo $_SERVER['REMOTE_ADDR'];
+				if($usuario_logado->getId() == 1 && $_SERVER['REMOTE_ADDR'] == $ip){
 
-				<div class="relatorio_box">
-					<ul>
-						<li>Enfermagem
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem&semestre=1">Enfermagem
-										- 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem&semestre=3">Enfermagem
-										- 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem&semestre=5">Enfermagem
-										- 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Enfermagem">Enfermagem
-										- Geral</a></li>
-							</ul>
-						</li>
-					</ul>
+			?>
+				
+				
+				
+				
+			<?php
+				}else{
+			?>
+				
+				<div id="box_opt1">
+					
+					
+					<div class="box_op">
+						<h4>Avaliador:</h4>
+					
+						<a href="#" id="op1_Aluno" onclick="loadOptions(1, 'Aluno');">Aluno</a>
+						
+						<a href="#" id="op1_Professor" onclick="loadOptions(1, 'Professor');">Professor</a>
+						
+						<a href="#" id="op1_Coordenador" onclick="loadOptions(1, 'Coordenador');">Coordenador</a>
+						
+						<a href="#" id="op1_Funcionário" onclick="loadOptions(1, 'Funcionário');">Funcionário</a>
+					</div>
+					
 				</div>
-
-				<div class="relatorio_box">
-					<ul>
-						<li>Serviço Social
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social&semestre=1">Serviço
-										Social - 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social&semestre=3">Serviço
-										Social - 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social&semestre=5">Serviço
-										Social - 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Serviço Social">Serviço
-										Social - Geral</a></li>
-							</ul>
-						</li>
-					</ul>
+				
+				<div id="box_opt2">
+					
 				</div>
-
-				<div class="relatorio_box">
-					<ul>
-						<li>Gestão Comercial
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial&semestre=1">Gestão
-										Comercial - 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial&semestre=3">Gestão
-										Comercial - 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial&semestre=5">Gestão
-										Comercial - 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão Comercial">Gestão
-										Comercial - Geral</a></li>
-							</ul>
-						</li>
-					</ul>
+				<div id="box_opt3">
+					
 				</div>
-
-				<div class="relatorio_box">
-					<ul>
-						<li>Gestão de Cooperativas
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas&semestre=1">Gestão
-										de Cooperativas - 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas&semestre=3">Gestão
-										de Cooperativas - 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas&semestre=5">Gestão
-										de Cooperativas - 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=4&curso=Tecnologia em Gestão de Cooperativas">Gestão
-										de Cooperativas - Geral</a></li>
-							</ul>
-						</li>
-					</ul>
+				<div id="box_opt4">
+					
 				</div>
-
-				<br style="clear: both" />
-
-				<h4>Questionario Coordenador</h4>
-				<br />
-				<div class="relatorio_box">
-					<ul>
-						<li>Psicologia
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia&semestre=1">Psicologia
-										- 1 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia&semestre=3">Psicologia
-										- 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia&semestre=5">Psicologia
-										- 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Psicologia">Psicologia
-										- Geral</a></li>
-							</ul>
-						</li>
-					</ul>
+				<div id="box_opt5">
+					
 				</div>
-
-				<div class="relatorio_box">
-					<ul>
-						<li>Enfermagem
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem&semestre=1">Enfermagem
-										- 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem&semestre=3">Enfermagem
-										- 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem&semestre=5">Enfermagem
-										- 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Enfermagem">Enfermagem
-										- Geral</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-
-				<div class="relatorio_box">
-					<ul>
-						<li>Serviço Social
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social&semestre=1">Serviço
-										Social - 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social&semestre=3">Serviço
-										Social - 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social&semestre=5">Serviço
-										Social - 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Serviço Social">Serviço
-										Social - Geral</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-
-				<div class="relatorio_box">
-					<ul>
-						<li>Gestão Comercial
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial&semestre=1">Gestão
-										Comercial - 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial&semestre=3">Gestão
-										Comercial - 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial&semestre=5">Gestão
-										Comercial - 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão Comercial">Gestão
-										Comercial - Geral</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-
-				<div class="relatorio_box">
-					<ul>
-						<li>Gestão de Cooperativas
-							<ul>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas&semestre=1">Gestão
-										de Cooperativas - 1 periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas&semestre=3">Gestão
-										de Cooperativas - 3 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas&semestre=5">Gestão
-										de Cooperativas - 5 Periodo</a></li>
-								<li><a
-									href="../Controller/relatorioController.php?relatorio_id=5&curso=Tecnologia em Gestão de Cooperativas">Gestão
-										de Cooperativas - Geral</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
+				
+				<?php
+				}
+				?>
+				
 				</div><!-- rel menus -->
 
 				<br style="clear: both" />
+				
 
 				<!--         <div id="questionarios"> -->
-
+				<div id="chart_div"></div>
 				<!-- <div id="chart_div" style="width: '100%'; height: 300px;"></div> -->
 				<h3><?php echo $_SESSION["s_rel_name"]; ?></h3>
 
-
-					<div id="dashboard">
+				<?php echo $_SESSION["s_active_chart_comment"]; ?>
+				
+				<div id="dashboard">
 
 					<div id="control1"></div>
 					<div id="control2"></div>
@@ -1331,6 +929,25 @@ return $avaliacoes;
     <?php include_once 'inc/footer_inc.php';?>
 			
 			</div>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.load('visualization', '1.1', {packages:['controls']});
+      google.setOnLoadCallback(drawChart);
 
+      //cores para os charts
+      // #920300 padrao unicampo
+      // #00CD00 verde google
+      // #CD0000 vermelho google
+      
+      <?php 
+      if(isset($_SESSION["s_active_chart"]) && $_SESSION["s_active_chart"] != ""){
+      	
+      	$chart = $_SESSION["s_active_chart"];
+      	echo $chart;
+      	
+      }
+      ?>
+      
+    </script>
 </body>
 </html>
