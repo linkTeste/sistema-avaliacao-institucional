@@ -22,8 +22,8 @@
 		</div>
 		<div style="
 ">
-Unicampo - Faculdade União de Campo Mourão - 2012<br>
-    		Desenvolvido por <a href="mailto:baiacfabio@gmail.com" >DevMake Systems</a><br>
+Unicampo - Faculdade União de Campo Mourão<br>
+    		Desenvolvido por <a href="mailto:baiacfabio@gmail.com" >DevMake Systems&reg; 2012 - <?php echo date("Y");?></a><br>
 		</div>
 		
     		

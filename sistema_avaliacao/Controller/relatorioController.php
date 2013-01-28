@@ -73,7 +73,7 @@ function avaliacaoController() {
 	//decodifica o q veio via GET
 	if(isset($_GET["p"])){
 		$_GET = decodeParams($_GET["p"]);
-	}
+	}	
 
 	//fazer o tratamento aqui da codificacao utf-8, iso, etc
 	if(isset($_POST["action"])){
@@ -84,8 +84,8 @@ function avaliacaoController() {
 		$action = $_GET["action"];
 	}
 
-	if(isset($_GET["relatorio_id"])){
-		$relatorio_id = $_GET["relatorio_id"];
+	if(isset($_POST["relatorio_id"])){
+		$relatorio_id = $_POST["relatorio_id"];
 	}
 
 	if($relatorio_id == 1){
@@ -101,60 +101,68 @@ function avaliacaoController() {
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
 	if($relatorio_id == 4){
-		if(isset($_GET["semestre"])){
-			$semestre = $_GET["semestre"]."º SEMESTRE";
+		if(isset($_POST["semestre"])){
+			//$semestre = $_POST["semestre"]."º SEMESTRE";
+			$semestre = $_POST["semestre"];
 		}else{
 			
 		}
 		
-		$curso = $_GET["curso"];
+		$curso = $_POST["curso"];
 		
 		$relatorio = relatorioInstituicao($semestre, $curso);
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
 	
 	if($relatorio_id == 5){
-		if(isset($_GET["semestre"])){
-			$semestre = $_GET["semestre"]."º SEMESTRE";
+		if(isset($_POST["semestre"])){
+			//$semestre = $_POST["semestre"]."º SEMESTRE";
+			$semestre = $_POST["semestre"];
 		}else{
 				
 		}
 	
 	
-		$curso = $_GET["curso"];
+		$curso = $_POST["curso"];
 	
 		$relatorio = relatorioCoordenador($semestre, $curso);
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
 	if($relatorio_id == 6){
-		$t = $_GET["tipo"];
-		$c = $_GET["curso"];
+		$t = $_POST["tipo"];
+		$c = $_POST["curso"];
 		$relatorio = relatorioInstituicao2($t, $c);
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
 	if($relatorio_id == 7){
-		$t = $_GET["tipo"];
-		$sub = $_GET["subtipo"];
+		$t = $_POST["tipo"];
+		$sub = $_POST["subtipo"];
 		$relatorio = relatorioComentarios($t, $sub);
 		$_SESSION["s_active_chart_comment"] = $relatorio;
 	}
 	
 	if($relatorio_id == 8){
-		$t = $_GET["tipo"];
-		$t_id = $_GET["turma_id"];
+		$t = $_POST["tipo"];
+		$t_id = $_POST["turma_id"];
 		$relatorio = relatorioProfessor($t, $t_id);
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
 	
 	if($relatorio_id == 9){
-		$curso = $_GET["curso"];
+		$curso = $_POST["curso"];
 		$relatorio = relatorioCoordenador2($curso);
 		$_SESSION["s_active_chart"] = $relatorio;
 	}
-	
+	if($relatorio_id == 10){
+		$t = $_POST["tipo"];
+		$s = $_POST["subtipo"];
+		$c = $_POST["curso"];
+		$relatorio = relatorioLab($t, $s, $c);
+		$_SESSION["s_active_chart"] = $relatorio;
+	}
 	
 	if($action == "load_"){
-		$avaliador = $_GET["avaliador"];
+		$avaliador = $_POST["avaliador"];
 		
 		/*$host="mysql01-farm26.kinghost.net";
 		$user="faculdadeunica05";
@@ -190,6 +198,10 @@ function avaliacaoController() {
 		$filtro = $_GET["filtro"];
 		$parametro = $_GET["param"];
 		
+		//semestres
+		$param_semestres = $_GET["param_semestres"];
+		//cursos
+		$param_cursos = $_GET["param_cursos"];
 		
 		if($filtro == 1){
 			$_SESSION["rel_filtro_1"] = $parametro;
@@ -204,8 +216,15 @@ function avaliacaoController() {
 				echo "<div class='box_op'>";
 				
 				echo "<h4>Questionário:</h4>";
+				echo "<br />";
 				
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&tipo=Funcionário' class='chart'>Instituição</a>";
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='6' />";
+				echo "<input type='hidden' name='tipo' value='Funcionário' />";
+				echo "<input type='hidden' name='curso[]' value='Todos' />";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&tipo=Funcionário' class='chart'>Instituição</a>";
+				echo "<label><input type='radio' value ='Funcionário' name='quest' />Instituição</label>";
+				
 				
 				echo "</div>";
 					
@@ -215,9 +234,12 @@ function avaliacaoController() {
 				echo "<div class='box_op'>";
 				
 				echo "<h4>Questionario:</h4>";
+				echo "<br />";
 				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&tipo=Professor' class='chart'>Instituição</a>";
 				while($quest->fetch()){
-					echo "<a href='#' id='op2_".utf8_encode($quest->getSubtipo())."' onclick='loadOptions(2, \"".utf8_encode($quest->getSubtipo())."\");'>".utf8_encode($quest->getSubtipo())."</a>";
+					//echo "<a href='#' id='op2_".utf8_encode($quest->getSubtipo())."' onclick='loadOptions(2, \"".utf8_encode($quest->getSubtipo())."\");'>".utf8_encode($quest->getSubtipo())."</a>";
+					echo "<label><input type='radio' value ='".utf8_encode($quest->getSubtipo())."' name='quest' id='op2_".utf8_encode($quest->getSubtipo())."' onclick='loadOptions(2, \"".utf8_encode($quest->getSubtipo())."\", this);' />".utf8_encode($quest->getSubtipo())."</label>";
+					//echo "<a href='#' id='op2_Laboratorios' onclick='loadOptions(2, \"Laboratorios\");'>Laborat�rios</a>";
 					//echo "<br />";
 				}
 				echo "</div>";
@@ -228,8 +250,14 @@ function avaliacaoController() {
 				echo "<div class='box_op'>";
 				
 				echo "<h4>Questionário:</h4>";
+				echo "<br />";
 				
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&tipo=Coordenador' class='chart'>Instituição</a>";
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='6' />";
+				echo "<input type='hidden' name='tipo' value='Coordenador' />";
+				echo "<input type='hidden' name='curso[]' value='Todos' />";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&tipo=Coordenador' class='chart'>Instituição</a>";
+				echo "<label><input type='radio' value ='Coordenador' name='quest' />Instituição</label>";
 				
 				echo "</div>";
 					
@@ -238,10 +266,11 @@ function avaliacaoController() {
 				echo "<div class='box_op'>";
 				
 				echo "<h4>Questionario:</h4>";
+				echo "<br />";
 				
 				while($quest->fetch()){
-					echo "<a href='#' id='op2_".utf8_encode($quest->getSubtipo())."' onclick='loadOptions(2, \"".utf8_encode($quest->getSubtipo())."\");'>".utf8_encode($quest->getSubtipo())."</a>";
-					//echo "<br />";
+					//echo "<a href='#' id='op2_".utf8_encode($quest->getSubtipo())."' onclick='loadOptions(2, \"".utf8_encode($quest->getSubtipo())."\");'>".utf8_encode($quest->getSubtipo())."</a>";
+					echo "<label><input type='radio' value ='".utf8_encode($quest->getSubtipo())."' name='quest' id='op2_".utf8_encode($quest->getSubtipo())."' onclick='loadOptions(2, \"".utf8_encode($quest->getSubtipo())."\", this);' />".utf8_encode($quest->getSubtipo())."</label>";
 				}
 				echo "</div>";
 					
@@ -256,14 +285,39 @@ function avaliacaoController() {
 			
 			$temp = substr($_SESSION["rel_filtro_2"], 0, 3);
 			if($temp == "Lab"){
-			
+				$tipo = $_SESSION["rel_filtro_1"];
 				//executa relatorio
 				//$relatorio = relatorioInstituicao2($_SESSION["rel_filtro_1"]);
 				//$_SESSION["s_active_chart"] = $relatorio;
+				echo "<div class='box_op'>";
+					
+				echo "<h4>Curso:</h4>";
 				
-				echo "lab";
+				//echo "lab";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=10&tipo=".$tipo."&subtipo=".$parametro."&curso=Psicologia' class='chart'>Psicologia</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=10&tipo=".$tipo."&subtipo=".$parametro."&curso=Enfermagem' class='chart'>Enfermagem</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=10&tipo=".$tipo."&subtipo=".$parametro."&curso=Servi�o Social' class='chart'>Servi�o Social</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=10&tipo=".$tipo."&subtipo=".$parametro."&curso=Tecnologia em Gest�o Comercial' class='chart'>Tecnologia em Gest�o Comercial</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=10&tipo=".$tipo."&subtipo=".$parametro."&curso=Tecnologia em Gest�o de Cooperativas' class='chart'>Tecnologia em Gest�o de Cooperativas</a>";
 			
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='10' />";
+				echo "<input type='hidden' name='tipo' value='".$tipo."' />";
+				echo "<input type='hidden' name='subtipo' value='".$parametro."' />";
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt3\");' />Marcar Todos</label>";
+				echo "<hr />";
+				
+				echo "<label><input type='checkbox' name='curso[]' value='Psicologia' onClick='marcaOpcaoCheckbox(this);'/>Psicologia</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Enfermagem' onClick='marcaOpcaoCheckbox(this);'/>Enfermagem</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Serviço Social' onClick='marcaOpcaoCheckbox(this);'/>Serviço Social</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão Comercial' onClick='marcaOpcaoCheckbox(this);'/>Tecnologia em Gestão Comercial</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão de Cooperativas' onClick='marcaOpcaoCheckbox(this);'/>Tecnologia em Gestão de Cooperativas</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Todos' onClick='marcaOpcaoCheckbox(this);'/>Geral(soma dos cursos)</label>";
+				
+				
+				
 				//redirectTo("relatorios.php");
+				echo "</div>";
 				exit;
 			}
 			
@@ -275,13 +329,25 @@ function avaliacaoController() {
 					
 				echo "<h4>Curso:</h4>";
 					
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Psicologia' class='chart'>Psicologia</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Enfermagem' class='chart'>Enfermagem</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Serviço Social' class='chart'>Serviço Social</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Tecnologia em Gestão Comercial' class='chart'>Tecnologia em Gestão Comercial</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Tecnologia em Gestão de Cooperativas' class='chart'>Tecnologia em Gestão de Cooperativas</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Todos' class='chart'>Todos os Cursos</a>";
-					
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Psicologia' class='chart'>Psicologia</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Enfermagem' class='chart'>Enfermagem</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Serviço Social' class='chart'>Serviço Social</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Tecnologia em Gestão Comercial' class='chart'>Tecnologia em Gestão Comercial</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Tecnologia em Gestão de Cooperativas' class='chart'>Tecnologia em Gestão de Cooperativas</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=Todos' class='chart'>Todos os Cursos</a>";
+
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='9' />";
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt3\");' />Marcar Todos</label>";
+				echo "<hr />";
+				
+				echo "<label><input type='checkbox' name='curso[]' value='Psicologia' onClick='marcaOpcaoCheckbox(this);'/>Psicologia</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Enfermagem' onClick='marcaOpcaoCheckbox(this);'/>Enfermagem</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Serviço Social' onClick='marcaOpcaoCheckbox(this);'/>Serviço Social</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão Comercial' onClick='marcaOpcaoCheckbox(this);'/>Tecnologia em Gestão Comercial</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão de Cooperativas' onClick='marcaOpcaoCheckbox(this);'/>Tecnologia em Gestão de Cooperativas</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Todos' onClick='marcaOpcaoCheckbox(this);'/>Geral(soma dos cursos)</label>";
+				
 				echo "</div>";
 					
 				exit;
@@ -292,17 +358,51 @@ function avaliacaoController() {
 					
 				echo "<h4>Curso:</h4>";
 					
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Psicologia&tipo=Professor' class='chart'>Psicologia</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Enfermagem&tipo=Professor' class='chart'>Enfermagem</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Serviço Social&tipo=Professor' class='chart'>Serviço Social</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Tecnologia em Gestão Comercial&tipo=Professor' class='chart'>Tecnologia em Gestão Comercial</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Tecnologia em Gestão de Cooperativas&tipo=Professor' class='chart'>Tecnologia em Gestão de Cooperativas</a>";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Todos&tipo=Professor' class='chart'>Todos os Cursos</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Psicologia&tipo=Professor' class='chart'>Psicologia</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Enfermagem&tipo=Professor' class='chart'>Enfermagem</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Serviço Social&tipo=Professor' class='chart'>Serviço Social</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Tecnologia em Gestão Comercial&tipo=Professor' class='chart'>Tecnologia em Gestão Comercial</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Tecnologia em Gestão de Cooperativas&tipo=Professor' class='chart'>Tecnologia em Gestão de Cooperativas</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=6&curso=Todos&tipo=Professor' class='chart'>Todos os Cursos</a>";
 					
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='6' />";
+				echo "<input type='hidden' name='tipo' value='Professor' />";
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt3\");' />Marcar Todos</label>";
+				echo "<hr />";
+				
+				echo "<label><input type='checkbox' name='curso[]' value='Psicologia' onClick='marcaOpcaoCheckbox(this);'/>Psicologia</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Enfermagem' onClick='marcaOpcaoCheckbox(this);'/>Enfermagem</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Serviço Social' onClick='marcaOpcaoCheckbox(this);'/>Serviço Social</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão Comercial' onClick='marcaOpcaoCheckbox(this);'/>Tecnologia em Gestão Comercial</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão de Cooperativas' onClick='marcaOpcaoCheckbox(this);'/>Tecnologia em Gestão de Cooperativas</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Todos' onClick='marcaOpcaoCheckbox(this);'/>Geral(soma dos cursos)</label>";
+				
 				echo "</div>";
 					
 				exit;
 				
+			}
+			
+			if($_SESSION["rel_filtro_1"] == "Aluno" && $_SESSION["rel_filtro_2"] == "Professor/Disciplina"){
+				echo "<div class='box_op'>";
+					
+				echo "<h4>Curso:</h4>";
+						
+				//inputs
+				//echo "<input type='hidden' name='relatorio_id' value='6' />";
+				//echo "<input type='hidden' name='tipo' value='Professor' />";
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt3\");loadOptionsMultiple(3, \"1\", this);' />Marcar Todos</label>";
+				echo "<hr />";
+				
+				echo "<label><input type='checkbox' name='curso[]' value='Psicologia' onClick='loadOptionsMultiple(3, \"1\", this);'/>Psicologia</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Enfermagem' onClick='loadOptionsMultiple(3, \"2\", this);'/>Enfermagem</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Serviço Social' onClick='loadOptionsMultiple(3, \"3\", this);'/>Serviço Social</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão Comercial' onClick='loadOptionsMultiple(3, \"4\", this);'/>Tecnologia em Gestão Comercial</label>";
+				echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão de Cooperativas' onClick='loadOptionsMultiple(3, \"5\", this);'/>Tecnologia em Gestão de Cooperativas</label>";
+				
+				echo "</div>";
+				exit;
 			}
 			
 			//seleciona os cursos
@@ -310,18 +410,21 @@ function avaliacaoController() {
 				
 			echo "<h4>Curso:</h4>";
 				
-			echo "<a href='#' id='op3_1' onclick='loadOptions(3, \"1\");'>Psicologia</a>";
-			//echo "<br />";
-			echo "<a href='#' id='op3_2' onclick='loadOptions(3, \"2\");'>Enfermagem</a>";
-			//echo "<br />";
-			echo "<a href='#' id='op3_3' onclick='loadOptions(3, \"3\");'>Serviço Social</a>";
-			//echo "<br />";
-			echo "<a href='#' id='op3_4' onclick='loadOptions(3, \"4\");'>Tecnologia em Gestão Comercial</a>";
-			//echo "<br />";
-			echo "<a href='#' id='op3_5' onclick='loadOptions(3, \"5\");'>Tecnologia em Gestão de Cooperativas</a>";
+			//echo "<a href='#' id='op3_1' onclick='loadOptions(3, \"1\");'>Psicologia</a>";
+			//echo "<a href='#' id='op3_2' onclick='loadOptions(3, \"2\");'>Enfermagem</a>";
+			//echo "<a href='#' id='op3_3' onclick='loadOptions(3, \"3\");'>Serviço Social</a>";
+			//echo "<a href='#' id='op3_4' onclick='loadOptions(3, \"4\");'>Tecnologia em Gestão Comercial</a>";
+			//echo "<a href='#' id='op3_5' onclick='loadOptions(3, \"5\");'>Tecnologia em Gestão de Cooperativas</a>";
+			//echo "<a href='#' id='op3_6' onclick='loadOptions(3, \"6\");'>Todos os Cursos</a>";
+			echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt3\");loadOptions(3, \"1\", this);' />Marcar Todos</label>";
+			echo "<hr />";
 				
-			echo "<a href='#' id='op3_6' onclick='loadOptions(3, \"6\");'>Todos os Cursos</a>";
-				
+			echo "<label><input type='checkbox' name='curso[]' value='Psicologia' onclick='loadOptions(3, \"1\", this);'/>Psicologia</label>";
+			echo "<label><input type='checkbox' name='curso[]' value='Enfermagem' onclick='loadOptions(3, \"2\", this);'/>Enfermagem</label>";
+			echo "<label><input type='checkbox' name='curso[]' value='Serviço Social' onclick='loadOptions(3, \"3\", this);'/>Serviço Social</label>";
+			echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão Comercial' onclick='loadOptions(3, \"4\", this);'/>Tecnologia em Gestão Comercial</label>";
+			echo "<label><input type='checkbox' name='curso[]' value='Tecnologia em Gestão de Cooperativas' onclick='loadOptions(3, \"5\", this);'/>Tecnologia em Gestão de Cooperativas</label>";
+			echo "<label><input type='checkbox' name='curso[]' value='Todos' onclick='loadOptions(3, \"0\", this);'/>Geral(soma dos cursos)</label>";
 			echo "</div>";
 			
 			exit;
@@ -354,7 +457,7 @@ function avaliacaoController() {
 					//Cooperativas
 					$curso = "Tecnologia em Gestão de Cooperativas";
 					break;
-				case 6:
+				case 0:
 					//Todos os cursos
 					$curso = "Todos";
 					break;			
@@ -370,13 +473,20 @@ function avaliacaoController() {
 				
 				echo "<h4>Período:</h4>";
 				
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."&semestre=1' class='chart'>1° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."&semestre=3' class='chart'>3° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."&semestre=5' class='chart'>5° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."' class='chart'>Todos os períodos</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."&semestre=1' class='chart'>1° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."&semestre=3' class='chart'>3° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."&semestre=5' class='chart'>5° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=4&curso=".$curso."' class='chart'>Todos os períodos</a>";
+				
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='4' />";
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt4\")' />Marcar Todos</label>";
+				echo "<hr />";
+				 
+				echo "<label><input type='checkbox' name='semestre[]' value='1' />1° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='3' />3° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='5' />5° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='Todos' />Geral(soma dos semestres)</label>";
 				
 				echo "</div>";
 				
@@ -390,14 +500,21 @@ function avaliacaoController() {
 				
 				echo "<h4>Período:</h4>";
 			
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."&semestre=1' class='chart'>1° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."&semestre=3' class='chart'>3° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."&semestre=5' class='chart'>5° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."' class='chart'>Todos os períodos</a>";
-			
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."&semestre=1' class='chart'>1° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."&semestre=3' class='chart'>3° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."&semestre=5' class='chart'>5° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$curso."' class='chart'>Todos os períodos</a>";
+				
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='5' />";
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt4\")' />Marcar Todos</label>";
+				echo "<hr />";
+					
+				echo "<label><input type='checkbox' name='semestre[]' value='1' onClick='marcaOpcaoCheckbox(this);'/>1° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='3' onClick='marcaOpcaoCheckbox(this);'/>3° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='5' onClick='marcaOpcaoCheckbox(this);'/>5° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='Todos' onClick='marcaOpcaoCheckbox(this);'/>Geral(soma dos semestres)</label>";
+				
 				echo "</div>";
 			
 				exit;
@@ -409,14 +526,20 @@ function avaliacaoController() {
 			
 				echo "<h4>Período:</h4>";
 					
-				echo "<a href='#' id='op4_1' onclick='loadOptions(4, \"1\");'>1° Período</a>";
-				//echo "<br />";
-				echo "<a href='#' id='op4_3' onclick='loadOptions(4, \"3\");'>3° Período</a>";
-				//echo "<br />";
-				echo "<a href='#' id='op4_5' onclick='loadOptions(4, \"5\");'>5° Período</a>";
-				//echo "<br />";
-				echo "<a href='#' id='op4_todos' onclick='loadOptions(4, \"todos\");'>Todos os Períodos</a>";
+				//echo "<a href='#' id='op4_1' onclick='loadOptions(4, \"1\");'>1° Período</a>";
+				//echo "<a href='#' id='op4_3' onclick='loadOptions(4, \"3\");'>3° Período</a>";
+				//echo "<a href='#' id='op4_5' onclick='loadOptions(4, \"5\");'>5° Período</a>";
+				//echo "<a href='#' id='op4_todos' onclick='loadOptions(4, \"todos\");'>Todos os Períodos</a>";
 					
+				//inputs
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt4\");loadOptionsMultiple(4, \"1\", this);' />Marcar Todos</label>";
+				echo "<hr />";
+								
+				echo "<label><input type='checkbox' name='semestre[]' value='1' onClick='loadOptionsMultiple(4, \"1\", this);'/>1° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='3' onClick='loadOptionsMultiple(4, \"3\", this);'/>3° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='5' onClick='loadOptionsMultiple(4, \"5\", this);'/>5° Período</label>";
+				//echo "<label><input type='checkbox' name='semestre[]' value='Todos' onClick='loadOptionsMultiple(4, \"0\", this);'/>Geral(soma dos semestres)</label>";
+				
 				echo "</div>";
 				
 				exit;
@@ -430,14 +553,19 @@ function avaliacaoController() {
 			
 				echo "<h4>Período:</h4>";
 					
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>1° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>3° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>5° Período</a>";
-				//echo "<br />";
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>Todos os períodos</a>";
-					
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>1° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>3° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>5° Período</a>";
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=9&curso=".$curso."' class='chart'>Todos os períodos</a>";
+				
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='9' />";
+									
+				echo "<label><input type='checkbox' name='semestre[]' value='1' onClick='marcaOpcaoCheckbox(this);'/>1° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='3' onClick='marcaOpcaoCheckbox(this);'/>3° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='5' onClick='marcaOpcaoCheckbox(this);'/>5° Período</label>";
+				echo "<label><input type='checkbox' name='semestre[]' value='Todos' onClick='marcaOpcaoCheckbox(this);'/>Geral(soma dos semestres)</label>";
+				
 				echo "</div>";
 					
 				exit;
@@ -454,8 +582,11 @@ function avaliacaoController() {
 				echo "<div class='box_op'>";
 					
 				echo "<h4>Disciplina:</h4>";
+				//echo "s curso: ".$_SESSION["rel_filtro_3"];
+				//echo "<br />";
+				//echo "s semestre: ".$_SESSION["rel_filtro_4"];
 				
-				$curso;
+				/*$curso;
 				switch ($_SESSION["rel_filtro_3"]){
 					case 1:
 				        //psicologia
@@ -477,35 +608,142 @@ function avaliacaoController() {
 		        		//Cooperativas
 		        		$curso = "Tecnologia em Gestão de Cooperativas";
 		        		break;
-		        	case 6:
+		        	case 0:
 		        		//Todos os cursos
 		        		$curso = "Todos";
 		        		break;
 						
-				}
+				}*/
 				
-				$curso = utf8_decode($curso);
+								
+				//$curso = utf8_decode($curso);
 				$turmas = new Turma();
 				
-				//filtra os cursos
-				if($curso == "Todos"){
+				$where = "";
+				if(isset($_GET["param_cursos"])){
+					$cursos_array = explode(",",$param_cursos);
+					//print_r($series_array);
+					//series
+					$cursos_str = "";
+					for ($i=0; $i<sizeof($cursos_array); $i++){
+						if($i == 0){
+							$cursos_str .= "'".$cursos_array[$i]."'";
+						}else{
+							$cursos_str .= ", '".$cursos_array[$i]."'";
+						}
+					}
+				
+					$where .= "curso in (".utf8_decode($cursos_str).")";
+					//$turmas->where("curso in (".utf8_decode($cursos_str).")");
 					
-				}else{
-					$turmas->curso = $curso;
+					if(isset($_GET["param_semestres"])){
+						$series_array = explode(",",$param_semestres);
+						//print_r($series_array);
+						//series
+						$series_str = "";
+						for ($i=0; $i<sizeof($series_array); $i++){
+							if($i == 0){
+								$series_str .= "'".$series_array[$i]."º SEMESTRE'";
+							}else{
+								$series_str .= ", '".$series_array[$i]."º SEMESTRE'";
+							}
+						}
+							
+						$where .= " AND serie in (".utf8_decode($series_str).")";
+						//$turmas->where("serie in (".utf8_decode($series_str).")");
+					}
+					
+					$turmas->where($where);
+					$turmas->order("curso, serie, idTurma");
+					
 				}
 				
-				if($_SESSION["rel_filtro_4"] == "todos"){
-					
-				}else{
-					$turmas->serie = utf8_decode($_SESSION["rel_filtro_4"]."º SEMESTRE");
-				}
+				
 				
 				$turmas->find();
-				echo "<a href='../Controller/relatorioController.php?relatorio_id=8&tipo=Aluno&turma_id=Todas' class='chart'>Todas as Turmas</a>";
+				
+							
+				//inputs
+				echo "<input type='hidden' name='relatorio_id' value='8' />";
+				echo "<input type='hidden' name='tipo' value='Aluno' />";
+				echo "<label><input type='checkbox' class='checkAll' onClick='checkAll(\"box_opt5\")' />Marcar Todos</label>";
+				echo "<hr />";
+				
+				//echo "<a href='../Controller/relatorioController.php?relatorio_id=8&tipo=Aluno&turma_id=Todas' class='chart'>Todas as Turmas</a>";
+				
+				$pointer_curso = 0;
+				$pointer_serie = 0;
 				while($turmas->fetch()){
-					echo "<a href='../Controller/relatorioController.php?relatorio_id=8&tipo=Aluno&turma_id=".$turmas->getIdTurma()."' class='chart'>".$turmas->getIdTurma()." - ".utf8_encode($turmas->getNomeDisciplina())."</a>";
-					//echo "<br />";
+					//agrupa por curso
+					if($pointer_curso == 0){
+						$temp_curso = utf8_encode($turmas->getCurso());
+						echo "<label style='padding-left:20px;'><input type='checkbox' name='turma_id[]' value='Todas' />Geral de Todos os Cursos</label>";
+						echo "<h4 class='ident1'>".$temp_curso."</h4>";
+						echo "<label style='padding-left:20px;'><input type='checkbox' name='turma_id[]' value='C:".$temp_curso."-Todos' />Geral de ".$temp_curso."</label>";
+					}else{
+						if($temp_curso == utf8_encode($turmas->getCurso())){
+							//echo "<label><input type='checkbox' name='turma_id[]' value='".$turmas->getIdTurma()."' />".$turmas->getIdTurma()." - ".utf8_encode($turmas->getNomeDisciplina())."</label>";
+							
+							//agrupa por serie
+							if($pointer_serie == 0){
+								$temp_serie = utf8_encode($turmas->getSerie());
+								echo "<h4 class='ident2'>".$temp_serie."</h4>";
+								echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='C:".$temp_curso."-".$temp_serie."' />Geral do ".$temp_serie."</label>";
+							}else{
+								if($temp_serie == utf8_encode($turmas->getSerie())){
+									echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='".$turmas->getIdTurma()."' />".$turmas->getIdTurma()." - ".utf8_encode($turmas->getNomeDisciplina())."</label>";
+								}else{
+									//troca a serie da vez
+									$temp_serie = utf8_encode($turmas->getSerie());
+									echo "<h4 class='ident2'>".$temp_serie."</h4>";
+									echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='C:".$temp_curso."-".$temp_serie."' />Geral do ".$temp_serie."</label>";
+									echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='".$turmas->getIdTurma()."' />".$turmas->getIdTurma()." - ".utf8_encode($turmas->getNomeDisciplina())."</label>";
+										
+								}
+							}
+							$pointer_serie++;
+							//
+							
+						}else{
+							//troca o curso da vez
+							$temp_curso = utf8_encode($turmas->getCurso());
+							echo "<h4 class='ident1'>".$temp_curso."</h4>";
+							echo "<label style='padding-left:20px;'><input type='checkbox' name='turma_id[]' value='C:".$temp_curso."-Todos' />Geral de ".$temp_curso."</label>";
+							//echo "<label><input type='checkbox' name='turma_id[]' value='".$turmas->getIdTurma()."' />Geral da serie ".$temp_serie."</label>";
+							//echo "<label><input type='checkbox' name='turma_id[]' value='".$turmas->getIdTurma()."' />".$turmas->getIdTurma()." - ".utf8_encode($turmas->getNomeDisciplina())."</label>";
+							
+							//agrupa por serie
+							if($pointer_serie == 0){
+								$temp_serie = utf8_encode($turmas->getSerie());
+								echo "<h4 class='ident2'>".$temp_serie."</h4>";
+								echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='C:".$temp_curso."-".$temp_serie."' />Geral do ".$temp_serie."</label>";
+							}else{
+								if($temp_serie == utf8_encode($turmas->getSerie())){
+									echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='".$turmas->getIdTurma()."' />".$turmas->getIdTurma()." - ".utf8_encode($turmas->getNomeDisciplina())."</label>";
+								}else{
+									//troca a serie da vez
+									$temp_serie = utf8_encode($turmas->getSerie());
+									echo "<h4 class='ident2'>".$temp_serie."</h4>";
+									echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='C:".$temp_curso."-".$temp_serie."' />Geral do ".$temp_serie."</label>";
+									echo "<label style='padding-left:40px;'><input type='checkbox' name='turma_id[]' value='".$turmas->getIdTurma()."' />".$turmas->getIdTurma()." - ".utf8_encode($turmas->getNomeDisciplina())."</label>";
+										
+								}
+							}
+							$pointer_serie++;
+							//
+							
+						}
+					}
+					
+					$pointer_curso++;
+
 				}
+				
+				
+				//mostra o botao gerar_grafico
+				echo "<script type='text/javascript'>
+					botaoGerarGrafico('mostrar');	
+					</script>";
 				
 				//echo "<a href='../Controller/relatorioController.php?relatorio_id=5&curso=".$_SESSION["rel_filtro_3"]."'>Todos os períodos</a>";
 					
@@ -873,7 +1111,9 @@ function relatorioDisciplina() {
 			'controlType': 'NumberRangeFilter',
 			'containerId': 'control1',
 			'options': {
-			'filterColumnLabel': 'Média',
+			'filterColumnLabel': 'Media',
+			'minValue': 1,
+      		'maxValue': 5,
 			'ui': {'labelStacking': 'vertical'}
 }
 });
@@ -1121,6 +1361,8 @@ function relatorioDisciplina2() {
 				'containerId': 'control1',
 				'options': {
 				'filterColumnLabel': 'Media',
+				'minValue': 1,
+      			'maxValue': 5,
 				'ui': {'labelStacking': 'vertical'}
 	}
 	});
@@ -1183,6 +1425,7 @@ function relatorioDisciplina2() {
 
 	}
 	
+	
 	/**
 	 * @name relatorioinstituicao
 	 * @author Fabio Ba�a
@@ -1223,291 +1466,369 @@ function relatorioDisciplina2() {
 		$semestre_escolhido = utf8_decode("1º SEMESTRE");
 		$curso_escolhido = utf8_decode("Serviço Social");*/
 		
-		$semestre_escolhido = utf8_decode($semestre);
-		$curso_escolhido = utf8_decode($curso);
-		
-		$rel_name = "Avaliador: ".$tipo_avaliacao;
-		$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
-		$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
-		$rel_name .= "<br/>Período: ".utf8_encode($semestre_escolhido);
-		
-		$_SESSION["s_rel_name"] = $rel_name;
-		
-	
-		$questionario = new Questionario();
-		$questionario->get($quest_id);
-		$questionario->alias('q');
-		$q = new Questao();
-		$qhq = new QuestionarioHasQuestao();
-	
-		$questionario->join($q,'INNER','qu');
-		$questionario->join($qhq,'INNER','qhq');
-	
-		$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
-	
-		$questionario->where("qu.id = qhq.questaoId");
-		$questionario->order("qhq.ordem");
-	
-		$questionario->find();
-	
-		while( $questionario->fetch() ) {
-
-			if(!isset($_GET["semestre"])){
-			if($curso == "Todos"){
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-				WHERE tha.turma_id_turma = t.id_turma
-				and questionario_has_questao_questao_id = '$questionario->id')
-										";
+		//$semestre_escolhido = utf8_decode($semestre);
+		//$curso_escolhido = utf8_decode($curso);
+		$semestre_escolhido = "";
+		$pos = 0;
+		//print_r($semestre);
+		foreach($semestre as $s => $value){
+			if($pos == 0){
+				$semestre_escolhido .= "'".utf8_decode($semestre[$s]."º SEMESTRE")."'";
 			}else{
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-				WHERE tha.turma_id_turma = t.id_turma
-				and t.curso = '".$curso_escolhido."'
-				and questionario_has_questao_questao_id = '$questionario->id')
-										";
+				$semestre_escolhido .= ", '".utf8_decode($semestre[$s]."º SEMESTRE")."'";
 			}
-				
-			}else{
-				if($curso == "Todos"){
-					$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-				WHERE tha.turma_id_turma = t.id_turma
-				and t.serie = '".$semestre_escolhido."'
-				and questionario_has_questao_questao_id = '$questionario->id')
-									";
-				}else{
-					$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-				WHERE tha.turma_id_turma = t.id_turma 
-				and t.curso = '".$curso_escolhido."'
-				and t.serie = '".$semestre_escolhido."'
-				and questionario_has_questao_questao_id = '$questionario->id')
-									";
-				}
-				
-			}
-			
-			
-			/*
-			
-					
-					*/
-			
-			//$sql = "select * from avaliacao";
-			$query = mysql_query($sql);
-			//$qt = mysql_num_rows($query);
-			//echo $qt;
-			
-			$nota5 = 0;
-			$nota4 = 0;
-			$nota3 = 0;
-			$nota2 = 0;
-			$nota1 = 0;
-	
-			$soma = 0;
-	
-			$qtd_avaliadores = 0;
-			
-			while ($dados = mysql_fetch_assoc($query)) {
-				//print_r($dados);
-				//echo "<hr />";
-				switch ($dados["nota"]) {
-					case 5:
-						$nota5++;
-						$soma += 5;
-						break;
-					case 4:
-						$nota4++;
-						$soma += 4;
-						break;
-					case 3:
-						$nota3++;
-						$soma += 3;
-						break;
-					case 2:
-						$nota2++;
-						$soma += 2;
-						break;
-					case 1:
-						$nota1++;
-						$soma += 1;
-						break;
-					}
-					
-				$qtd_avaliadores++;
-	
-			}
-	
-			$resposta[] = array("processo_avaliacao_id" => $processo_id,
-					"questionario_id" => $quest_id,
-					"questao_id" => $questionario->id,
-					"questao_texto" => trim($questionario->texto),
-					"itemAvaliado" => $item_avaliado,
-					"nota5" => $nota5,
-					"nota4" => $nota4,
-					"nota3" => $nota3,
-					"nota2" => $nota2,
-					"nota1" => $nota1,
-					"media" => $soma/$qtd_avaliadores,
-					"tipo_avaliacao" => $tipo_avaliacao,
-					"subtipo_avaliacao" => $subtipo_avaliacao);
+			$pos++;
 		}
-	
+		
+		
+		$curso_escolhido = "";
+		$pos = 0;
+		//print_r($curso);
+		foreach($curso as $c => $value){
+			if($pos == 0){
+				$curso_escolhido .= "'".utf8_decode($curso[$c])."'";
+			}else{
+				$curso_escolhido .= ", '".utf8_decode($curso[$c])."'";
+			}
+			$pos++;			
+		}
+		
 		//debug
-		/*foreach ($resposta as $resp){
-			print_r($resp);
-			echo "<br />";
-		}*/
-		//print_r($resposta);
-		//exit;
-	
-	
-		// Create and populate the data table.
-		/*var data = google.visualization.arrayToDataTable([
-		 ['Disciplina', '5 estrelas', '4 estrelas', '3 estrelas', '2 estrelas', '1 estrela', 'Média'],
-				['Introdução à Administração',  5,      8,         6,             22,           0,      8.2],
-				['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
-				['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
-				['Filosofia',  3,      5,       2,             1,           8,     3.8]
-				]);*/
-	
-		$chart = "function drawChart(){
-	
-				var data = new google.visualization.DataTable();
-				data.addColumn('string', 'Questao');
-				data.addColumn('number', '5 estrelas');
-				data.addColumn('number', '4 estrelas');
-				data.addColumn('number', '3 estrelas');
-				data.addColumn('number', '2 estrelas');
-				data.addColumn('number', '1 estrela');
-				data.addColumn('number', 'Media');
-	
-				";
-	
-		$arr1 = $resposta;
-	
-		$chart .= 'data.addRows('.sizeof($arr1).');';
-		$i = 0;
-		for($i; $i <sizeof($arr1); $i++){
-			$d = utf8_encode($arr1[$i]["questao_texto"]);
-			//$m = escalaDecimal($arr1[$i]["media"]);
-			$m = $arr1[$i]["media"];
+		//echo "cursos >>> ".$curso_escolhido;
+		//echo "semestre >>> ".$semestre_escolhido;
+		
+		//aqui come�a o for pra criar um grafico por curso/periodo
+		//primeiro criamos as divs q v�o conter os charts(uma pra cada curso/disciplina)
+		$divs = sizeof($curso)*sizeof($semestre);
+		$conteiner_id = 0;
+		$all_chart = "";
+		foreach ($curso as $c => $value){
+			foreach ($semestre as $s => $value){
+				/*
+				$rel_name = "Avaliador: ".$tipo_avaliacao;
+				$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
+				$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
+				$rel_name .= "<br/>Período: ".utf8_encode($semestre_escolhido);
+				*/
 				
-			$item = $arr1[$i]["tipo_avaliacao"];
-	
-			$chart .=  'data.setValue('.$i.', 0, \''.$d.'\');';
-			$chart .=  'data.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
-			$chart .=  'data.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
-			$chart .=  'data.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
-			$chart .=  'data.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
-			$chart .=  'data.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
-			$chart .=  'data.setValue('.$i.', 6, '.$m.');';
+				$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."<br/><span>Período:</span> ".$semestre[$s]."</h3>";
+					
+					
+				//$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
+				//$rel_name .= "<br/>Período: ".utf8_encode($semestre_escolhido);
+					
+				//$_SESSION["s_rel_name"] = $rel_name;
+					
+					
+				$questionario = new Questionario();
+				$questionario->get($quest_id);
+				$questionario->alias('q');
+				$q = new Questao();
+				$qhq = new QuestionarioHasQuestao();
+					
+				$questionario->join($q,'INNER','qu');
+				$questionario->join($qhq,'INNER','qhq');
+					
+				$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+					
+				$questionario->where("qu.id = qhq.questaoId");
+				$questionario->order("qhq.ordem");
+					
+				$questionario->find();
+					
+				while( $questionario->fetch() ) {
+						
+					if(!isset($_POST["semestre"]) || utf8_decode($semestre[$s]) == "Todos"){
+						if(utf8_decode($curso[$c]) == "Todos"){
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+											and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+											WHERE tha.turma_id_turma = t.id_turma
+											and questionario_has_questao_questao_id = '$questionario->id')
+											";
+						}else{
+							/*$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							 and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+							and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+									WHERE tha.turma_id_turma = t.id_turma
+									and t.curso = '".$curso_escolhido."'
+									and questionario_has_questao_questao_id = '$questionario->id')
+							";*/
+								
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+							and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+							WHERE tha.turma_id_turma = t.id_turma
+							and t.curso IN (".$curso_escolhido.")
+											and questionario_has_questao_questao_id = '$questionario->id')
+											";
+						}//fecha else
+							
+					}else{
+						if(utf8_decode($curso[$c]) == "Todos"){
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+						and questionario_has_questao_questionario_id = ".$quest_id."
+						and tipo_avaliacao = '".$tipo_avaliacao."'
+						and subtipo_avaliacao = '".$subtipo_avaliacao."'
+						and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+						WHERE tha.turma_id_turma = t.id_turma
+						and t.serie = '".utf8_decode($semestre[$s]."º SEMESTRE")."'
+										and questionario_has_questao_questao_id = '$questionario->id')
+										";
+						}else{
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							 and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+							and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+									WHERE tha.turma_id_turma = t.id_turma
+									and t.curso = '".utf8_decode($curso[$c])."'
+									and t.serie = '".utf8_decode($semestre[$s]."º SEMESTRE")."'
+									and questionario_has_questao_questao_id = '$questionario->id')
+							";
+							/*$sql = "select * from avaliacao where processo_avaliacao_id = 2
+						and questionario_has_questao_questionario_id = ".$quest_id."
+						and tipo_avaliacao = '".$tipo_avaliacao."'
+						and subtipo_avaliacao = '".$subtipo_avaliacao."'
+						and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+						WHERE tha.turma_id_turma = t.id_turma
+						and t.curso IN (".$curso_escolhido.")
+						and t.serie IN (".$semestre_escolhido.")
+										and questionario_has_questao_questao_id = '$questionario->id')
+							";*/
+								
+						}//fecha else
+							
+							
+					}//fecha else
+						
+					//debug
+					//echo $sql;
 				
-			//print_r($arr1[$i]);
+						
+					//$sql = "select * from avaliacao";
+					$query = mysql_query($sql);
+					//$qt = mysql_num_rows($query);
+					//echo $qt;
+						
+					$nota5 = 0;
+					$nota4 = 0;
+					$nota3 = 0;
+					$nota2 = 0;
+					$nota1 = 0;
+						
+					$soma = 0;
+						
+					$qtd_avaliadores = 0;
+						
+					while ($dados = mysql_fetch_assoc($query)) {
+						//print_r($dados);
+						//echo "<hr />";
+						switch ($dados["nota"]) {
+							case 5:
+								$nota5++;
+								$soma += 5;
+								break;
+							case 4:
+								$nota4++;
+								$soma += 4;
+								break;
+							case 3:
+								$nota3++;
+								$soma += 3;
+								break;
+							case 2:
+								$nota2++;
+								$soma += 2;
+								break;
+							case 1:
+								$nota1++;
+								$soma += 1;
+								break;
+						}//fecha switch
+				
+						$qtd_avaliadores++;
+							
+					}//fecha while
+					
+					if($qtd_avaliadores <= 0){
+						$media = 0;
+					}else{
+						$media = $soma/$qtd_avaliadores;
+					}
+						
+					$resposta[] = array("processo_avaliacao_id" => $processo_id,
+							"questionario_id" => $quest_id,
+							"questao_id" => $questionario->id,
+							"questao_texto" => trim($questionario->texto),
+							"itemAvaliado" => $item_avaliado,
+							"nota5" => $nota5,
+							"nota4" => $nota4,
+							"nota3" => $nota3,
+							"nota2" => $nota2,
+							"nota1" => $nota1,
+							"media" => $media,
+							"tipo_avaliacao" => $tipo_avaliacao,
+							"subtipo_avaliacao" => $subtipo_avaliacao);
+				
+				}//fecha while fetch
+			
+					
+				//cria os conteiners pra conter os graficos
+				//drawChart".$conteiner_id."();
+				$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+								
+								});									
+								
+							";
+				
+								
+				$chart .= "function drawChart".$conteiner_id."(){
+			
+						var data_".$conteiner_id." = new google.visualization.DataTable();
+						data_".$conteiner_id.".addColumn('string', 'Questao');
+						data_".$conteiner_id.".addColumn('number', '5 estrelas');
+						data_".$conteiner_id.".addColumn('number', '4 estrelas');
+						data_".$conteiner_id.".addColumn('number', '3 estrelas');
+						data_".$conteiner_id.".addColumn('number', '2 estrelas');
+						data_".$conteiner_id.".addColumn('number', '1 estrela');
+						data_".$conteiner_id.".addColumn('number', 'Media');
+			
+						";
+					
+				$arr1 = $resposta;
+				$resposta = null;//importante -- para zerar o array pro proximo grafico
+					
+				$chart .= "data_".$conteiner_id.".addRows(".sizeof($arr1).");";
+				$i = 0;
+				for($i; $i <sizeof($arr1); $i++){
+					$d = utf8_encode($arr1[$i]["questao_texto"]);
+					//$m = escalaDecimal($arr1[$i]["media"]);
+					$m = $arr1[$i]["media"];
+						
+					$item = $arr1[$i]["tipo_avaliacao"];
+						
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 0, \''.$d.'\');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 6, '.$m.');';
+						
+					//print_r($arr1[$i]);
+						
+				}//fecha for
+					
+					
+				$chart .= "var barChart_".$conteiner_id." = new google.visualization.ChartWrapper({
+						'chartType': 'ColumnChart',
+						'containerId': 'chart1_".$conteiner_id."',
+						'options': {
+						'width': '100%',
+						'height': 400,
+						'hAxis': {'minValue': 0, 'maxValue': 10},
+						'chartArea': {top: 0, right: 0, bottom: 0},
+						'series': {5: {type: 'line'}},
+						'pointSize': 5,
+						'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
+						animation:{
+		        			'duration': 1000,
+		        			'easing': 'linear'
+		      			}
+			}
+			});
+			
+						";
+					
+				// Define a slider control for the Age column.
+				$chart .= "var slider_".$conteiner_id." = new google.visualization.ControlWrapper({
+						'controlType': 'NumberRangeFilter',
+						'containerId': 'control1_".$conteiner_id."',
+						'options': {
+						'filterColumnLabel': 'Media',
+						'minValue': 1,
+		      			'maxValue': 5,
+						'ui': {'labelStacking': 'vertical'}
+			}
+			});
+			
+						";
+					
+				// Define a category picker control for the Gender column
+				$chart .= "var categoryPicker_".$conteiner_id." = new google.visualization.ControlWrapper({
+						'controlType': 'CategoryFilter',
+						'containerId': 'control2_".$conteiner_id."',
+						'options': {
+						'filterColumnLabel': 'Questao',
+						'ui': {
+						'labelStacking': 'vertical',
+						'allowTyping': false,
+						'allowMultiple': true
+			}
+			}
+			});
+			
+						";
+					
+				// Define a table
+				$chart .= "var table_".$conteiner_id." = new google.visualization.ChartWrapper({
+						'chartType': 'Table',
+						'containerId': 'chart2_".$conteiner_id."',
+						'options': {
+						'width': '100%',
+						'allowHtml': true
+			}
+			});
+			
+						";
+					
+				$chart .= "var formatter_".$conteiner_id." = new google.visualization.ColorFormat();
+						formatter_".$conteiner_id.".addRange(0, 3.99, '#CC0000', null);
+						formatter_".$conteiner_id.".addRange(3.99, 5, '#006600', null);
+						formatter_".$conteiner_id.".format(data_".$conteiner_id.", 6);
+			
+						";
+					
+				$chart .= "var formatter2_".$conteiner_id." = new google.visualization.NumberFormat(
+						{pattern: '#.##'});
+						formatter2_".$conteiner_id.".format(data_".$conteiner_id.", 6);
+			
+						";
+					
+					
+					
+				// Create a dashboard
+				$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard_".$conteiner_id."')).
+						// Establish bindings, declaring the both the slider and the category
+						// picker will drive both charts.
+						bind([slider_".$conteiner_id.", categoryPicker_".$conteiner_id."], [barChart_".$conteiner_id.", table_".$conteiner_id."]).
+						// Draw the entire dashboard.
+						draw(data_".$conteiner_id.");
+			}
+						";
+				
+				$conteiner_id += 1;
+				$all_chart .= $chart;
+
+							
+			}//fim foreach semestre		
+		}//fim foreach curso
+		
+		return $all_chart;
+	    		
 	
-		}
-	
-	
-		$chart .= "var barChart = new google.visualization.ChartWrapper({
-				'chartType': 'ColumnChart',
-				'containerId': 'chart1',
-				'options': {
-				'width': '100%',
-				'height': 400,
-				'hAxis': {'minValue': 0, 'maxValue': 10},
-				'chartArea': {top: 0, right: 0, bottom: 0},
-				'series': {5: {type: 'line'}},
-				'pointSize': 5,
-				'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
-				animation:{
-        			'duration': 1000,
-        			'easing': 'linear'
-      			}
-	}
-	});
-	
-				";
-	
-		// Define a slider control for the Age column.
-		$chart .= "var slider = new google.visualization.ControlWrapper({
-				'controlType': 'NumberRangeFilter',
-				'containerId': 'control1',
-				'options': {
-				'filterColumnLabel': 'Media',
-				'ui': {'labelStacking': 'vertical'}
-	}
-	});
-	
-				";
-	
-		// Define a category picker control for the Gender column
-		$chart .= "var categoryPicker = new google.visualization.ControlWrapper({
-				'controlType': 'CategoryFilter',
-				'containerId': 'control2',
-				'options': {
-				'filterColumnLabel': 'Questao',
-				'ui': {
-				'labelStacking': 'vertical',
-				'allowTyping': false,
-				'allowMultiple': true
-	}
-	}
-	});
-	
-				";
-	
-		// Define a table
-		$chart .= "var table = new google.visualization.ChartWrapper({
-				'chartType': 'Table',
-				'containerId': 'chart2',
-				'options': {
-				'width': '100%',
-				'allowHtml': true
-	}
-	});
-	
-				";
-	
-		$chart .= "var formatter = new google.visualization.ColorFormat();
-				formatter.addRange(0, 3.99, '#CC0000', null);
-				formatter.addRange(3.99, 5, '#006600', null);
-				formatter.format(data, 6);
-	
-				";
-	
-		$chart .= "var formatter2 = new google.visualization.NumberFormat(
-				{pattern: '#.##'});
-				formatter2.format(data, 6);
-	
-				";
-	
-	
-	
-		// Create a dashboard
-		$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard')).
-				// Establish bindings, declaring the both the slider and the category
-				// picker will drive both charts.
-				bind([slider, categoryPicker], [barChart, table]).
-				// Draw the entire dashboard.
-				draw(data);
-	}
-				";
-		return $chart;
-	
-	}
+	}//fecha function
 	
 	/**
 	 * @name relatorioinstituicao2
@@ -1538,275 +1859,678 @@ function relatorioDisciplina2() {
 	
 		$quest_id = $quest_usado->getQuestionarioId();
 	
-		$semestre_escolhido = utf8_decode($semestre);
-		$curso_escolhido = utf8_decode($curso);
+		//$semestre_escolhido = utf8_decode($semestre);
+		//$curso_escolhido = utf8_decode($curso);
 	
-		$rel_name = "Avaliador: ".$tipo_avaliacao;
-		$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
-		$rel_name .= "<br/>Curso: ".$curso;
-	
-		$_SESSION["s_rel_name"] = $rel_name;
-	
-	
-		$questionario = new Questionario();
-		$questionario->get($quest_id);
-		$questionario->alias('q');
-		$q = new Questao();
-		$qhq = new QuestionarioHasQuestao();
-	
-		$questionario->join($q,'INNER','qu');
-		$questionario->join($qhq,'INNER','qhq');
-	
-		$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
-	
-		$questionario->where("qu.id = qhq.questaoId");
-		$questionario->order("qhq.ordem");
-	
-		$questionario->find();
-	
-		$lista_professores = "";
-		if(($curso != "Todos") && ($tipo != "Funcionário")){
-			//monta um array com todos os professores da coordenacao
-			$lista = new Turma();
-			$lista->curso = $curso_escolhido;
-			$lista->group("professor_id");
-			$lista->find();
-			$pos = 0;
-			while( $lista->fetch()){
-				if($pos == 0){
-					$lista_professores .= "".$lista->getProfessorId();
-				}else{
-					$lista_professores .= ", ".$lista->getProfessorId();
+		//aqui come�a o for pra criar um grafico por curso
+		//primeiro criamos as divs q v�o conter os charts(uma pra cada curso)
+		$divs = sizeof($curso);
+		$conteiner_id = 0;
+		$all_chart = "";
+		foreach ($curso as $c => $value){
+			//$rel_name = "Avaliador: ".$tipo_avaliacao;
+			//$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
+			//$rel_name .= "<br/>Curso: ".$curso[$c];
+		
+			//$_SESSION["s_rel_name"] = $rel_name;
+			
+			$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."</h3>";
+		
+		
+			$questionario = new Questionario();
+			$questionario->get($quest_id);
+			$questionario->alias('q');
+			$q = new Questao();
+			$qhq = new QuestionarioHasQuestao();
+		
+			$questionario->join($q,'INNER','qu');
+			$questionario->join($qhq,'INNER','qhq');
+		
+			$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+		
+			$questionario->where("qu.id = qhq.questaoId");
+			$questionario->order("qhq.ordem");
+		
+			$questionario->find();
+		
+			$lista_professores = "";
+			if((utf8_decode($curso[$c]) != "Todos" || utf8_decode($curso[$c]) != null) && ($tipo != "Funcionário")){
+				//monta um array com todos os professores da coordenacao
+				$lista = new Turma();
+				$lista->curso = utf8_decode($curso[$c]);
+				$lista->group("professor_id");
+				$lista->find();
+				$pos = 0;
+				while( $lista->fetch()){
+					if($pos == 0){
+						$lista_professores .= "".$lista->getProfessorId();
+					}else{
+						$lista_professores .= ", ".$lista->getProfessorId();
+					}
+					$pos++;	
 				}
-				$pos++;	
 			}
-		}
+			
+			
+			while( $questionario->fetch() ) {
+					
+				if(utf8_decode($curso[$c]) != "Todos" && utf8_decode($curso[$c]) != null && $tipo_avaliacao != "Funcionário"){
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and avaliador in(".$lista_professores.")
+									and questionario_has_questao_questao_id = '$questionario->id'
+									";
+					//debug
+					//echo ">>> ".$sql;
+					//exit;
+				}else{
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+									and questionario_has_questao_questao_id = '$questionario->id'
+									";
+				}
+			
 		
-		
-		while( $questionario->fetch() ) {
+			$query = mysql_query($sql);
+	
 				
-			if($curso != "Todos" && $tipo_avaliacao != "Funcionário"){
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and avaliador in(".$lista_professores.")
-								and questionario_has_questao_questao_id = '$questionario->id'
-								";
-				//debug
-				//echo ">>> ".$sql;
-				//exit;
+			$nota5 = 0;
+			$nota4 = 0;
+			$nota3 = 0;
+			$nota2 = 0;
+			$nota1 = 0;
+		
+			$soma = 0;
+		
+			$qtd_avaliadores = 0;
+			
+			//se obteve resultados
+			if($query){
+				
+				while ($dados = mysql_fetch_assoc($query)) {
+		
+					switch ($dados["nota"]) {
+						case 5:
+							$nota5++;
+							$soma += 5;
+							break;
+						case 4:
+							$nota4++;
+							$soma += 4;
+							break;
+						case 3:
+							$nota3++;
+							$soma += 3;
+							break;
+						case 2:
+							$nota2++;
+							$soma += 2;
+							break;
+						case 1:
+							$nota1++;
+							$soma += 1;
+							break;
+					}
+						
+					$qtd_avaliadores++;
+			
+				}//fecha while
+				
+			}else{//fecha if
+				//faz nada
+			}
+			
+			if($qtd_avaliadores <= 0){
+				$media = 0;
 			}else{
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-								and questionario_has_questao_questao_id = '$questionario->id'
-								";
+				$media = $soma/$qtd_avaliadores;
 			}
 		
-	
-		$query = mysql_query($sql);
-
-			
-		$nota5 = 0;
-		$nota4 = 0;
-		$nota3 = 0;
-		$nota2 = 0;
-		$nota1 = 0;
-	
-		$soma = 0;
-	
-		$qtd_avaliadores = 0;
-			
-		while ($dados = mysql_fetch_assoc($query)) {
-
-			switch ($dados["nota"]) {
-				case 5:
-					$nota5++;
-					$soma += 5;
-					break;
-				case 4:
-					$nota4++;
-					$soma += 4;
-					break;
-				case 3:
-					$nota3++;
-					$soma += 3;
-					break;
-				case 2:
-					$nota2++;
-					$soma += 2;
-					break;
-				case 1:
-					$nota1++;
-					$soma += 1;
-					break;
+			$resposta[] = array("processo_avaliacao_id" => $processo_id,
+					"questionario_id" => $quest_id,
+					"questao_id" => $questionario->id,
+					"questao_texto" => trim($questionario->texto),
+					"itemAvaliado" => $item_avaliado,
+					"nota5" => $nota5,
+					"nota4" => $nota4,
+					"nota3" => $nota3,
+					"nota2" => $nota2,
+					"nota1" => $nota1,
+					"media" => $media,
+					"tipo_avaliacao" => $tipo_avaliacao,
+					"subtipo_avaliacao" => $subtipo_avaliacao);
 			}
+		
+			//cria os conteiners pra conter os graficos
+			//drawChart".$conteiner_id."();
+			$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+								});
+						
+			
+							";
+		
+			$chart .= "function drawChart".$conteiner_id."(){
+		
+					var data_".$conteiner_id." = new google.visualization.DataTable();
+					data_".$conteiner_id.".addColumn('string', 'Id');
+					data_".$conteiner_id.".addColumn('string', 'Questao');
+					data_".$conteiner_id.".addColumn('number', '5 estrelas');
+					data_".$conteiner_id.".addColumn('number', '4 estrelas');
+					data_".$conteiner_id.".addColumn('number', '3 estrelas');
+					data_".$conteiner_id.".addColumn('number', '2 estrelas');
+					data_".$conteiner_id.".addColumn('number', '1 estrela');
+					data_".$conteiner_id.".addColumn('number', 'Media');
+		
+					";
+		
+			$arr1 = $resposta;
+			$resposta = null; //important
+		
+			$chart .= 'data_'.$conteiner_id.'.addRows('.sizeof($arr1).');';
+			$i = 0;
+			for($i; $i <sizeof($arr1); $i++){
+				$q = utf8_encode($arr1[$i]["questao_texto"]);
+				$id = utf8_encode($arr1[$i]["questao_id"]);
+				$m = $arr1[$i]["media"];
+		
+				$item = $arr1[$i]["tipo_avaliacao"];
+		
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 0, \''.$id.'\');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 1, \''.$q.'\');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 2, '.$arr1[$i]["nota5"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 3, '.$arr1[$i]["nota4"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 4, '.$arr1[$i]["nota3"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 5, '.$arr1[$i]["nota2"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 6, '.$arr1[$i]["nota1"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 7, '.$m.');';
+		
+				//print_r($arr1[$i]);
+		
+			}
+		
+		
+			$chart .= "var barChart_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'ColumnChart',
+					'containerId': 'chart1_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'height': 400,
+					'hAxis': {'minValue': 0, 'maxValue': 10},
+					'chartArea': {top: 0, right: 0, bottom: 0},
+					'series': {5: {type: 'line'}},
+					'pointSize': 5,
+					'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
+					animation:{
+	        			'duration': 1000,
+	        			'easing': 'linear'
+	      			}
+		},
+					'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
+		});
+		
+					";
+		
+			// Define a slider control for the Age column.
+			$chart .= "var slider_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'NumberRangeFilter',
+					'containerId': 'control1_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Media',
+					'minValue': 1,
+	      			'maxValue': 5,
+					'ui': {'labelStacking': 'vertical'}
+		}
+		});
+		
+					";
+		
+			// Define a category picker control for the Gender column
+			$chart .= "var categoryPicker_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'CategoryFilter',
+					'containerId': 'control2_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Questao',
+					'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': false,
+					'allowMultiple': true
+		}
+		}
+		});
+		
+					";
+		
+			// Define a table
+			$chart .= "var table_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'Table',
+					'containerId': 'chart2_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'allowHtml': true
+		},
+					'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
+		});
+		
+					";
+		
+			$chart .= "var formatter_".$conteiner_id." = new google.visualization.ColorFormat();
+					formatter_".$conteiner_id.".addRange(0, 3.99, '#CC0000', null);
+					formatter_".$conteiner_id.".addRange(3.99, 5, '#006600', null);
+					formatter_".$conteiner_id.".format(data_".$conteiner_id.", 7);
+		
+					";
+		
+			$chart .= "var formatter2_".$conteiner_id." = new google.visualization.NumberFormat(
+					{pattern: '#.##'});
+					formatter2_".$conteiner_id.".format(data_".$conteiner_id.", 7);
+		
+					";
+		
+			/*
+			$chart .= "google.visualization.events.addListener(table, 'select', function() {
+				barChart.setSelection(table.getSelection());
+			});
+			";
+			
+			$chart .= "google.visualization.events.addListener(barChart, 'select', function() {
+				table.setSelection(barChart.getSelection());
+			});
+			";
+			*/
+		
+		
+			// Create a dashboard
+			$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard_".$conteiner_id."')).
+					// Establish bindings, declaring the both the slider and the category
+					// picker will drive both charts.
+					bind([slider_".$conteiner_id.", categoryPicker_".$conteiner_id."], [barChart_".$conteiner_id.", table_".$conteiner_id."]).
+					// Draw the entire dashboard.
+					draw(data_".$conteiner_id.");
+		}
+					";
+			
+			$conteiner_id += 1;
+			$all_chart .= $chart;
+			
+			
+		}//fecha foreach	
+		return $all_chart;
+	
+	}
+	
+	/**
+	 * @name relatorioLab
+	 * @author Fabio Ba�a
+	 * @since 21/11/2012 16:01:19
+	 * insert a description here
+	 **/
+	function relatorioLab($tipo, $subtipo, $curso = null) {
+		$host="mysql01-farm26.kinghost.net";
+		$user="faculdadeunica05";
+		$pass="avaliacaounicampo159";
+		$DB="faculdadeunica05";
+	
+		$conexao = mysql_pconnect($host,$user,$pass) or die (mysql_error("impossivel se conectar no sistema de avaliacao"));
+		$banco = mysql_select_db($DB);
+	
+		$processo_id = 2;
+		//$tipo_avaliacao = "Professor";
+		$tipo_avaliacao = $tipo;
+		$subtipo_avaliacao = $subtipo;
+		$item_avaliado = $subtipo;
+	
+		$quest_usado = new QuestionarioUsado();
+		$quest_usado->tipo = $tipo_avaliacao;
+		$quest_usado->subtipo = $subtipo_avaliacao;
+		$quest_usado->processoAvaliacaoId = $processo_id;
+		$quest_usado->find(true);
+	
+		$quest_id = $quest_usado->getQuestionarioId();
+	
+		//$semestre_escolhido = utf8_decode($semestre);
+		//$curso_escolhido = utf8_decode($curso);
+		
+		//
+		//aqui come�a o for pra criar um grafico por curso
+		//primeiro criamos as divs q v�o conter os charts(uma pra cada curso)
+		$divs = sizeof($curso);
+		$conteiner_id = 0;
+		$all_chart = "";
+		foreach ($curso as $c => $value){
+			
+			$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."</h3>";
+		
+		
+			$questionario = new Questionario();
+			$questionario->get($quest_id);
+			$questionario->alias('q');
+			$q = new Questao();
+			$qhq = new QuestionarioHasQuestao();
+		
+			$questionario->join($q,'INNER','qu');
+			$questionario->join($qhq,'INNER','qhq');
+		
+			$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+		
+			$questionario->where("qu.id = qhq.questaoId");
+			$questionario->order("qhq.ordem");
+		
+			$questionario->find();
+		
+			
+			//verifica se � professor ou aluno
+			$lista_avaliadores = "";
+			
+			//cria uma lista com os professores do curso
+			if(($curso[$c] != "Todos") && ($tipo == "Professor")){
+				//monta um array com todos os professores da coordenacao
+				$lista = new Turma();
+				$lista->curso = $curso[$c];
+				$lista->group("professor_id");
+				$lista->find();
+				$pos = 0;
+				while( $lista->fetch()){
+					if($pos == 0){
+						$lista_avaliadores .= "'".$lista->getProfessorId()."'";
+					}else{
+						$lista_avaliadores .= ", '".$lista->getProfessorId()."'";
+					}
+					$pos++;
+				}
+			}
+			
+			if(($curso[$c] != "Todos") && ($tipo == "Aluno")){
+				//monta um array com todos os alunos do curso
+				$aluno = new Aluno();				 
+				$aluno->curso = utf8_decode($curso[$c]);
+				$aluno->find();
+		
+				$pos = 0;
+				while( $aluno->fetch()){
+					if($pos == 0){
+						$lista_avaliadores .= "'".$aluno->getRa()."'";
+					}else{
+						$lista_avaliadores .= ", '".$aluno->getRa()."'";
+					}
+					$pos++;
+				}
+			}
+			
+			//debug
+			//echo "Avaliadores: ".$lista_avaliadores."<br />";
+			
+			
+		
+			while( $questionario->fetch() ) {
+		
+				if($curso[$c] != "Todos"){
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and avaliador in(".$lista_avaliadores.")
+						and questionario_has_questao_questao_id = '$questionario->id'
+						";
+					//debug
+					//echo ">>> ".$sql;
+					//exit;
+				}else {
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+						and questionario_has_questao_questao_id = '$questionario->id'
+						";
+					
+					
+				}
+				//debug
+				//echo ">>> ".$sql."<br />";
+				//exit;
 				
-			$qtd_avaliadores++;
-	
-		}
-	
-		$resposta[] = array("processo_avaliacao_id" => $processo_id,
-				"questionario_id" => $quest_id,
-				"questao_id" => $questionario->id,
-				"questao_texto" => trim($questionario->texto),
-				"itemAvaliado" => $item_avaliado,
-				"nota5" => $nota5,
-				"nota4" => $nota4,
-				"nota3" => $nota3,
-				"nota2" => $nota2,
-				"nota1" => $nota1,
-				"media" => $soma/$qtd_avaliadores,
-				"tipo_avaliacao" => $tipo_avaliacao,
-				"subtipo_avaliacao" => $subtipo_avaliacao);
-		}
-	
+				
+						
+				$query = mysql_query($sql);
+								
+				$nota5 = 0;
+				$nota4 = 0;
+				$nota3 = 0;
+				$nota2 = 0;
+				$nota1 = 0;
 		
-	
-		$chart = "function drawChart(){
-	
-				var data = new google.visualization.DataTable();
-				data.addColumn('string', 'Id');
-				data.addColumn('string', 'Questao');
-				data.addColumn('number', '5 estrelas');
-				data.addColumn('number', '4 estrelas');
-				data.addColumn('number', '3 estrelas');
-				data.addColumn('number', '2 estrelas');
-				data.addColumn('number', '1 estrela');
-				data.addColumn('number', 'Media');
-	
-				";
-	
-		$arr1 = $resposta;
-	
-		$chart .= 'data.addRows('.sizeof($arr1).');';
-		$i = 0;
-		for($i; $i <sizeof($arr1); $i++){
-			$q = utf8_encode($arr1[$i]["questao_texto"]);
-			$id = utf8_encode($arr1[$i]["questao_id"]);
-			$m = $arr1[$i]["media"];
-	
-			$item = $arr1[$i]["tipo_avaliacao"];
-	
-			$chart .=  'data.setValue('.$i.', 0, \''.$id.'\');';
-			$chart .=  'data.setValue('.$i.', 1, \''.$q.'\');';
-			$chart .=  'data.setValue('.$i.', 2, '.$arr1[$i]["nota5"].');';
-			$chart .=  'data.setValue('.$i.', 3, '.$arr1[$i]["nota4"].');';
-			$chart .=  'data.setValue('.$i.', 4, '.$arr1[$i]["nota3"].');';
-			$chart .=  'data.setValue('.$i.', 5, '.$arr1[$i]["nota2"].');';
-			$chart .=  'data.setValue('.$i.', 6, '.$arr1[$i]["nota1"].');';
-			$chart .=  'data.setValue('.$i.', 7, '.$m.');';
-	
-			//print_r($arr1[$i]);
-	
-		}
-	
-	
-		$chart .= "var barChart = new google.visualization.ChartWrapper({
-				'chartType': 'ColumnChart',
-				'containerId': 'chart1',
-				'options': {
-				'width': '100%',
-				'height': 400,
-				'hAxis': {'minValue': 0, 'maxValue': 10},
-				'chartArea': {top: 0, right: 0, bottom: 0},
-				'series': {5: {type: 'line'}},
-				'pointSize': 5,
-				'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
-				animation:{
-        			'duration': 1000,
-        			'easing': 'linear'
-      			}
-	},
-				'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
-	});
-	
-				";
-	
-		// Define a slider control for the Age column.
-		$chart .= "var slider = new google.visualization.ControlWrapper({
-				'controlType': 'NumberRangeFilter',
-				'containerId': 'control1',
-				'options': {
-				'filterColumnLabel': 'Media',
-				'ui': {'labelStacking': 'vertical'}
-	}
-	});
-	
-				";
-	
-		// Define a category picker control for the Gender column
-		$chart .= "var categoryPicker = new google.visualization.ControlWrapper({
-				'controlType': 'CategoryFilter',
-				'containerId': 'control2',
-				'options': {
-				'filterColumnLabel': 'Questao',
-				'ui': {
-				'labelStacking': 'vertical',
-				'allowTyping': false,
-				'allowMultiple': true
-	}
-	}
-	});
-	
-				";
-	
-		// Define a table
-		$chart .= "var table = new google.visualization.ChartWrapper({
-				'chartType': 'Table',
-				'containerId': 'chart2',
-				'options': {
-				'width': '100%',
-				'allowHtml': true
-	},
-				'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
-	});
-	
-				";
-	
-		$chart .= "var formatter = new google.visualization.ColorFormat();
-				formatter.addRange(0, 3.99, '#CC0000', null);
-				formatter.addRange(3.99, 5, '#006600', null);
-				formatter.format(data, 7);
-	
-				";
-	
-		$chart .= "var formatter2 = new google.visualization.NumberFormat(
-				{pattern: '#.##'});
-				formatter2.format(data, 7);
-	
-				";
-	
-		/*
-		$chart .= "google.visualization.events.addListener(table, 'select', function() {
-			barChart.setSelection(table.getSelection());
+				$soma = 0;
+		
+				$qtd_avaliadores = 0;
+				
+				//se obteve resultados
+				if($query){
+					
+					while ($dados = mysql_fetch_assoc($query)) {
+			
+						switch ($dados["nota"]) {
+							case 5:
+								$nota5++;
+								$soma += 5;
+								break;
+							case 4:
+								$nota4++;
+								$soma += 4;
+								break;
+							case 3:
+								$nota3++;
+								$soma += 3;
+								break;
+							case 2:
+								$nota2++;
+								$soma += 2;
+								break;
+							case 1:
+								$nota1++;
+								$soma += 1;
+								break;
+						}
+			
+						$qtd_avaliadores++;
+			
+					}//fim do while
+					
+				}//fim do if
+				else{
+					//faz nada
+				}
+				
+				if($qtd_avaliadores <= 0){
+					$media = 0;
+				}else{
+					$media = $soma/$qtd_avaliadores;
+				}
+				
+				$resposta[] = array("processo_avaliacao_id" => $processo_id,
+						"questionario_id" => $quest_id,
+						"questao_id" => $questionario->id,
+						"questao_texto" => trim($questionario->texto),
+						"itemAvaliado" => $item_avaliado,
+						"nota5" => $nota5,
+						"nota4" => $nota4,
+						"nota3" => $nota3,
+						"nota2" => $nota2,
+						"nota1" => $nota1,
+						"media" => $media,
+						"tipo_avaliacao" => $tipo_avaliacao,
+						"subtipo_avaliacao" => $subtipo_avaliacao);
+			}
+		
+		
+			//cria os conteiners pra conter os graficos
+			//drawChart".$conteiner_id."();
+			$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+								});		
+													
+							";
+
+			$chart .= "function drawChart".$conteiner_id."(){
+		
+					var data_".$conteiner_id." = new google.visualization.DataTable();
+					data_".$conteiner_id.".addColumn('string', 'Id');
+					data_".$conteiner_id.".addColumn('string', 'Questao');
+					data_".$conteiner_id.".addColumn('number', '5 estrelas');
+					data_".$conteiner_id.".addColumn('number', '4 estrelas');
+					data_".$conteiner_id.".addColumn('number', '3 estrelas');
+					data_".$conteiner_id.".addColumn('number', '2 estrelas');
+					data_".$conteiner_id.".addColumn('number', '1 estrela');
+					data_".$conteiner_id.".addColumn('number', 'Media');
+		
+					";
+		
+			$arr1 = $resposta;
+			$resposta = null;//zera o array -- importante
+		
+			$chart .= 'data_'.$conteiner_id.'.addRows('.sizeof($arr1).');';
+			$i = 0;
+			for($i; $i <sizeof($arr1); $i++){
+				$q = utf8_encode($arr1[$i]["questao_texto"]);
+				$id = utf8_encode($arr1[$i]["questao_id"]);
+				$m = $arr1[$i]["media"];
+		
+				$item = $arr1[$i]["tipo_avaliacao"];
+		
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 0, \''.$id.'\');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 1, \''.$q.'\');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 2, '.$arr1[$i]["nota5"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 3, '.$arr1[$i]["nota4"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 4, '.$arr1[$i]["nota3"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 5, '.$arr1[$i]["nota2"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 6, '.$arr1[$i]["nota1"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 7, '.$m.');';
+		
+				//print_r($arr1[$i]);
+		
+			}
+		
+		
+			$chart .= "var barChart_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'ColumnChart',
+					'containerId': 'chart1_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'height': 400,
+					'hAxis': {'minValue': 0, 'maxValue': 10},
+					'chartArea': {top: 0, right: 0, bottom: 0},
+					'series': {5: {type: 'line'}},
+					'pointSize': 5,
+					'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
+					animation:{
+	        			'duration': 1000,
+	        			'easing': 'linear'
+	      			}
+		},
+					'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
 		});
-		";
 		
-		$chart .= "google.visualization.events.addListener(barChart, 'select', function() {
-			table.setSelection(barChart.getSelection());
+					";
+		
+			// Define a slider control for the Age column.
+			$chart .= "var slider_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'NumberRangeFilter',
+					'containerId': 'control1_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Media',
+					'minValue': 1,
+	      			'maxValue': 5,
+					'ui': {'labelStacking': 'vertical'}
+		}
 		});
-		";
-		*/
+		
+					";
+		
+			// Define a category picker control for the Gender column
+			$chart .= "var categoryPicker_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'CategoryFilter',
+					'containerId': 'control2_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Questao',
+					'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': false,
+					'allowMultiple': true
+		}
+		}
+		});
+		
+					";
+		
+			// Define a table
+			$chart .= "var table_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'Table',
+					'containerId': 'chart2_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'allowHtml': true
+		},
+					'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
+		});
+		
+					";
+		
+			$chart .= "var formatter_".$conteiner_id." = new google.visualization.ColorFormat();
+					formatter_".$conteiner_id.".addRange(0, 3.99, '#CC0000', null);
+					formatter_".$conteiner_id.".addRange(3.99, 5, '#006600', null);
+					formatter_".$conteiner_id.".format(data_".$conteiner_id.", 7);
+		
+					";
+		
+			$chart .= "var formatter2_".$conteiner_id." = new google.visualization.NumberFormat(
+					{pattern: '#.##'});
+					formatter2_".$conteiner_id.".format(data_".$conteiner_id.", 7);
+		
+					";
+		
+			/*
+				$chart .= "google.visualization.events.addListener(table, 'select', function() {
+						barChart.setSelection(table.getSelection());
+						});
+			";
+		
+			$chart .= "google.visualization.events.addListener(barChart, 'select', function() {
+					table.setSelection(barChart.getSelection());
+					});
+			";
+			*/
+		
+		
+			// Create a dashboard
+			$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard_".$conteiner_id."')).
+					// Establish bindings, declaring the both the slider and the category
+					// picker will drive both charts.
+					bind([slider_".$conteiner_id.", categoryPicker_".$conteiner_id."], [barChart_".$conteiner_id.", table_".$conteiner_id."]).
+					// Draw the entire dashboard.
+					draw(data_".$conteiner_id.");
+		}
+					";
+		
+			$conteiner_id += 1;
+			$all_chart .= $chart;
+		
+		
+		}//fim foreach curso
+		
+		return $all_chart;
 	
-	
-		// Create a dashboard
-		$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard')).
-				// Establish bindings, declaring the both the slider and the category
-				// picker will drive both charts.
-				bind([slider, categoryPicker], [barChart, table]).
-				// Draw the entire dashboard.
-				draw(data);
 	}
-				";
-		
-		
-		
-		return $chart;
 	
-	}
+	
 	
 	/**
 	 * @name relatorioProfessor
@@ -1827,7 +2551,7 @@ function relatorioDisciplina2() {
 		$tipo_avaliacao = $tipo;
 		$subtipo_avaliacao = "Professor/Disciplina";
 		//$subtipo_avaliacao = "Instituição";
-		$item_avaliado = $t_id;
+		//$item_avaliado = $t_id;
 	
 		$quest_usado = new QuestionarioUsado();
 		$quest_usado->tipo = $tipo_avaliacao;
@@ -1840,265 +2564,377 @@ function relatorioDisciplina2() {
 	
 		//$semestre_escolhido = utf8_decode($semestre);
 		//$curso_escolhido = utf8_decode($curso);
-		if($t_id != "Todas"){
-			$temp_turma = new Turma();
-			$temp_turma->idTurma = $t_id;
-			$temp_turma->find(true);
-			$temp_turma_name = utf8_encode($temp_turma->getNomeDisciplina());
-			
-			$rel_name = "Avaliador: ".$tipo_avaliacao;
-			$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
-			$rel_name .= "<br/>Turma/Disciplina: ".$t_id." - ".$temp_turma_name;
-		}else{
-			$temp_turma = new Turma();
-			$temp_turma->find(true);
-			
-			$rel_name = "Avaliador: ".$tipo_avaliacao;
-			$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
-			$rel_name .= "<br/>Turma/Disciplina: Todas";
-		}
 		
-	
-		$_SESSION["s_rel_name"] = $rel_name;
-	
-	
-		$questionario = new Questionario();
-		$questionario->get($quest_id);
-		$questionario->alias('q');
-		$q = new Questao();
-		$qhq = new QuestionarioHasQuestao();
-	
-		$questionario->join($q,'INNER','qu');
-		$questionario->join($qhq,'INNER','qhq');
-	
-		$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
-	
-		$questionario->where("qu.id = qhq.questaoId");
-		$questionario->order("qhq.ordem");
-	
-		$questionario->find();
-	
-		while( $questionario->fetch() ) {
-			if($t_id != "Todas"){
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and item_avaliado = '".$item_avaliado."'
-				and questionario_has_questao_questao_id = '$questionario->id'
-								";
+		//aqui come�a o for pra criar um grafico por turma
+		//primeiro criamos as divs q v�o conter os charts(uma pra cada turma)
+		$divs = sizeof($t_id);
+		$conteiner_id = 0;
+		$all_chart = "";
+		foreach ($t_id as $t => $value){
+			
+			//C:Psicologia-1
+			$temp_turma = new Turma();
+			if(utf8_decode($t_id[$t]) == "Todas"){
+				//faz nada, pega todo mundo
+				$temp_turma->find(true);
+				$temp_turma_name = utf8_encode($temp_turma->getNomeDisciplina());
+				
+				//info
+				$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br /><span>Curso:</span>Todos<br /><span>Per&iacute;odo: </span>Todos</h3>";
+			}
+			else if(utf8_decode($t_id[$t]) != "Todas" && substr(utf8_decode($t_id[$t]), 0, 1) == "C"){
+				$str = explode(":", utf8_decode($t_id[$t]));
+				$str2 = explode("-", $str[1]);
+				
+				/*if($str2[1] == "Todos"){
+					$temp_turma->where("curso = '".$str2[0]."'");
+				}else{
+					//$str2[1] = $str2.utf8_decode("º SEMESTRE");
+					$temp_turma->where("curso = '".$str2[0]."' AND serie = '".$str2[1]."'");
+				}
+				*/			
+				
+				//info
+				$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br /><span>Curso:</span> ".utf8_encode($str2[0])."<br /><span>Per&iacute;odo: </span> ".utf8_encode($str2[1])."</h3>";
+							
+				
 			}else{
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and questionario_has_questao_questao_id = '$questionario->id'
-								";
+				$temp_turma->idTurma = utf8_decode($t_id[$t]);
+				
+				$temp_turma->find(true);
+				$temp_turma_name = utf8_encode($temp_turma->getNomeDisciplina());
+				
+				//info
+				$temp_prof = new Professor();
+				$temp_prof->id = $temp_turma->getProfessorId();
+				$temp_prof->find(true);
+					
+				$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br /><span>Curso:</span> ".utf8_encode($temp_turma->getCurso())."<br /><span>Per&iacute;odo: </span> ".utf8_encode($temp_turma->getSerie())."<br /><span>Turma/Disciplina:</span> ".utf8_decode($t_id[$t])." - ".$temp_turma_name."<br /><span>Professor: </span>".utf8_encode($temp_prof->getNome())."</h3>";
 			}
 			
-	
-	
-			$query = mysql_query($sql);
-	
+		
+		
+			$questionario = new Questionario();
+			$questionario->get($quest_id);
+			$questionario->alias('q');
+			$q = new Questao();
+			$qhq = new QuestionarioHasQuestao();
+		
+			$questionario->join($q,'INNER','qu');
+			$questionario->join($qhq,'INNER','qhq');
+		
+			$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+		
+			$questionario->where("qu.id = qhq.questaoId");
+			$questionario->order("qhq.ordem");
+		
+			$questionario->find();
+		
+			while( $questionario->fetch() ) {
 				
-			$nota5 = 0;
-			$nota4 = 0;
-			$nota3 = 0;
-			$nota2 = 0;
-			$nota1 = 0;
-	
-			$soma = 0;
-	
-			$qtd_avaliadores = 0;
-				
-			while ($dados = mysql_fetch_assoc($query)) {
-	
-				switch ($dados["nota"]) {
-					case 5:
-						$nota5++;
-						$soma += 5;
-						break;
-					case 4:
-						$nota4++;
-						$soma += 4;
-						break;
-					case 3:
-						$nota3++;
-						$soma += 3;
-						break;
-					case 2:
-						$nota2++;
-						$soma += 2;
-						break;
-					case 1:
-						$nota1++;
-						$soma += 1;
-						break;
+				//aqui verifica se o relatorio � por turma, semestre ou curso
+				if(utf8_decode($t_id[$t]) == "Todas"){
+					//pega todo mundo
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and questionario_has_questao_questao_id = '$questionario->id'
+									";
 				}
-	
-				$qtd_avaliadores++;
-	
+				else if(utf8_decode($t_id[$t]) != "Todas" && substr(utf8_decode($t_id[$t]), 0, 1) == "C"){
+					//pega todo mundo do curso/periodo selecionado
+					$temp_turma = new Turma();//important
+					$str = explode(":", utf8_decode($t_id[$t]));
+					$str2 = explode("-", $str[1]);
+				
+					if($str2[1] == "Todos"){
+						$temp_turma->where("curso = '".$str2[0]."'");
+					}else{
+						$temp_turma->where("curso = '".$str2[0]."' AND serie = '".$str2[1]."'");
+					}
+				
+					$temp_turma->find();
+
+					//pega as turmas do curso e periodo selecionado e colocam em um array
+					$turmas_curso_periodo = "";
+					$p = 0;
+					while($temp_turma->fetch()){
+						if($p == 0){
+							$turmas_curso_periodo .= "'".$temp_turma->idTurma."'";
+						}else{
+							$turmas_curso_periodo .= ", '".$temp_turma->idTurma."'";
+						}
+						$p++;
+					}
+					
+					//echo "turmas >>>>> ".$turmas_curso_periodo;
+					
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and item_avaliado IN (".$turmas_curso_periodo.")
+										and questionario_has_questao_questao_id = '$questionario->id'
+										";
+					//echo "<br />".$sql;
+						
+				
+				}else{
+					//pega somente a turma selecionada
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and item_avaliado = '".utf8_decode($t_id[$t])."'
+					and questionario_has_questao_questao_id = '$questionario->id'
+									";
+				}
+				
+				
+				//
+				/*
+				if(utf8_decode($t_id[$t]) != "Todas"){
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and item_avaliado = '".utf8_decode($t_id[$t])."'
+					and questionario_has_questao_questao_id = '$questionario->id'
+									";
+				}else{
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and questionario_has_questao_questao_id = '$questionario->id'
+									";
+				}
+				*/
+		
+		
+				$query = mysql_query($sql);
+		
+					
+				$nota5 = 0;
+				$nota4 = 0;
+				$nota3 = 0;
+				$nota2 = 0;
+				$nota1 = 0;
+		
+				$soma = 0;
+		
+				$qtd_avaliadores = 0;
+					
+				while ($dados = mysql_fetch_assoc($query)) {
+		
+					switch ($dados["nota"]) {
+						case 5:
+							$nota5++;
+							$soma += 5;
+							break;
+						case 4:
+							$nota4++;
+							$soma += 4;
+							break;
+						case 3:
+							$nota3++;
+							$soma += 3;
+							break;
+						case 2:
+							$nota2++;
+							$soma += 2;
+							break;
+						case 1:
+							$nota1++;
+							$soma += 1;
+							break;
+					}
+		
+					$qtd_avaliadores++;
+		
+				}
+		
+				if($qtd_avaliadores <= 0){
+					$media = 0;
+				}else{
+					$media = $soma/$qtd_avaliadores;
+				}
+				
+				$resposta[] = array("processo_avaliacao_id" => $processo_id,
+						"questionario_id" => $quest_id,
+						"questao_id" => $questionario->id,
+						"questao_texto" => trim($questionario->texto),
+						"itemAvaliado" => $item_avaliado,
+						"nota5" => $nota5,
+						"nota4" => $nota4,
+						"nota3" => $nota3,
+						"nota2" => $nota2,
+						"nota1" => $nota1,
+						"media" => $media,
+						"tipo_avaliacao" => $tipo_avaliacao,
+						"subtipo_avaliacao" => $subtipo_avaliacao);
 			}
-	
-			$resposta[] = array("processo_avaliacao_id" => $processo_id,
-					"questionario_id" => $quest_id,
-					"questao_id" => $questionario->id,
-					"questao_texto" => trim($questionario->texto),
-					"itemAvaliado" => $item_avaliado,
-					"nota5" => $nota5,
-					"nota4" => $nota4,
-					"nota3" => $nota3,
-					"nota2" => $nota2,
-					"nota1" => $nota1,
-					"media" => $soma/$qtd_avaliadores,
-					"tipo_avaliacao" => $tipo_avaliacao,
-					"subtipo_avaliacao" => $subtipo_avaliacao);
+		
+			//cria os conteiners pra conter os graficos
+				//drawChart".$conteiner_id."();
+				$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+								});
+											
+								
+							";
+		
+			$chart .= "function drawChart".$conteiner_id."(){
+		
+					var data_".$conteiner_id." = new google.visualization.DataTable();
+					data_".$conteiner_id.".addColumn('string', 'Id');
+					data_".$conteiner_id.".addColumn('string', 'Questao');
+					data_".$conteiner_id.".addColumn('number', '5 estrelas');
+					data_".$conteiner_id.".addColumn('number', '4 estrelas');
+					data_".$conteiner_id.".addColumn('number', '3 estrelas');
+					data_".$conteiner_id.".addColumn('number', '2 estrelas');
+					data_".$conteiner_id.".addColumn('number', '1 estrela');
+					data_".$conteiner_id.".addColumn('number', 'Media');
+		
+					";
+		
+			$arr1 = $resposta;
+			$resposta = null; //important
+		
+			$chart .= 'data_'.$conteiner_id.'.addRows('.sizeof($arr1).');';
+			$i = 0;
+			for($i; $i <sizeof($arr1); $i++){
+				$q = utf8_encode($arr1[$i]["questao_texto"]);
+				$id = utf8_encode($arr1[$i]["questao_id"]);
+				$m = $arr1[$i]["media"];
+		
+				$item = $arr1[$i]["tipo_avaliacao"];
+		
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 0, \''.$id.'\');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 1, \''.$q.'\');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 2, '.$arr1[$i]["nota5"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 3, '.$arr1[$i]["nota4"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 4, '.$arr1[$i]["nota3"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 5, '.$arr1[$i]["nota2"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 6, '.$arr1[$i]["nota1"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 7, '.$m.');';
+		
+				//print_r($arr1[$i]);
+		
+			}
+		
+			//exit;
+		
+			$chart .= "var barChart_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'ColumnChart',
+					'containerId': 'chart1_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'height': 400,
+					'hAxis': {'minValue': 0, 'maxValue': 10},
+					'chartArea': {top: 0, right: 0, bottom: 0},
+					'series': {5: {type: 'line'}},
+					'pointSize': 5,
+					'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
+					animation:{
+	        			'duration': 1000,
+	        			'easing': 'linear'
+	      			}
+		},
+					'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
+		});
+		
+					";
+		
+			// Define a slider control for the Age column.
+			$chart .= "var slider_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'NumberRangeFilter',
+					'containerId': 'control1_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Media',
+					'minValue': 1,
+	      			'maxValue': 5,
+					'ui': {'labelStacking': 'vertical'}
 		}
-	
-	//print_r($resposta);
-	//exit;
-	
-		$chart = "function drawChart(){
-	
-				var data = new google.visualization.DataTable();
-				data.addColumn('string', 'Id');
-				data.addColumn('string', 'Questao');
-				data.addColumn('number', '5 estrelas');
-				data.addColumn('number', '4 estrelas');
-				data.addColumn('number', '3 estrelas');
-				data.addColumn('number', '2 estrelas');
-				data.addColumn('number', '1 estrela');
-				data.addColumn('number', 'Media');
-	
-				";
-	
-		$arr1 = $resposta;
-	
-		$chart .= 'data.addRows('.sizeof($arr1).');';
-		$i = 0;
-		for($i; $i <sizeof($arr1); $i++){
-			$q = utf8_encode($arr1[$i]["questao_texto"]);
-			$id = utf8_encode($arr1[$i]["questao_id"]);
-			$m = $arr1[$i]["media"];
-	
-			$item = $arr1[$i]["tipo_avaliacao"];
-	
-			$chart .=  'data.setValue('.$i.', 0, \''.$id.'\');';
-			$chart .=  'data.setValue('.$i.', 1, \''.$q.'\');';
-			$chart .=  'data.setValue('.$i.', 2, '.$arr1[$i]["nota5"].');';
-			$chart .=  'data.setValue('.$i.', 3, '.$arr1[$i]["nota4"].');';
-			$chart .=  'data.setValue('.$i.', 4, '.$arr1[$i]["nota3"].');';
-			$chart .=  'data.setValue('.$i.', 5, '.$arr1[$i]["nota2"].');';
-			$chart .=  'data.setValue('.$i.', 6, '.$arr1[$i]["nota1"].');';
-			$chart .=  'data.setValue('.$i.', 7, '.$m.');';
-	
-			//print_r($arr1[$i]);
-	
+		});
+		
+					";
+		
+			// Define a category picker control for the Gender column
+			$chart .= "var categoryPicker_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'CategoryFilter',
+					'containerId': 'control2_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Questao',
+					'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': false,
+					'allowMultiple': true
 		}
-	
-		//exit;
-	
-		$chart .= "var barChart = new google.visualization.ChartWrapper({
-				'chartType': 'ColumnChart',
-				'containerId': 'chart1',
-				'options': {
-				'width': '100%',
-				'height': 400,
-				'hAxis': {'minValue': 0, 'maxValue': 10},
-				'chartArea': {top: 0, right: 0, bottom: 0},
-				'series': {5: {type: 'line'}},
-				'pointSize': 5,
-				'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
-				animation:{
-        			'duration': 1000,
-        			'easing': 'linear'
-      			}
-	},
-				'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
-	});
-	
-				";
-	
-		// Define a slider control for the Age column.
-		$chart .= "var slider = new google.visualization.ControlWrapper({
-				'controlType': 'NumberRangeFilter',
-				'containerId': 'control1',
-				'options': {
-				'filterColumnLabel': 'Media',
-				'ui': {'labelStacking': 'vertical'}
-	}
-	});
-	
-				";
-	
-		// Define a category picker control for the Gender column
-		$chart .= "var categoryPicker = new google.visualization.ControlWrapper({
-				'controlType': 'CategoryFilter',
-				'containerId': 'control2',
-				'options': {
-				'filterColumnLabel': 'Questao',
-				'ui': {
-				'labelStacking': 'vertical',
-				'allowTyping': false,
-				'allowMultiple': true
-	}
-	}
-	});
-	
-				";
-	
-		// Define a table
-		$chart .= "var table = new google.visualization.ChartWrapper({
-				'chartType': 'Table',
-				'containerId': 'chart2',
-				'options': {
-				'width': '100%',
-				'allowHtml': true
-	},
-				'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
-	});
-	
-				";
-	
-		$chart .= "var formatter = new google.visualization.ColorFormat();
-				formatter.addRange(0, 3.99, '#CC0000', null);
-				formatter.addRange(3.99, 5, '#006600', null);
-				formatter.format(data, 7);
-	
-				";
-	
-		$chart .= "var formatter2 = new google.visualization.NumberFormat(
-				{pattern: '#.##'});
-				formatter2.format(data, 7);
-	
-				";
-	
-		/*
-			$chart .= "google.visualization.events.addListener(table, 'select', function() {
-					barChart.setSelection(table.getSelection());
+		}
+		});
+		
+					";
+		
+			// Define a table
+			$chart .= "var table_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'Table',
+					'containerId': 'chart2_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'allowHtml': true
+		},
+					'view': {'columns': [1, 2, 3, 4, 5, 6, 7]}
+		});
+		
+					";
+		
+			$chart .= "var formatter_".$conteiner_id." = new google.visualization.ColorFormat();
+					formatter_".$conteiner_id.".addRange(0, 3.99, '#CC0000', null);
+					formatter_".$conteiner_id.".addRange(3.99, 5, '#006600', null);
+					formatter_".$conteiner_id.".format(data_".$conteiner_id.", 7);
+		
+					";
+		
+			$chart .= "var formatter2_".$conteiner_id." = new google.visualization.NumberFormat(
+					{pattern: '#.##'});
+					formatter2_".$conteiner_id.".format(data_".$conteiner_id.", 7);
+		
+					";
+		
+			/*
+				$chart .= "google.visualization.events.addListener(table, 'select', function() {
+						barChart.setSelection(table.getSelection());
+						});
+			";
+		
+			$chart .= "google.visualization.events.addListener(barChart, 'select', function() {
+					table.setSelection(barChart.getSelection());
 					});
-		";
+			";
+			*/
+		
+		
+			// Create a dashboard
+			$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard_".$conteiner_id."')).
+					// Establish bindings, declaring the both the slider and the category
+					// picker will drive both charts.
+					bind([slider_".$conteiner_id.", categoryPicker_".$conteiner_id."], [barChart_".$conteiner_id.", table_".$conteiner_id."]).
+					// Draw the entire dashboard.
+					draw(data_".$conteiner_id.");
+		}
+					";
 	
-		$chart .= "google.visualization.events.addListener(barChart, 'select', function() {
-				table.setSelection(barChart.getSelection());
-				});
-		";
-		*/
+			$conteiner_id += 1;
+			$all_chart .= $chart;
+			
+		}//fecha foreach
 	
-	
-		// Create a dashboard
-		$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard')).
-				// Establish bindings, declaring the both the slider and the category
-				// picker will drive both charts.
-				bind([slider, categoryPicker], [barChart, table]).
-				// Draw the entire dashboard.
-				draw(data);
-	}
-				";
-	
-	
-	
-		return $chart;
+		return $all_chart;
 	
 	}
 	
@@ -2129,295 +2965,319 @@ function relatorioDisciplina2() {
 		$quest_id = 20;
 		$tipo_avaliacao = "Aluno";
 		$subtipo_avaliacao = "Curso/Coordenador";
-		$item_avaliado = utf8_decode($curso);
+		//$item_avaliado = utf8_decode($curso);
 	
-		/*
-			$semestre_escolhido = utf8_decode("1º SEMESTRE");
-		$curso_escolhido = utf8_decode("Serviço Social");*/
+		//$semestre_escolhido = utf8_decode($semestre);
+		//$curso_escolhido = utf8_decode($curso);
 	
-		$semestre_escolhido = utf8_decode($semestre);
-		$curso_escolhido = utf8_decode($curso);
-	
-		$rel_name = "Avaliador: ".$tipo_avaliacao;
-		$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
-		$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
-		$rel_name .= "<br/>Período: ".utf8_encode($semestre_escolhido);
-		
-		$_SESSION["s_rel_name"] = $rel_name;
-	
-		$questionario = new Questionario();
-		$questionario->get($quest_id);
-		$questionario->alias('q');
-		$q = new Questao();
-		$qhq = new QuestionarioHasQuestao();
-	
-		$questionario->join($q,'INNER','qu');
-		$questionario->join($qhq,'INNER','qhq');
-	
-		$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
-	
-		$questionario->where("qu.id = qhq.questaoId");
-		$questionario->order("qhq.ordem");
-	
-		$questionario->find();
-	
-		while( $questionario->fetch() ) {
-		
-			if(!isset($_GET["semestre"])){
-				if($curso == "Todos"){
-					$sql = "select * from avaliacao where processo_avaliacao_id = 2
-					and questionario_has_questao_questionario_id = ".$quest_id."
-					and tipo_avaliacao = '".$tipo_avaliacao."'
-					and subtipo_avaliacao = '".$subtipo_avaliacao."'
-					and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-					WHERE tha.turma_id_turma = t.id_turma
-					and questionario_has_questao_questao_id = '$questionario->id')
-										";
-				}else{
-					$sql = "select * from avaliacao where processo_avaliacao_id = 2
-					and questionario_has_questao_questionario_id = ".$quest_id."
-					and tipo_avaliacao = '".$tipo_avaliacao."'
-					and subtipo_avaliacao = '".$subtipo_avaliacao."'
-					and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-					WHERE tha.turma_id_turma = t.id_turma
-					and t.curso = '".$curso_escolhido."'
-										and questionario_has_questao_questao_id = '$questionario->id')
-										";
+		//aqui come�a o for pra criar um grafico por curso/periodo
+		//primeiro criamos as divs q v�o conter os charts(uma pra cada curso/disciplina)
+		$divs = sizeof($curso)*sizeof($semestre);
+		$conteiner_id = 0;
+		$all_chart = "";
+		foreach ($curso as $c => $value){
+			foreach ($semestre as $s => $value){
+				//$rel_name = "Avaliador: ".$tipo_avaliacao;
+				//$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
+				//$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
+				//$rel_name .= "<br/>Período: ".utf8_encode($semestre_escolhido);
+				
+				//$_SESSION["s_rel_name"] = $rel_name;
+				
+				$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."<br/><span>Período:</span> ".$semestre[$s]."</h3>";
+				
+				
+			
+				$questionario = new Questionario();
+				$questionario->get($quest_id);
+				$questionario->alias('q');
+				$q = new Questao();
+				$qhq = new QuestionarioHasQuestao();
+			
+				$questionario->join($q,'INNER','qu');
+				$questionario->join($qhq,'INNER','qhq');
+			
+				$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+			
+				$questionario->where("qu.id = qhq.questaoId");
+				$questionario->order("qhq.ordem");
+			
+				$questionario->find();
+			
+				while( $questionario->fetch() ) {
+				
+					if(!isset($_POST["semestre"]) || utf8_decode($semestre[$s]) == "Todos"){
+						if(utf8_decode($curso[$c]) == "Todos"){
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+							and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+							WHERE tha.turma_id_turma = t.id_turma
+							and questionario_has_questao_questao_id = '$questionario->id')
+												";
+						}else{
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+							and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+							WHERE tha.turma_id_turma = t.id_turma
+							and t.curso = '".utf8_decode($curso[$c])."'
+												and questionario_has_questao_questao_id = '$questionario->id')
+												";
+						}
+						
+					}else{
+						if(utf8_decode($curso[$c] == "Todos")){
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+							and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+							WHERE tha.turma_id_turma = t.id_turma
+							and t.serie = '".utf8_decode($semestre[$s]."º SEMESTRE")."'
+												and questionario_has_questao_questao_id = '$questionario->id')
+												";
+						}else{
+							$sql = "select * from avaliacao where processo_avaliacao_id = 2
+							and questionario_has_questao_questionario_id = ".$quest_id."
+							and tipo_avaliacao = '".$tipo_avaliacao."'
+							and subtipo_avaliacao = '".$subtipo_avaliacao."'
+							and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
+							WHERE tha.turma_id_turma = t.id_turma
+							and t.curso = '".utf8_decode($curso[$c])."'
+							and t.serie = '".utf8_decode($semestre[$s]."º SEMESTRE")."'
+												and questionario_has_questao_questao_id = '$questionario->id')
+												";
+						}
+						
+					}
+					
+					
+				/*
+				 	
+					
+				*/
+					
+				//$sql = "select * from avaliacao";
+				$query = mysql_query($sql);
+				//$qt = mysql_num_rows($query);
+				//echo $qt;
+					
+				$nota5 = 0;
+				$nota4 = 0;
+				$nota3 = 0;
+				$nota2 = 0;
+				$nota1 = 0;
+			
+				$soma = 0;
+			
+				$qtd_avaliadores = 0;
+					
+				while ($dados = mysql_fetch_assoc($query)) {
+					//print_r($dados);
+					//echo "<hr />";
+					switch ($dados["nota"]) {
+						case 5:
+							$nota5++;
+							$soma += 5;
+							break;
+						case 4:
+							$nota4++;
+							$soma += 4;
+							break;
+						case 3:
+							$nota3++;
+							$soma += 3;
+							break;
+						case 2:
+							$nota2++;
+							$soma += 2;
+							break;
+						case 1:
+							$nota1++;
+							$soma += 1;
+							break;
+					}
+						
+					$qtd_avaliadores++;
+			
 				}
 				
-			}else{
-				if($curso == "Todos"){
-					$sql = "select * from avaliacao where processo_avaliacao_id = 2
-					and questionario_has_questao_questionario_id = ".$quest_id."
-					and tipo_avaliacao = '".$tipo_avaliacao."'
-					and subtipo_avaliacao = '".$subtipo_avaliacao."'
-					and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-					WHERE tha.turma_id_turma = t.id_turma
-					and t.serie = '".$semestre_escolhido."'
-										and questionario_has_questao_questao_id = '$questionario->id')
-										";
+				if($qtd_avaliadores <= 0){
+					$media = 0;
 				}else{
-					$sql = "select * from avaliacao where processo_avaliacao_id = 2
-					and questionario_has_questao_questionario_id = ".$quest_id."
-					and tipo_avaliacao = '".$tipo_avaliacao."'
-					and subtipo_avaliacao = '".$subtipo_avaliacao."'
-					and avaliador IN (SELECT tha.aluno_ra FROM turma t, turma_has_aluno tha
-					WHERE tha.turma_id_turma = t.id_turma
-					and t.curso = '".$curso_escolhido."'
-					and t.serie = '".$semestre_escolhido."'
-										and questionario_has_questao_questao_id = '$questionario->id')
-										";
+					$media = $soma/$qtd_avaliadores;
 				}
-				
+			
+				$resposta[] = array("processo_avaliacao_id" => $processo_id,
+						"questionario_id" => $quest_id,
+						"questao_id" => $questionario->id,
+						"questao_texto" => trim($questionario->texto),
+						"itemAvaliado" => $item_avaliado,
+						"nota5" => $nota5,
+						"nota4" => $nota4,
+						"nota3" => $nota3,
+						"nota2" => $nota2,
+						"nota1" => $nota1,
+						"media" => $media,
+						"tipo_avaliacao" => $tipo_avaliacao,
+						"subtipo_avaliacao" => $subtipo_avaliacao);
+				}
+			
+				//debug
+				/*foreach ($resposta as $resp){
+				 print_r($resp);
+				echo "<br />";
+				}*/
+				//print_r($resposta);
+				//exit;
+			
+			
+				//cria os conteiners pra conter os graficos
+			//drawChart".$conteiner_id."();
+			$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+								});		
+													
+							";
+			
+				$chart .= "function drawChart".$conteiner_id."(){
+			
+						var data_".$conteiner_id." = new google.visualization.DataTable();
+						data_".$conteiner_id.".addColumn('string', 'Questao');
+						data_".$conteiner_id.".addColumn('number', '5 estrelas');
+						data_".$conteiner_id.".addColumn('number', '4 estrelas');
+						data_".$conteiner_id.".addColumn('number', '3 estrelas');
+						data_".$conteiner_id.".addColumn('number', '2 estrelas');
+						data_".$conteiner_id.".addColumn('number', '1 estrela');
+						data_".$conteiner_id.".addColumn('number', 'Media');
+			
+						";
+			
+				$arr1 = $resposta;
+				$resposta = null; //important
+			
+				$chart .= 'data_'.$conteiner_id.'.addRows('.sizeof($arr1).');';
+				$i = 0;
+				for($i; $i <sizeof($arr1); $i++){
+					$d = utf8_encode($arr1[$i]["questao_texto"]);
+					//$m = escalaDecimal($arr1[$i]["media"]);
+					$m = $arr1[$i]["media"];
+			
+					$item = $arr1[$i]["tipo_avaliacao"];
+			
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 0, \''.$d.'\');';			
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
+					$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 6, '.$m.');';
+			
+					//print_r($arr1[$i]);
+			
+				}
+			
+				/*'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF'],*/
+			
+				$chart .= "var barChart_".$conteiner_id." = new google.visualization.ChartWrapper({
+						'chartType': 'ColumnChart',
+						'containerId': 'chart1_".$conteiner_id."',
+						'options': {
+						'width': '100%',
+						'height': 400,
+						'hAxis': {'minValue': 0, 'maxValue': 10},
+						'chartArea': {top: 0, right: 0, bottom: 0},
+						'series': {5: {type: 'line'}},
+						'pointSize': 5,
+						'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
+						animation:{
+		        			'duration': 1000,
+		        			'easing': 'linear'
+		      			}
 			}
+			});
 			
+						";
 			
-		/*
-		 	
-			
-		*/
-			
-		//$sql = "select * from avaliacao";
-		$query = mysql_query($sql);
-		//$qt = mysql_num_rows($query);
-		//echo $qt;
-			
-		$nota5 = 0;
-		$nota4 = 0;
-		$nota3 = 0;
-		$nota2 = 0;
-		$nota1 = 0;
-	
-		$soma = 0;
-	
-		$qtd_avaliadores = 0;
-			
-		while ($dados = mysql_fetch_assoc($query)) {
-			//print_r($dados);
-			//echo "<hr />";
-			switch ($dados["nota"]) {
-				case 5:
-					$nota5++;
-					$soma += 5;
-					break;
-				case 4:
-					$nota4++;
-					$soma += 4;
-					break;
-				case 3:
-					$nota3++;
-					$soma += 3;
-					break;
-				case 2:
-					$nota2++;
-					$soma += 2;
-					break;
-				case 1:
-					$nota1++;
-					$soma += 1;
-					break;
+				// Define a slider control for the Age column.
+				$chart .= "var slider_".$conteiner_id." = new google.visualization.ControlWrapper({
+						'controlType': 'NumberRangeFilter',
+						'containerId': 'control1_".$conteiner_id."',
+						'options': {
+						'filterColumnLabel': 'Media',
+						'minValue': 1,
+		      			'maxValue': 5,
+						'ui': {'labelStacking': 'vertical'}
 			}
+			});
+			
+						";
+			
+				// Define a category picker control for the Gender column
+				$chart .= "var categoryPicker_".$conteiner_id." = new google.visualization.ControlWrapper({
+						'controlType': 'CategoryFilter',
+						'containerId': 'control2_".$conteiner_id."',
+						'options': {
+						'filterColumnLabel': 'Questao',
+						'ui': {
+						'labelStacking': 'vertical',
+						'allowTyping': false,
+						'allowMultiple': true
+			}
+			}
+			});
+			
+						";
+			
+				// Define a table
+				$chart .= "var table_".$conteiner_id." = new google.visualization.ChartWrapper({
+						'chartType': 'Table',
+						'containerId': 'chart2_".$conteiner_id."',
+						'options': {
+						'width': '100%',
+						'allowHtml': true
+			}
+			});
+			
+						";
+			
+				$chart .= "var formatter_".$conteiner_id." = new google.visualization.ColorFormat();
+						formatter_".$conteiner_id.".addRange(0, 3.99, '#CC0000', null);
+						formatter_".$conteiner_id.".addRange(3.99, 5, '#006600', null);
+						formatter_".$conteiner_id.".format(data_".$conteiner_id.", 6);
+			
+						";
+			
+				$chart .= "var formatter2_".$conteiner_id." = new google.visualization.NumberFormat(
+						{pattern: '#.##'});
+						formatter2_".$conteiner_id.".format(data_".$conteiner_id.", 6);
+			
+						";
+			
+			
+			
+				// Create a dashboard
+				$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard_".$conteiner_id."')).
+						// Establish bindings, declaring the both the slider and the category
+						// picker will drive both charts.
+						bind([slider_".$conteiner_id.", categoryPicker_".$conteiner_id."], [barChart_".$conteiner_id.", table_".$conteiner_id."]).
+						// Draw the entire dashboard.
+						draw(data_".$conteiner_id.");
+			}
+						";
 				
-			$qtd_avaliadores++;
-	
-		}
-	
-		$resposta[] = array("processo_avaliacao_id" => $processo_id,
-				"questionario_id" => $quest_id,
-				"questao_id" => $questionario->id,
-				"questao_texto" => trim($questionario->texto),
-				"itemAvaliado" => $item_avaliado,
-				"nota5" => $nota5,
-				"nota4" => $nota4,
-				"nota3" => $nota3,
-				"nota2" => $nota2,
-				"nota1" => $nota1,
-				"media" => $soma/$qtd_avaliadores,
-				"tipo_avaliacao" => $tipo_avaliacao,
-				"subtipo_avaliacao" => $subtipo_avaliacao);
-		}
-	
-		//debug
-		/*foreach ($resposta as $resp){
-		 print_r($resp);
-		echo "<br />";
-		}*/
-		//print_r($resposta);
-		//exit;
-	
-	
-		// Create and populate the data table.
-		/*var data = google.visualization.arrayToDataTable([
-		 ['Disciplina', '5 estrelas', '4 estrelas', '3 estrelas', '2 estrelas', '1 estrela', 'Média'],
-				['Introdução à Administração',  5,      8,         6,             22,           0,      8.2],
-				['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
-				['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
-				['Filosofia',  3,      5,       2,             1,           8,     3.8]
-				]);*/
-	
-		$chart = "function drawChart(){
-	
-				var data = new google.visualization.DataTable();
-				data.addColumn('string', 'Questao');
-				data.addColumn('number', '5 estrelas');
-				data.addColumn('number', '4 estrelas');
-				data.addColumn('number', '3 estrelas');
-				data.addColumn('number', '2 estrelas');
-				data.addColumn('number', '1 estrela');
-				data.addColumn('number', 'Media');
-	
-				";
-	
-		$arr1 = $resposta;
-	
-		$chart .= 'data.addRows('.sizeof($arr1).');';
-		$i = 0;
-		for($i; $i <sizeof($arr1); $i++){
-			$d = utf8_encode($arr1[$i]["questao_texto"]);
-			//$m = escalaDecimal($arr1[$i]["media"]);
-			$m = $arr1[$i]["media"];
-	
-			$item = $arr1[$i]["tipo_avaliacao"];
-	
-			$chart .=  'data.setValue('.$i.', 0, \''.$d.'\');';			
-			$chart .=  'data.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
-			$chart .=  'data.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
-			$chart .=  'data.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
-			$chart .=  'data.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
-			$chart .=  'data.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
-			$chart .=  'data.setValue('.$i.', 6, '.$m.');';
-	
-			//print_r($arr1[$i]);
-	
-		}
-	
-		/*'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF'],*/
-	
-		$chart .= "var barChart = new google.visualization.ChartWrapper({
-				'chartType': 'ColumnChart',
-				'containerId': 'chart1',
-				'options': {
-				'width': '100%',
-				'height': 400,
-				'hAxis': {'minValue': 0, 'maxValue': 10},
-				'chartArea': {top: 0, right: 0, bottom: 0},
-				'series': {5: {type: 'line'}},
-				'pointSize': 5,
-				'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
-				animation:{
-        			'duration': 1000,
-        			'easing': 'linear'
-      			}
-	}
-	});
-	
-				";
-	
-		// Define a slider control for the Age column.
-		$chart .= "var slider = new google.visualization.ControlWrapper({
-				'controlType': 'NumberRangeFilter',
-				'containerId': 'control1',
-				'options': {
-				'filterColumnLabel': 'Media',
-				'ui': {'labelStacking': 'vertical'}
-	}
-	});
-	
-				";
-	
-		// Define a category picker control for the Gender column
-		$chart .= "var categoryPicker = new google.visualization.ControlWrapper({
-				'controlType': 'CategoryFilter',
-				'containerId': 'control2',
-				'options': {
-				'filterColumnLabel': 'Questao',
-				'ui': {
-				'labelStacking': 'vertical',
-				'allowTyping': false,
-				'allowMultiple': true
-	}
-	}
-	});
-	
-				";
-	
-		// Define a table
-		$chart .= "var table = new google.visualization.ChartWrapper({
-				'chartType': 'Table',
-				'containerId': 'chart2',
-				'options': {
-				'width': '100%',
-				'allowHtml': true
-	}
-	});
-	
-				";
-	
-		$chart .= "var formatter = new google.visualization.ColorFormat();
-				formatter.addRange(0, 3.99, '#CC0000', null);
-				formatter.addRange(3.99, 5, '#006600', null);
-				formatter.format(data, 6);
-	
-				";
-	
-		$chart .= "var formatter2 = new google.visualization.NumberFormat(
-				{pattern: '#.##'});
-				formatter2.format(data, 6);
-	
-				";
-	
-	
-	
-		// Create a dashboard
-		$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard')).
-				// Establish bindings, declaring the both the slider and the category
-				// picker will drive both charts.
-				bind([slider, categoryPicker], [barChart, table]).
-				// Draw the entire dashboard.
-				draw(data);
-	}
-				";
-		return $chart;
+				$conteiner_id += 1;
+				$all_chart .= $chart;
+				
+			}//fecha foreach
+		}//fecha foreach
+		return $all_chart;
 	
 	}
 	
@@ -2447,7 +3307,7 @@ function relatorioDisciplina2() {
 		
 		$tipo_avaliacao = "Professor";
 		$subtipo_avaliacao = "Coordenador";
-		$item_avaliado = utf8_decode($curso);
+		//$item_avaliado = utf8_decode($curso);
 		
 		//descobre o questionario_id
 		$quest_usado = new QuestionarioUsado();
@@ -2463,262 +3323,287 @@ function relatorioDisciplina2() {
 		 $semestre_escolhido = utf8_decode("1º SEMESTRE");
 		$curso_escolhido = utf8_decode("Serviço Social");*/
 	
-		$semestre_escolhido = utf8_decode($semestre);
-		$curso_escolhido = utf8_decode($curso);
+		//$semestre_escolhido = utf8_decode($semestre);
+		//$curso_escolhido = utf8_decode($curso);
 	
-		$rel_name = "Avaliador: ".$tipo_avaliacao;
-		$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
-		$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
-	
-		$_SESSION["s_rel_name"] = $rel_name;
-	
-		$questionario = new Questionario();
-		$questionario->get($quest_id);
-		$questionario->alias('q');
-		$q = new Questao();
-		$qhq = new QuestionarioHasQuestao();
-	
-		$questionario->join($q,'INNER','qu');
-		$questionario->join($qhq,'INNER','qhq');
-	
-		$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
-	
-		$questionario->where("qu.id = qhq.questaoId");
-		$questionario->order("qhq.ordem");
-	
-		$questionario->find();
-	
-		if($curso != "Todos"){
-			//verificar qual o coordenador do curso
-			//pra filtrar a avaliacao por curso
-			//na tabela turma
-			$coord_id = new Turma();
-			$coord_id->curso = $curso_escolhido;
-			$coord_id->group("coordenador_id");
-			$coord_id->find(true);
-			$coord_id = $coord_id->getCoordenadorId();
-		}
+		//aqui come�a o for pra criar um grafico por curso
+		//primeiro criamos as divs q v�o conter os charts(uma pra cada curso)
+		$divs = sizeof($curso);
+		$conteiner_id = 0;
+		$all_chart = "";
+		foreach ($curso as $c => $value){
+			
+			//$rel_name = "Avaliador: ".$tipo_avaliacao;
+			//$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
+			//$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
 		
-		while( $questionario->fetch() ) {
-	
-			if($curso == "Todos"){
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and questionario_has_questao_questao_id = ".$questionario->getId()."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'";
+			//$_SESSION["s_rel_name"] = $rel_name;
+			
+			$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."</h3>";
+		
+			$questionario = new Questionario();
+			$questionario->get($quest_id);
+			$questionario->alias('q');
+			$q = new Questao();
+			$qhq = new QuestionarioHasQuestao();
+		
+			$questionario->join($q,'INNER','qu');
+			$questionario->join($qhq,'INNER','qhq');
+		
+			$questionario->select("qu.id, qu.texto, qu.topico, qu.opcional, qhq.ordem");
+		
+			$questionario->where("qu.id = qhq.questaoId");
+			$questionario->order("qhq.ordem");
+		
+			$questionario->find();
+		
+			if(utf8_decode($curso[$c]) != "Todos"){
+				//verificar qual o coordenador do curso
+				//pra filtrar a avaliacao por curso
+				//na tabela turma
+				$coord_id = new Turma();
+				$coord_id->curso = utf8_decode($curso[$c]);
+				$coord_id->group("coordenador_id");
+				$coord_id->find(true);
+				$coord_id = $coord_id->getCoordenadorId();
+			}
+			
+			while( $questionario->fetch() ) {
+		
+				if(utf8_decode($curso[$c]) == "Todos"){
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and questionario_has_questao_questao_id = ".$questionario->getId()."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'";
+				}else{
+					$sql = "select * from avaliacao where processo_avaliacao_id = 2
+					and questionario_has_questao_questionario_id = ".$quest_id."
+					and questionario_has_questao_questao_id = ".$questionario->getId()."
+					and tipo_avaliacao = '".$tipo_avaliacao."'
+					and subtipo_avaliacao = '".$subtipo_avaliacao."'
+					and item_avaliado = '".$coord_id."'";
+				}
+				
+		
+				
+			//$sql = "select * from avaliacao";
+			$query = mysql_query($sql);
+			//$qt = mysql_num_rows($query);
+			//echo $qt;
+				
+			$nota5 = 0;
+			$nota4 = 0;
+			$nota3 = 0;
+			$nota2 = 0;
+			$nota1 = 0;
+		
+			$soma = 0;
+		
+			$qtd_avaliadores = 0;
+				
+			while ($dados = mysql_fetch_assoc($query)) {
+				//print_r($dados);
+				//echo "<hr />";
+				switch ($dados["nota"]) {
+					case 5:
+						$nota5++;
+						$soma += 5;
+						break;
+					case 4:
+						$nota4++;
+						$soma += 4;
+						break;
+					case 3:
+						$nota3++;
+						$soma += 3;
+						break;
+					case 2:
+						$nota2++;
+						$soma += 2;
+						break;
+					case 1:
+						$nota1++;
+						$soma += 1;
+						break;
+				}
+		
+				$qtd_avaliadores++;
+		
+			}
+			
+			if($qtd_avaliadores <= 0){
+				$media = 0;
 			}else{
-				$sql = "select * from avaliacao where processo_avaliacao_id = 2
-				and questionario_has_questao_questionario_id = ".$quest_id."
-				and questionario_has_questao_questao_id = ".$questionario->getId()."
-				and tipo_avaliacao = '".$tipo_avaliacao."'
-				and subtipo_avaliacao = '".$subtipo_avaliacao."'
-				and item_avaliado = '".$coord_id."'";
+				$media = $soma/$qtd_avaliadores;
 			}
-			
-	
-			
-		//$sql = "select * from avaliacao";
-		$query = mysql_query($sql);
-		//$qt = mysql_num_rows($query);
-		//echo $qt;
-			
-		$nota5 = 0;
-		$nota4 = 0;
-		$nota3 = 0;
-		$nota2 = 0;
-		$nota1 = 0;
-	
-		$soma = 0;
-	
-		$qtd_avaliadores = 0;
-			
-		while ($dados = mysql_fetch_assoc($query)) {
-			//print_r($dados);
-			//echo "<hr />";
-			switch ($dados["nota"]) {
-				case 5:
-					$nota5++;
-					$soma += 5;
-					break;
-				case 4:
-					$nota4++;
-					$soma += 4;
-					break;
-				case 3:
-					$nota3++;
-					$soma += 3;
-					break;
-				case 2:
-					$nota2++;
-					$soma += 2;
-					break;
-				case 1:
-					$nota1++;
-					$soma += 1;
-					break;
+		
+			$resposta[] = array("processo_avaliacao_id" => $processo_id,
+					"questionario_id" => $quest_id,
+					"questao_id" => $questionario->id,
+					"questao_texto" => trim($questionario->texto),
+					"itemAvaliado" => $item_avaliado,
+					"nota5" => $nota5,
+					"nota4" => $nota4,
+					"nota3" => $nota3,
+					"nota2" => $nota2,
+					"nota1" => $nota1,
+					"media" => $media,
+					"tipo_avaliacao" => $tipo_avaliacao,
+					"subtipo_avaliacao" => $subtipo_avaliacao);
 			}
-	
-			$qtd_avaliadores++;
-	
+		
+			//debug
+			/*foreach ($resposta as $resp){
+			 print_r($resp);
+			echo "<br />";
+			}*/
+			//print_r($resposta);
+			//exit;
+		
+		
+			//cria os conteiners pra conter os graficos
+			//drawChart".$conteiner_id."();
+			$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+								});
+						
+			
+							";
+			$chart .= "function drawChart".$conteiner_id."(){
+		
+					var data_".$conteiner_id." = new google.visualization.DataTable();
+					data_".$conteiner_id.".addColumn('string', 'Questao');
+					data_".$conteiner_id.".addColumn('number', '5 estrelas');
+					data_".$conteiner_id.".addColumn('number', '4 estrelas');
+					data_".$conteiner_id.".addColumn('number', '3 estrelas');
+					data_".$conteiner_id.".addColumn('number', '2 estrelas');
+					data_".$conteiner_id.".addColumn('number', '1 estrela');
+					data_".$conteiner_id.".addColumn('number', 'Media');
+		
+					";
+		
+			$arr1 = $resposta;
+			$resposta = null; //important
+		
+			$chart .= 'data_'.$conteiner_id.'.addRows('.sizeof($arr1).');';
+			$i = 0;
+			for($i; $i <sizeof($arr1); $i++){
+				$d = utf8_encode($arr1[$i]["questao_texto"]);
+				//$m = escalaDecimal($arr1[$i]["media"]);
+				$m = $arr1[$i]["media"];
+		
+				$item = $arr1[$i]["tipo_avaliacao"];
+		
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 0, \''.$d.'\');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
+				$chart .=  'data_'.$conteiner_id.'.setValue('.$i.', 6, '.$m.');';
+		
+				//print_r($arr1[$i]);
+		
+			}
+		
+			/*'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF'],*/
+		
+			$chart .= "var barChart_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'ColumnChart',
+					'containerId': 'chart1_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'height': 400,
+					'hAxis': {'minValue': 0, 'maxValue': 10},
+					'chartArea': {top: 0, right: 0, bottom: 0},
+					'series': {5: {type: 'line'}},
+					'pointSize': 5,
+					'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
+					animation:{
+	        			'duration': 1000,
+	        			'easing': 'linear'
+	      			}
 		}
-	
-		$resposta[] = array("processo_avaliacao_id" => $processo_id,
-				"questionario_id" => $quest_id,
-				"questao_id" => $questionario->id,
-				"questao_texto" => trim($questionario->texto),
-				"itemAvaliado" => $item_avaliado,
-				"nota5" => $nota5,
-				"nota4" => $nota4,
-				"nota3" => $nota3,
-				"nota2" => $nota2,
-				"nota1" => $nota1,
-				"media" => $soma/$qtd_avaliadores,
-				"tipo_avaliacao" => $tipo_avaliacao,
-				"subtipo_avaliacao" => $subtipo_avaliacao);
+		});
+		
+					";
+		
+			// Define a slider control for the Age column.
+			$chart .= "var slider_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'NumberRangeFilter',
+					'containerId': 'control1_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Media',
+					'minValue': 1,
+	      			'maxValue': 5,
+					'ui': {'labelStacking': 'vertical'}
 		}
-	
-		//debug
-		/*foreach ($resposta as $resp){
-		 print_r($resp);
-		echo "<br />";
-		}*/
-		//print_r($resposta);
-		//exit;
-	
-	
-		// Create and populate the data table.
-		/*var data = google.visualization.arrayToDataTable([
-		 ['Disciplina', '5 estrelas', '4 estrelas', '3 estrelas', '2 estrelas', '1 estrela', 'Média'],
-				['Introdução à Administração',  5,      8,         6,             22,           0,      8.2],
-				['Estatística Aplicada', 2,      7,        8,             10,          3,      6],
-				['Comunicação e Linguagem',  0,      15,       5,             0,           11,     6.2],
-				['Filosofia',  3,      5,       2,             1,           8,     3.8]
-				]);*/
-	
-		$chart = "function drawChart(){
-	
-				var data = new google.visualization.DataTable();
-				data.addColumn('string', 'Questao');
-				data.addColumn('number', '5 estrelas');
-				data.addColumn('number', '4 estrelas');
-				data.addColumn('number', '3 estrelas');
-				data.addColumn('number', '2 estrelas');
-				data.addColumn('number', '1 estrela');
-				data.addColumn('number', 'Media');
-	
-				";
-	
-		$arr1 = $resposta;
-	
-		$chart .= 'data.addRows('.sizeof($arr1).');';
-		$i = 0;
-		for($i; $i <sizeof($arr1); $i++){
-			$d = utf8_encode($arr1[$i]["questao_texto"]);
-			//$m = escalaDecimal($arr1[$i]["media"]);
-			$m = $arr1[$i]["media"];
-	
-			$item = $arr1[$i]["tipo_avaliacao"];
-	
-			$chart .=  'data.setValue('.$i.', 0, \''.$d.'\');';
-			$chart .=  'data.setValue('.$i.', 1, '.$arr1[$i]["nota5"].');';
-			$chart .=  'data.setValue('.$i.', 2, '.$arr1[$i]["nota4"].');';
-			$chart .=  'data.setValue('.$i.', 3, '.$arr1[$i]["nota3"].');';
-			$chart .=  'data.setValue('.$i.', 4, '.$arr1[$i]["nota2"].');';
-			$chart .=  'data.setValue('.$i.', 5, '.$arr1[$i]["nota1"].');';
-			$chart .=  'data.setValue('.$i.', 6, '.$m.');';
-	
-			//print_r($arr1[$i]);
-	
+		});
+		
+					";
+		
+			// Define a category picker control for the Gender column
+			$chart .= "var categoryPicker_".$conteiner_id." = new google.visualization.ControlWrapper({
+					'controlType': 'CategoryFilter',
+					'containerId': 'control2_".$conteiner_id."',
+					'options': {
+					'filterColumnLabel': 'Questao',
+					'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': false,
+					'allowMultiple': true
 		}
-	
-		/*'colors':['#006600','#00CC00','#FFCC00','#FF6600','#CC0000','#3366FF'],*/
-	
-		$chart .= "var barChart = new google.visualization.ChartWrapper({
-				'chartType': 'ColumnChart',
-				'containerId': 'chart1',
-				'options': {
-				'width': '100%',
-				'height': 400,
-				'hAxis': {'minValue': 0, 'maxValue': 10},
-				'chartArea': {top: 0, right: 0, bottom: 0},
-				'series': {5: {type: 'line'}},
-				'pointSize': 5,
-				'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
-				animation:{
-        			'duration': 1000,
-        			'easing': 'linear'
-      			}
-	}
-	});
-	
-				";
-	
-		// Define a slider control for the Age column.
-		$chart .= "var slider = new google.visualization.ControlWrapper({
-				'controlType': 'NumberRangeFilter',
-				'containerId': 'control1',
-				'options': {
-				'filterColumnLabel': 'Media',
-				'ui': {'labelStacking': 'vertical'}
-	}
-	});
-	
-				";
-	
-		// Define a category picker control for the Gender column
-		$chart .= "var categoryPicker = new google.visualization.ControlWrapper({
-				'controlType': 'CategoryFilter',
-				'containerId': 'control2',
-				'options': {
-				'filterColumnLabel': 'Questao',
-				'ui': {
-				'labelStacking': 'vertical',
-				'allowTyping': false,
-				'allowMultiple': true
-	}
-	}
-	});
-	
-				";
-	
-		// Define a table
-		$chart .= "var table = new google.visualization.ChartWrapper({
-				'chartType': 'Table',
-				'containerId': 'chart2',
-				'options': {
-				'width': '100%',
-				'allowHtml': true
-	}
-	});
-	
-				";
-	
-		$chart .= "var formatter = new google.visualization.ColorFormat();
-				formatter.addRange(0, 3.99, '#CC0000', null);
-				formatter.addRange(3.99, 5, '#006600', null);
-				formatter.format(data, 6);
-	
-				";
-	
-		$chart .= "var formatter2 = new google.visualization.NumberFormat(
-				{pattern: '#.##'});
-				formatter2.format(data, 6);
-	
-				";
-	
-	
-	
-		// Create a dashboard
-		$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard')).
-				// Establish bindings, declaring the both the slider and the category
-				// picker will drive both charts.
-				bind([slider, categoryPicker], [barChart, table]).
-				// Draw the entire dashboard.
-				draw(data);
-	}
-				";
-		return $chart;
+		}
+		});
+		
+					";
+		
+			// Define a table
+			$chart .= "var table_".$conteiner_id." = new google.visualization.ChartWrapper({
+					'chartType': 'Table',
+					'containerId': 'chart2_".$conteiner_id."',
+					'options': {
+					'width': '100%',
+					'allowHtml': true
+		}
+		});
+		
+					";
+		
+			$chart .= "var formatter_".$conteiner_id." = new google.visualization.ColorFormat();
+					formatter_".$conteiner_id.".addRange(0, 3.99, '#CC0000', null);
+					formatter_".$conteiner_id.".addRange(3.99, 5, '#006600', null);
+					formatter_".$conteiner_id.".format(data_".$conteiner_id.", 6);
+		
+					";
+		
+			$chart .= "var formatter2_".$conteiner_id." = new google.visualization.NumberFormat(
+					{pattern: '#.##'});
+					formatter2_".$conteiner_id.".format(data_".$conteiner_id.", 6);
+		
+					";
+		
+		
+		
+			// Create a dashboard
+			$chart .= "new google.visualization.Dashboard(document.getElementById('dashboard_".$conteiner_id."')).
+					// Establish bindings, declaring the both the slider and the category
+					// picker will drive both charts.
+					bind([slider_".$conteiner_id.", categoryPicker_".$conteiner_id."], [barChart_".$conteiner_id.", table_".$conteiner_id."]).
+					// Draw the entire dashboard.
+					draw(data_".$conteiner_id.");
+		}
+					";
+			$conteiner_id += 1;
+			$all_chart .= $chart;
+			
+		}//fecha foreach
+		
+		return $all_chart;
 	
 	}
 	

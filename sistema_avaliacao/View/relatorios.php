@@ -676,6 +676,80 @@ ul.vertical li:hover ul, ul.vertical li.over ul { display: block; } /* The magic
 	background: url(css/images/chart.png) no-repeat;
 	padding-left: 25px;
 }
+
+.goog-menuitem-content {
+	text-align: left;
+}
+/* efeito hover nos filtros*/
+/*passe o mouse*/
+/*#mouse {
+background: #fff;
+text-align: center;
+width: auto;
+padding: 10px;
+color: red;
+}
+#rel_menus {
+width: 100%;
+position: absolute;
+background: #FAFAFA;
+padding: 10px;
+margin: 10px;
+}
+#rel_menus:hover {
+height: auto;
+z-index: 500;
+}
+.box_op {
+border: 1px solid #f3f3f3;
+background: #fff;
+padding: 10px;
+float: left;
+}
+
+.box_op:hover {
+height: auto;
+z-index: 500;
+position: relative;
+}
+*/
+
+/*filtro modelo 2*/
+#rel_menus {
+width: 92%;
+/*height: auto;*/
+height: 65px;
+background: #FAFAFA;
+padding: 10px;
+margin: 10px;
+position: absolute;
+}
+.box_op {
+border: 1px solid #f3f3f3;
+background: #fff;
+padding: 10px;
+width: auto;
+float: left;
+height: 20px;
+overflow-y: hidden;
+}
+.box_op:hover {
+height: auto;
+z-index: 500;
+position: relative;
+box-shadow: 1px 1px 2px #888888;
+}
+
+.box_op h4.ident1{
+	text-align: left;
+	padding-left: 20px;
+	border-top: 1px solid #ddd;
+}
+
+.box_op h4.ident2{
+	text-align: left;
+	padding-left: 40px;
+}
 					        	
 					        	</style>
 <?php include_once 'inc/theme_inc.php';?>
@@ -689,6 +763,60 @@ ul.vertical li:hover ul, ul.vertical li.over ul { display: block; } /* The magic
       google.load("visualization", "1", {packages:["corechart"]});
       google.load('visualization', '1.1', {packages:['controls']});
       google.setOnLoadCallback(drawChart);
+
+      var qtd = 0;
+      function drawChart(){
+          //exibe div carregando
+          //$('#dashboard').hide();
+    	for(var i = 0; i < qtd; i++){
+    		var funcao = "drawChart"+i;
+    		window[funcao]();// isso executa a fun��o
+    	}
+
+    	escondeBlackout();   	
+    	
+      }
+
+      function escondeBlackout(){
+    	//esconde div carregando
+  		$('#blackout').hide();
+      }
+
+      function drawConteiners(param){
+          $('#dashboard').append('<div id="dashboard_'+param+'" class="dash"><div id="dashinfo_'+param+'" class="dashinfo"></div><div id="control1_'+param+'" class="control"></div><div id="control2_'+param+'" class="control"></div><br /><br /><div id="chart1_'+param+'" class="chart1"></div><div id="chart2_'+param+'" class="chart2"></div></div>');
+      }
+
+      function drawInfo(param, info){
+          var div = "#dashinfo_"+param;
+          //alert(param);
+          $(div).html(info);
+
+          //
+                    
+      }
+
+      function imprimirDashboards(tipo){
+    	
+    	  $("div.dash").each(function(){
+						
+			//impressao completa tabelas+graficos
+			if(tipo == "full"){
+				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: block;}div.chart2{display: block;}</style>');
+			}
+			//impressao de tabelas
+			if(tipo == "table"){
+				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: none;}div.chart2{display: block;}</style>');
+			}
+			//impressao de graficos
+			if(tipo == "chart"){
+				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: block;}div.chart2{display: none;}</style>');
+			}
+			
+    	  });
+
+	      window.print();
+      }
+      
 
       //cores para os charts
       // #920300 padrao unicampo
@@ -704,15 +832,26 @@ ul.vertical li:hover ul, ul.vertical li.over ul { display: block; } /* The magic
       }
       ?>
       
-
-
-
-  
+       
       
     </script>
 <script type="text/javascript" src="js/info_usuario.js"></script>
 <script type="text/javascript" src="js/jquery.selectboxes.js"></script>
 <script type="text/javascript">
+/*function botaoGerarGrafico(op){
+	if(op == "mostrar"){
+		$("button#gerar_grafico").show();
+		alert('mostrando');
+	}else{
+		$("button#gerar_grafico").css('display','none');
+		alert('escondendo');
+	}
+	
+}
+
+botaoGerarGrafico("esconder");
+*/
+    
 var box; //guarda a box q vai ser atualizada
 
 var req_2;
@@ -790,15 +929,61 @@ function processReqChange_2(){
 }
 
 
-function loadOptions(filtro, param){
+function loadOptions(filtro, param, obj){
 	//alert(param);
 	//loadXMLDoc_2("../Controller/relatorioController.php?action=load&avaliador="+param);
 	loadXMLDoc_2("../Controller/relatorioController.php?action=load&filtro="+filtro+"&param="+param);
 	box = filtro+1;
-	marcaOpcao(filtro, param);
-
+	//marcaOpcao(filtro, param);
+	marcaOpcaoCheckbox(obj);
+	
+	//preencheHiddenFields(filtro, param);
 	//verifica se tem grafico e chama a funcao abaixo
 }
+
+function loadOptionsMultiple(filtro, param, obj){
+	//pega todos os checkboxes marcados
+
+	var param_cursos = [];
+	var param_semestres = [];
+	
+		$("input[name='curso[]']").each(function( index ) {
+			  if($(this).is(':checked')){
+				//alert("checado "+$(this).val());
+				param_cursos.push($(this).val());
+			  }else{
+				//alert("n�o checado");
+			  }
+			});
+	
+		$("input[name='semestre[]']").each(function( index ) {
+			  if($(this).is(':checked')){
+				//alert("checado "+$(this).val());
+				param_semestres.push($(this).val());
+			  }else{
+				//alert("n�o checado");
+			  }
+			});
+	
+	//alert(param_cursos);
+	loadXMLDoc_2("../Controller/relatorioController.php?action=load&filtro="+filtro+"&param_cursos="+param_cursos+"&param_semestres="+param_semestres);
+	
+	
+	box = filtro+1;
+	//marcaOpcao(filtro, param);
+	marcaOpcaoCheckbox(obj);
+
+}
+
+
+//sem marcar opcao(usando radio button)
+function loadOptions2(filtro, param){
+	loadXMLDoc_2("../Controller/relatorioController.php?action=load&filtro="+filtro+"&param="+param);
+	//box = filtro+1;
+	//marcaOpcao(filtro, param);
+}
+
+
 
 function marcaOpcao(filtro, param){
 
@@ -820,6 +1005,69 @@ function marcaOpcao(filtro, param){
 	//alert("testaaaaaaaaaaando>>> "+id);
 }
 
+function checkAll(box){
+	//var name = $(obj).attr("name");
+	//alert(box);
+	
+	if($("#"+box+" .checkAll").is(':checked')){
+		$("#"+box+" input").attr("checked",true);
+	}else{
+		$("#"+box+" input").attr("checked",false);
+	}
+	
+	
+}
+
+function marcaOpcaoCheckbox(obj){
+
+	//var op = "op"+filtro;
+	//var n = param.replace(" ", "_");
+	//var id = op+"_"+n;
+	
+	var type = $(obj).attr("type");
+
+	var x = $(obj).parent().get(0);
+	
+	if(type == "radio"){
+		//pega o nome do elemento
+		var name = $(obj).attr("name");
+		//alert(name);
+		if($(obj).is(':checked')){
+			//alert("marcado");
+			
+			//se for radio button deve desmarcar os outros antes
+			$("input[name="+name+"]").attr("checked",false);
+			$("input[name="+name+"]").parent().css("color", "#06C");
+			$("input[name="+name+"]").parent().css("background", "#fff");
+
+			//marca o atual
+			$(obj).attr('checked', true);		
+			//$(x).css("color", "#fff");
+			//$(x).css("background", "#333");
+		}else{
+			//alert("desmarcado");
+			//$(x).css("color", "#06C");
+			//$(x).css("background", "#fff");
+		}
+	}
+	if(type == "checkbox"){
+		if($(obj).is(':checked')){
+			//alert("marcado");
+			
+			//$(x).css("color", "#fff");
+			//$(x).css("background", "#333");
+		}else{
+			//alert("desmarcado");
+			//$(x).css("color", "#06C");
+			//$(x).css("background", "#fff");
+		}
+	}
+	
+	
+	
+	
+}
+
 //fazer funcao pra carregar chart com ajax aqui
 
 
@@ -827,7 +1075,7 @@ function marcaOpcao(filtro, param){
 </head>
 
 <body style="background: #fafafa;">
-
+	
 	<?php if(($new == true) || $edit == true){	?>
 	<div id="blackout"></div>
 
@@ -835,19 +1083,31 @@ function marcaOpcao(filtro, param){
 	<?php } ?>
 
 	<div id="wrapper" class="container">
-
 		<?php include_once 'inc/header_inc.php';?>
 		<div id="content">
 			<?php include_once 'inc/menu_admin_inc.php';?>
 
 			<div class="white">
-				<br />
-
-
-				<h3>Relat&oacute;rios</h3>
-
+				<div class="remove_at_print">
+				
+				  <?php 
+				  //mostra o botao de imprimir so qdo tem graficos
+			      if(isset($_SESSION["s_active_chart"]) && $_SESSION["s_active_chart"] != ""){
+			      ?>	
+			      	<br />
+					<button class="botaoGoogleGrey" onclick="imprimirDashboards('full');">Imprimir</button>
+					<button class="botaoGoogleGrey" onclick="imprimirDashboards('chart');">Imprimir Gr&aacute;ficos</button>
+					<button class="botaoGoogleGrey" onclick="imprimirDashboards('table');">Imprimir Tabelas</button>
+					<br />
+			      <?php	
+			      }
+			      ?>
+	
+					<h3>Relat&oacute;rios</h3>
+				</div>
+				
 			<div id="rel_menus">
-			
+			<div style="font-weight: bold;font-size: 16px;color: #777;">Filtros</div>
 			<?php
 				$ip = "189.26.80.175";
 				//echo $_SERVER['REMOTE_ADDR'];
@@ -861,20 +1121,24 @@ function marcaOpcao(filtro, param){
 			<?php
 				}else{
 			?>
-				
+				<form name="loadFilters" action="../Controller/relatorioController.php" method="post">
 				<div id="box_opt1">
-					
-					
+										
 					<div class="box_op">
 						<h4>Avaliador:</h4>
+						<br />
 					
-						<a href="#" id="op1_Aluno" onclick="loadOptions(1, 'Aluno');">Aluno</a>
-						
+						<!--
+						<a href="#" id="op1_Aluno" onclick="loadOptions(1, 'Aluno');">Aluno</a>						
 						<a href="#" id="op1_Professor" onclick="loadOptions(1, 'Professor');">Professor</a>
-						
 						<a href="#" id="op1_Coordenador" onclick="loadOptions(1, 'Coordenador');">Coordenador</a>
-						
 						<a href="#" id="op1_Funcionário" onclick="loadOptions(1, 'Funcionário');">Funcionário</a>
+						-->
+						
+						<label><input type="radio" value="" name="avaliador" id="op1_Aluno" onclick="loadOptions(1, 'Aluno', this);" />Aluno</label>
+						<label><input type="radio" value="" name="avaliador" id="op1_Professor" onclick="loadOptions(1, 'Professor', this);" />Professor</label>
+						<label><input type="radio" value="" name="avaliador" id="op1_Coordenador" onclick="loadOptions(1, 'Coordenador', this);" />Coordenador</label>
+						<label><input type="radio" value="" name="avaliador" id="op1_Funcionário" onclick="loadOptions(1, 'Funcionário', this);" />Funcionário</label>
 					</div>
 					
 				</div>
@@ -892,37 +1156,32 @@ function marcaOpcao(filtro, param){
 					
 				</div>
 				
+				<button type="submit" class="botaoGoogleBlue" value="gerar_grafico" id="gerar_grafico">Gerar Gr&aacute;fico</button>
+				</form>
 				<?php
 				}
 				?>
 				
-				</div><!-- rel menus -->
-
-				<br style="clear: both" />
 				
-
-				<!--         <div id="questionarios"> -->
-				<div id="chart_div"></div>
-				<!-- <div id="chart_div" style="width: '100%'; height: 300px;"></div> -->
-				<h3><?php echo $_SESSION["s_rel_name"]; ?></h3>
-
-				<?php echo $_SESSION["s_active_chart_comment"]; ?>
+				</div><!-- rel menus -->
+				<br /><br /><br />
+				<div class="remove_at_print">
+					<br style="clear: both" />
+					
+	
+					<!--         <div id="questionarios"> -->
+					<div id="chart_div"></div>
+					<!-- <div id="chart_div" style="width: '100%'; height: 300px;"></div> -->
+					<h3><?php //echo $_SESSION["s_rel_name"]; ?></h3>
+	
+					<?php //echo $_SESSION["s_active_chart_comment"]; ?>
+				</div>
+				
 				
 				<div id="dashboard">
-
-					<div id="control1"></div>
-					<div id="control2"></div>
-					<div id="control3"></div>
-					<br />
-					<br />
-					<div id="chart1"></div>
-					<div id="chart2"></div>
-					<div id="chart3"></div>
-
+					
 					</div>
 
-
-					<!--         </div> -->
 					</div><!-- fecha div white -->
 
 					</div>
@@ -930,9 +1189,9 @@ function marcaOpcao(filtro, param){
 			
 			</div>
 <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.load('visualization', '1.1', {packages:['controls']});
-      google.setOnLoadCallback(drawChart);
+      //google.load("visualization", "1", {packages:["corechart"]});
+      //google.load('visualization', '1.1', {packages:['controls']});
+      //google.setOnLoadCallback(drawChart);
 
       //cores para os charts
       // #920300 padrao unicampo
@@ -940,14 +1199,14 @@ function marcaOpcao(filtro, param){
       // #CD0000 vermelho google
       
       <?php 
-      if(isset($_SESSION["s_active_chart"]) && $_SESSION["s_active_chart"] != ""){
+      //if(isset($_SESSION["s_active_chart"]) && $_SESSION["s_active_chart"] != ""){
       	
-      	$chart = $_SESSION["s_active_chart"];
-      	echo $chart;
+      	//$chart = $_SESSION["s_active_chart"];
+      	//echo $chart;
       	
-      }
+      //}
       ?>
       
-    </script>
+</script>
 </body>
 </html>

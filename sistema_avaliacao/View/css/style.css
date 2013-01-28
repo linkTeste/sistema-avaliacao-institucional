@@ -925,7 +925,7 @@ textarea#texto {
 
 /* google buttons style */
 input[type="submit"],button {
-	display: block;
+	/*display: block;*/
 	height: 35px;
 	padding: 0 10px;
 	text-decoration: none;
@@ -1723,4 +1723,26 @@ jquery-checkbox {
 .relatorio_box {
 	width: 250px;
 	float: left;
+}
+
+/*----------------------------------------------------------*/
+.box_op label{
+	display: block;
+	padding: 4px;
+	color: #06C;
+}
+
+.control {
+	background: #fafafa;
+	padding: 5px;
+}
+.dashinfo{ 
+	padding: 5px;
+	color: #333;
+	background: #fafafa;
+	border-top: 2px solid #f3f3f3;
+	margin-top: 35px;
+}
+.dashinfo h3 span{
+	font-weight: bold;
 }

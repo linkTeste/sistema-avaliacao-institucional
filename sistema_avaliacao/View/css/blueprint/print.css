@@ -31,3 +31,15 @@ a:link:after, a:visited:after {content:" (" attr(href) ")";font-size:90%;}
 #rel_menus, #menu{
 	display: none;
 }
+.remove_at_print{
+	display: none;	
+}
+div.white{
+	border: 0px;	
+}
+#header{
+	display: none;
+}
+.dashinfo {
+	margin-top: 0px;
+}
