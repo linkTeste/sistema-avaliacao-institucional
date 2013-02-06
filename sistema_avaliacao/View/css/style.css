@@ -1702,7 +1702,7 @@ jquery-checkbox {
 }
 
 /* comentarios */
-#comentarios {
+/*#comentarios {
 	padding: 15px;
 }
 
@@ -1717,6 +1717,16 @@ jquery-checkbox {
 }
 
 #comentarios .comentario span {
+	font-style: italic;
+}
+*/
+div.comments{
+	padding: 15px;
+}
+
+div.comments p{
+	padding: 15px;
+	border-bottom: 1px solid #f3f3f3;
 	font-style: italic;
 }
 
