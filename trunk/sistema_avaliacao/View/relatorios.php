@@ -1,4 +1,6 @@
 <?php
+
+
 //obs: os requires devem vir antes da sessao
 require '../lumine/Lumine.php';
 require '../lumine-conf.php';
@@ -783,16 +785,25 @@ box-shadow: 1px 1px 2px #888888;
       }
 
       function drawConteiners(param){
-          $('#dashboard').append('<div id="dashboard_'+param+'" class="dash"><div id="dashinfo_'+param+'" class="dashinfo"></div><div id="control1_'+param+'" class="control"></div><div id="control2_'+param+'" class="control"></div><br /><br /><div id="chart1_'+param+'" class="chart1"></div><div id="chart2_'+param+'" class="chart2"></div></div>');
+          $('#dashboard').append('<div id="dashboard_'+param+'" class="dash"><div id="dashinfo_'+param+'" class="dashinfo"></div><div id="control1_'+param+'" class="control"></div><div id="control2_'+param+'" class="control"></div><br /><br /><div id="chart1_'+param+'" class="chart1"></div><div id="chart2_'+param+'" class="chart2"></div><div id="comments_'+param+'" class="comments"></div></div>');
       }
 
       function drawInfo(param, info){
           var div = "#dashinfo_"+param;
           //alert(param);
-          $(div).html(info);
+          $(div).html(info);                    
+      }
 
-          //
-                    
+      function drawComments(param, comments){
+          var div = "#comments_"+param;
+          //alert(param);
+          if(comments == ""){
+        	  //$(div).hide();
+        	  $(div).html("<h3>N&atilde;o h&aacute; Coment&aacute;rios</h3>");
+          }else{
+        	  $(div).html("<h3>Coment&aacute;rios</h3>"+comments);
+          }
+                              
       }
 
       function imprimirDashboards(tipo){
@@ -801,15 +812,19 @@ box-shadow: 1px 1px 2px #888888;
 						
 			//impressao completa tabelas+graficos
 			if(tipo == "full"){
-				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: block;}div.chart2{display: block;}</style>');
+				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: block;}div.chart2{display: block;}div.comments{display: block;}</style>');
 			}
 			//impressao de tabelas
 			if(tipo == "table"){
-				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: none;}div.chart2{display: block;}</style>');
+				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: none;}div.chart2{display: block;}div.comments{display: none;}</style>');
 			}
 			//impressao de graficos
 			if(tipo == "chart"){
-				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: block;}div.chart2{display: none;}</style>');
+				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: block;}div.chart2{display: none;}div.comments{display: none;}</style>');
+			}
+			//impressao de comentarios
+			if(tipo == "comment"){
+				$('head').append('<style media="print">div.dash{page-break-after: always;}div.control{display: none;}div.chart1{display: none;}div.chart2{display: none;}div.comments{display: block;}</style>');
 			}
 			
     	  });
@@ -1098,6 +1113,7 @@ function marcaOpcaoCheckbox(obj){
 					<button class="botaoGoogleGrey" onclick="imprimirDashboards('full');">Imprimir</button>
 					<button class="botaoGoogleGrey" onclick="imprimirDashboards('chart');">Imprimir Gr&aacute;ficos</button>
 					<button class="botaoGoogleGrey" onclick="imprimirDashboards('table');">Imprimir Tabelas</button>
+					<button class="botaoGoogleGrey" onclick="imprimirDashboards('comment');">Imprimir Coment&aacute;rios</button>
 					<br />
 			      <?php	
 			      }
