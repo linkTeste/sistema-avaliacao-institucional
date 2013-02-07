@@ -1967,7 +1967,10 @@ function relatorioDisciplina2() {
 		foreach ($curso as $c => $value){
 			
 			//aqui chama a funcao que mostra os comentarios
-			$comments = relatorioComentarios($tipo, $curso[$c]);
+			$comments = relatorioComentarios($tipo_avaliacao, $subtipo_avaliacao);
+			
+			//aqui chama a funcao que mostra os comentarios
+			//$comments = relatorioComentarios2($tipo_avaliacao, $subtipo_avaliacao, $curso[$c], $semestre[$s]);
 			
 			$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."</h3>";
 		
@@ -4039,28 +4042,27 @@ function relatorioDisciplina2() {
 	}
 	
 	
-	function relatorioComentarios($tipo, $itemAvaliado) {
+	function relatorioComentarios($tipo, $subtipo) {
+		$periodoLetivo = "1/2012";
+		
+		//conversao de caracteres
+		if(substr($subtipo, 0, 4) == "Lab_"){
+			$subtipo = utf8_decode($subtipo);
+		}
+		
 		$comentarios = new Comentarios();
 		$comentarios->tipoAvaliacao = $tipo;
-		$comentarios->itemAvaliado = $itemAvaliado;
+		$comentarios->itemAvaliado = $subtipo;
 		$comentarios->find();
 		
 				
 		$html = "";
 		$temp = 0;
 		while ($comentarios->fetch()) {
-			//$html .= "<div class='comentario'>";
-			//$html .= "<p>".$comentarios->getComentario()."</p>";
-			//$html .= "</div>";
-			
-			//$html .= "<div class='comentario'><p>".utf8_decode($comentarios->getComentario())."</p></div>";
-			//$html .= "<p>".trim($comentarios->getComentario())."</p>";
 			$html .= "<p>".trim($comentarios->getComentario())."</p>";
 			
 			//remove line breaks
 			$html = str_replace (array("\r\n", "\n", "\r"), ' ', $html);			
-			
-			//echo $html;
 			
 			$temp++;
 		}
@@ -4146,13 +4148,8 @@ function relatorioDisciplina2() {
 			}
 			
 						
-		}else{
-			
 		}
-		
-	
-	
-		
+			
 		
 		return $html;
 	}
