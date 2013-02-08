@@ -462,13 +462,16 @@ function avaliacaoController() {
 			//define o tipo da avaliacao(aluno, professor, cooordenador)
 			//tipo avaliador
 			$comentario->setTipoAvaliacao($tipo);
+			
+			$comentario->setSubtipoAvaliacao($subtipo);
 
-			//define o objeto da avaliaï¿½ï¿½o
+			//define o objeto da avaliação
 			$comentario->setItemAvaliado($item_avaliado);
 
 			$comentario->save();
 
 		}
+		
 			
 			
 		//zera o array de questoes respondidas da sessao
