@@ -1967,7 +1967,12 @@ function relatorioDisciplina2() {
 		foreach ($curso as $c => $value){
 			
 			//aqui chama a funcao que mostra os comentarios
-			$comments = relatorioComentarios($tipo_avaliacao, $subtipo_avaliacao);
+			if($tipo_avaliacao == "Professor"){
+				$comments = relatorioComentarios2($tipo_avaliacao, $subtipo_avaliacao, $curso[$c], "Todos");		
+			}else{
+				$comments = relatorioComentarios($tipo_avaliacao, $subtipo_avaliacao);
+			}
+			
 			
 			//aqui chama a funcao que mostra os comentarios
 			//$comments = relatorioComentarios2($tipo_avaliacao, $subtipo_avaliacao, $curso[$c], $semestre[$s]);
@@ -2300,6 +2305,16 @@ function relatorioDisciplina2() {
 		$all_chart = "";
 		foreach ($curso as $c => $value){
 						
+			//aqui chama a funcao que mostra os comentarios
+			if($tipo == "Professor"){
+				$comments = relatorioComentarios2($tipo_avaliacao, $subtipo_avaliacao, $curso[$c], "Todos");
+			}
+			if($tipo == "Coordenador"){
+				$comments = relatorioComentarios($tipo_avaliacao, $subtipo_avaliacao);
+			}
+			
+			
+			
 			$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."</h3>";
 		
 		
@@ -2437,6 +2452,7 @@ function relatorioDisciplina2() {
 								$(document).ready(function() {
 									drawConteiners(".$conteiner_id.");
 									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									drawComments(".$conteiner_id.",'".$comments."');
 									qtd++;
 								});
 						
@@ -3767,11 +3783,8 @@ function relatorioDisciplina2() {
 		$all_chart = "";
 		foreach ($curso as $c => $value){
 			
-			//$rel_name = "Avaliador: ".$tipo_avaliacao;
-			//$rel_name .= "<br/>Questionário: ".$subtipo_avaliacao;
-			//$rel_name .= "<br/>Curso: ".utf8_encode($curso_escolhido);
-		
-			//$_SESSION["s_rel_name"] = $rel_name;
+			//aqui chama a funcao que mostra os comentarios
+			$comments = relatorioComentarios2($tipo_avaliacao, $subtipo_avaliacao, $curso[$c], "Todos");
 			
 			$dashinfo = "<h3><span>Avaliador:</span> ".$tipo_avaliacao."<br/><span>Questionário:</span> ".$subtipo_avaliacao."<br/><span>Curso:</span> ".$curso[$c]."</h3>";
 		
@@ -3902,6 +3915,7 @@ function relatorioDisciplina2() {
 								$(document).ready(function() {
 									drawConteiners(".$conteiner_id.");
 									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									drawComments(".$conteiner_id.",'".$comments."');
 									qtd++;
 								});
 						
@@ -4052,7 +4066,7 @@ function relatorioDisciplina2() {
 		
 		$comentarios = new Comentarios();
 		$comentarios->tipoAvaliacao = $tipo;
-		$comentarios->itemAvaliado = $subtipo;
+		$comentarios->subtipoAvaliacao = $subtipo;
 		$comentarios->find();
 		
 				
@@ -4148,6 +4162,66 @@ function relatorioDisciplina2() {
 			}
 			
 						
+		}
+		
+		if($tipo == "Professor"){
+		
+			if($curso == "Todos"){
+		
+			}else{
+				
+				//pega as turmas e agrupa pelo curso
+				$t = new Turma();
+				$t->curso = utf8_decode($curso);
+				//$t->groupBy("curso");
+				$t->find();
+				
+
+				$str_professores = "";
+				
+				$id_coordenador;
+					
+				$p = 0;
+				while($t->fetch()){
+					if($p == 0){
+						$str_professores .= "'".$t->professorId."'";
+					}else{
+						$str_professores .= ", '".$t->professorId."'";
+					}
+					
+					$id_coordenador = $t->coordenadorId;
+					
+					$p++;		
+				}
+				
+				//echo "Professores ".$str_professores;
+				//exit;
+					
+				$comentarios = new Comentarios();
+				$comentarios->tipoAvaliacao = $tipo;
+				$comentarios->subtipoAvaliacao = $subtipo;
+				
+				
+				if($subtipo == "Coordenador"){
+					$comentarios->where("avaliador in(".$str_professores.") AND item_avaliado = '".$id_coordenador."'");
+				}else{
+					$comentarios->where("avaliador in(".$str_professores.")");
+				}
+				
+				$comentarios->find();
+					
+				//print_r($array_alunos);
+				//exit;
+		
+				$html = "";
+				while ($comentarios->fetch()) {
+					$html .= "<p>".trim($comentarios->getComentario())."</p>";
+					//remove line breaks
+					$html = str_replace (array("\r\n", "\n", "\r"), ' ', $html);
+				}
+			}
+				
+		
 		}
 			
 		
