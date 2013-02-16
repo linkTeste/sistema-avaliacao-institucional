@@ -1286,6 +1286,37 @@ thead th {
 	border-left: 1px solid #f3f3f3;
 }
 
+/*menu drop down*/
+#menu ul li ul {
+    display: none;
+    float: none;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    border: solid 1px #000;
+}
+#menu ul li:hover > ul {
+    display: block;
+}
+#menu ul li ul li,
+#menu ul li ul li a {
+    float: none;
+    background: #444;
+    color: #CCC;
+}
+#menu ul li ul li a:hover {
+    float: none;
+    background: #FFF;
+    color: #666;
+}
+#menu ul li ul li {
+    margin: 0;
+}
+#menu ul li ul li ul {
+    left: 100%;
+    top: 0;
+}
+
 #info_user {
 	position: absolute;
 	height: 35px;

@@ -84,6 +84,9 @@ function avaliacaoController() {
 		$action = $_GET["action"];
 	}
  
+	if(isset($_GET["relatorio_id"])){
+		$relatorio_id = $_GET["relatorio_id"];
+	}
 	if(isset($_POST["relatorio_id"])){
 		$relatorio_id = $_POST["relatorio_id"];
 	}
@@ -184,6 +187,24 @@ function avaliacaoController() {
 		$c = $_POST["curso"];
 		$relatorio = relatorioAutoAvaliacao($t, $c);
 	}
+	if($relatorio_id == 12){
+		$t = $_POST["tipo"];
+		//por enquanto get
+		$t = $_GET["tipo"];
+		
+		$c = $_POST["curso"];
+		$relatorio = avaliadoresPendentes($t);
+		$_SESSION["s_active_chart"] = $relatorio;
+	}
+	if($relatorio_id == 13){
+		$t = $_POST["tipo"];
+		//por enquanto get
+		$t = $_GET["tipo"];
+	
+		$relatorio = avaliadoresPendentes2($t);
+		$_SESSION["s_active_chart"] = $relatorio;
+	}
+	
 	
 	if($action == "load_"){
 		$avaliador = $_POST["avaliador"];
@@ -822,9 +843,14 @@ function avaliacaoController() {
  * @since 07/08/2012 13:11:06
  * insert a description here
  **/
-function avaliadoresPendentes($param) {
+function avaliadoresPendentes($tipoAvaliacao, $curso = null, $semestre = null) {
 	$qtdTotal = 0;
 	$qtdAvaliaram = 0;
+	
+	$acuracia = 1;
+	
+	//pegar processoId
+	$processoId = 2;
 	
 	//possibilitar filtro por curso e semestre
 	
@@ -833,42 +859,383 @@ function avaliadoresPendentes($param) {
 	
 	
 	//verifica o tipo do avaliador
-	if($param == "Aluno"){
+	if($tipoAvaliacao == "Aluno"){
 		$alunos = new Aluno();
-    	$alunos->alias('alunos');
+		$alunos->sitAcademica = 1;
+		    	
+		$qtdTotal = $alunos->find();
+    	$qtdAvaliaram = 0;
     	
-    	$turma = new Turma();
-    	$alunos->join($turma, 'INNER', 'turma');
+    	//echo "QTD Alunos: ".$qtdTotal;
+    	//echo "<br />";
     	
-    	$thaa = new TurmaHasAluno();
-    	    	
-    	$alunos->join($thaa,'INNER','thaa');    	
-    	$alunos->select("alunos.nome, turma.periodoLetivo, alunos.sitAcademica, alunos.ra, count(thaa.avaliado) as totalA, count(thaa.avaliado is null) as total");
     	
-    	$alunos->where("turma.periodoLetivo = '".$periodo_atual."' and alunos.sitAcademica=1
-    	                                                            and thaa.turmaIdTurma = turma.idTurma ".
-    			$where_curso." ".$where_turma." ".$where_semestre);
+    	//
+    	while($alunos->fetch()){
+    		//conta qtos professores/disciplina o aluno tem
+    		$professores_do_aluno = new Turma();
+    		$tha = new TurmaHasAluno();
+    		$professores_do_aluno->join($tha,'INNER','tha');
+    		
+    		$professores_do_aluno->select("tha.alunoRa, tha.turmaIdTurma");
+    		
+    		$professores_do_aluno->where("tha.alunoRa = '".$alunos->getRa()."'");
+    		$professores_do_aluno->group("tha.turmaIdTurma");
+    		$qtd_professores_do_aluno = $professores_do_aluno->find();
+    		//echo "professores do aluno ".$qtd_professores_do_aluno."<br />";
+    		$qtd_professores_do_aluno_avaliados = 0;
+    		
+    		//conta qtos laboratorios o aluno tem
+    		//terminar depois
+    		/*
+    		$labs_do_aluno = new Turma();
+    		$thl = new TurmaHasLaboratorio();
+    		$labs_do_aluno->join($tha,'INNER','tha');
+    		
+    		$labs_do_aluno->select("tha.alunoRa, tha.turmaIdTurma");
+    		
+    		$labs_do_aluno->where("tha.alunoRa = '".$alunos->getRa()."'");
+    		$labs_do_aluno->group("thl.turmaIdTurma");
+    		$qtd_labs_do_aluno = $labs_do_aluno->find();    		
+    		*/
+    		
+    			
+    		$avaliou_instituicao = false;
+    		$avaliou_curso = false;
+    		$avaliou_professores = false;
+    		$avaliou_labs = false;
+    			
+    		$avaliacoes = new Avaliacao();
+    		$avaliacoes->tipoAvaliacao = $tipoAvaliacao;
+    		$avaliacoes->processoAvaliacaoId = $processoId;
+    		$avaliacoes->avaliador = $alunos->getRa();
+    		$avaliacoes->group("itemAvaliado");
+    		$avaliacoes->find();
+    			
+    		while($avaliacoes->fetch()){
+    			//adicionar tbm os labs aqui
+    			
+    			switch($avaliacoes->subtipoAvaliacao){
+    				case "Instituição":{
+    					$avaliou_instituicao = true;
+    					break;
+    				}
+    				case "Professor/Disciplina":{
+    					//verifica se avaliou todos os professores
+    					$qtd_professores_do_aluno_avaliados++;
+    					if($qtd_professores_do_aluno_avaliados >= ($qtd_professores_do_aluno * $acuracia)){
+    						$avaliou_professores = true;
+    					}
+    					break;
+    				}
+    				case "Curso/Coordenador":{
+    					$avaliou_curso = true;
+    					break;
+    				}
+    			}
+    		}
+    			
+    		//if avaliou todos os tipos de avaliacao então marca como avaliado
+    		if($avaliou_instituicao && $avaliou_professores && $avaliou_curso){
+    			$qtdAvaliaram++;
+    		}
+    			
+    			
+    			
+    	}
     	
-    	$alunos->group("alunos.ra");
-    	$alunos->order("alunos.nome");
-    	$qtd_alunos = $alunos->find();
+    	//echo "QTD Alunos q avaliaram: ".$qtdAvaliaram;
+    	//echo "<br />";
     	
-    	echo "QTD Alunos: ".$qtd_alunos;
+    	//remover depois
+    	$curso[] = "Psicologia";
+    	$semestre[] = 1;
+    	//
     	
+    	//$divs = sizeof($curso)*sizeof($semestre);
+    	$conteiner_id = 0;
+    	$all_chart = "";
+    	foreach ($curso as $c => $value){
+    		foreach ($semestre as $s => $value){
+    			$dashinfo = "Participação dos Alunos";
+    			
+    			//cria os conteiners pra conter os graficos
+    			//drawChart".$conteiner_id."();
+    			$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+  
+								});
+  
+							";
+    			
+    			
+    			$chart .= "function drawChart".$conteiner_id."(){
+   
+						
+								
+						var data_".$conteiner_id." = google.visualization.arrayToDataTable([
+    					['Classificacao', 'Qtd'],
+    					['Avaliaram',".$qtdAvaliaram."],
+    					['Pendentes',".($qtdTotal - $qtdAvaliaram)."]
+    							]);
+    					";
+    			
+    			// Define a table
+    			$chart .= "var chart = new google.visualization.PieChart(document.getElementById('chart1_".$conteiner_id."'));
+    			            chart.draw(data_".$conteiner_id.", 
+    			            {
+    			            		'width': '100%',
+    			            		'height': '400',
+    			            		'is3D': true,
+    			            		'colors':['#82CCB5','#F8A792']
+    						});
+    			            		
+    			            		}
+    			            "; 			
+    			//'colors':['#82CCB5','#B6D884','#FFED81','#FECD7E','#F8A792','#6BBCE9'],
+    			
+    			$conteiner_id += 1;
+    			$all_chart .= $chart;
+    	 
+    		}//fecha foreach semestre
+    	}//fecha foreach curso
+    	
+    	return $all_chart;    	
+    	
+    	
+	}//fecha if
+	
+}
+
+function avaliadoresPendentes2($tipoAvaliacao) {
+	$acuracia = 1;
+	
+		
+	//pegar processoId
+	$processoId = 2;
+	
+	//possibilitar filtro por curso e semestre
+	
+	if($tipoAvaliacao == "Professor"){
+		$professores = new Professor();		
+		$qtdTotal = $professores->find();
+		$qtdAvaliaram = 0;
+		 
+		$dashinfo = "Participação dos Professores";
+		
+		//echo "QTD Professores: ".$qtdTotal;
+		//echo "<br />";
+		
+		while($professores->fetch()){
+			//conta em qtas coordenacoes o professor esta
+			$coordenacoes = new Turma();
+			$coordenacoes->professorId = $professores->getId();
+			$coordenacoes->group("coordenadorId");
+			$qtd_coordenacoes = $coordenacoes->find();
+			//echo "coordenadores ".$qtd_coordenacoes."<br />";
+			$qtd_coordenacoes_avaliados = 0;
+			
+			$avaliou_instituicao = false;
+			$avaliou_auto = false;
+			$avaliou_coord = false;
+			
+			$avaliacoes = new Avaliacao();
+			$avaliacoes->tipoAvaliacao = $tipoAvaliacao;
+			$avaliacoes->processoAvaliacaoId = $processoId;
+			$avaliacoes->avaliador = $professores->getId();
+			$avaliacoes->find();
+			
+			while($avaliacoes->fetch()){
+				switch($avaliacoes->subtipoAvaliacao){
+					case "Instituição":{
+						$avaliou_instituicao = true;
+						break;
+					}
+					case "Auto-avaliação-professor":{
+						$avaliou_auto = true;
+						break;
+					}
+					case "Coordenador":{
+						//verificar se o professor esta em mais de uma coordenacao
+						$qtd_coordenacoes_avaliados++;
+						if($qtd_coordenacoes_avaliados >= ($qtd_coordenacoes * $acuracia)){
+							$avaliou_coord = true;
+						}
+						break;
+					}
+				}				
+			}
+			
+			//if avaliou todos os tipos de avaliacao então marca como avaliado
+			if($avaliou_instituicao && $avaliou_auto && $avaliou_coord){
+				$qtdAvaliaram++;
+			}
+			
+			
+		}
+		
+		//echo "QTD Professores q avaliaram: ".$qtdAvaliaram;
+		//echo "<br />";
+		 
+	}//fecha if
+	
+	if($tipoAvaliacao == "Coordenador"){
+		$coordenadores = new Professor();
+		$coordenadores->iscoordenador = true;
+		
+		$qtdTotal = $coordenadores->find();
+		$qtdAvaliaram = 0;
+		
+		$dashinfo = "Participação dos Coordenadores";
+			
+		//echo "QTD Coordenadores: ".$qtd_coordenadores;
+		//echo "<br />";
+	
+		while($coordenadores->fetch()){
+			//conta os professores da coordenacao
+			$professores_coordenacao = new Turma();
+			$professores_coordenacao->coordenadorId = $coordenadores->getId();
+			$professores_coordenacao->group("professorId");			
+			$qtd_professores_coordenacao = $professores_coordenacao->find();
+			//echo "professores da coord ".$qtd_professores_coordenacao."<br />";
+			$qtd_professores_coordenacao_avaliados = 0;
+			
+			$avaliou_instituicao = false;
+			$avaliou_auto = false;
+			$avaliou_docente = false;
+				
+			$avaliacoes = new Avaliacao();
+			$avaliacoes->tipoAvaliacao = $tipoAvaliacao;
+			$avaliacoes->processoAvaliacaoId = $processoId;
+			$avaliacoes->avaliador = $coordenadores->getId();
+			$avaliacoes->group("itemAvaliado");
+			$avaliacoes->find();
+				
+			while($avaliacoes->fetch()){
+				switch($avaliacoes->getSubtipoAvaliacao()){
+					case "Instituição":{
+						$avaliou_instituicao = true;
+						break;
+					}
+					case "Auto-avaliação-coordenador":{
+						$avaliou_auto = true;
+						break;
+					}
+					case "Docente":{
+						$qtd_professores_coordenacao_avaliados++;
+						if($qtd_professores_coordenacao_avaliados >= ($qtd_professores_coordenacao * $acuracia)){
+							$avaliou_docente = true;
+						}
+						break;
+					}
+				}
+			}
+			//echo "professores da coord avaliados".$qtd_professores_coordenacao_avaliados."<br />";
+			
+			//if avaliou todos os tipos de avaliacao então marca como avaliado
+			if($avaliou_instituicao && $avaliou_auto && $avaliou_docente){
+				$qtdAvaliaram++;
+			}
+				
+		}
+	
+		//echo "QTD Coordenadores q avaliaram: ".$qtd_coordenadores_avaliaram;
+		//echo "<br />";
+				
+	}//fecha if
+	
+	if($tipoAvaliacao == "Funcionário"){
+		$funcionarios = new Funcionario();
+	
+		$qtdTotal = $funcionarios->find();
+		$qtdAvaliaram = 0;
+	
+		$dashinfo = "Participação dos Funcionários";
+	
+		while($funcionarios->fetch()){
+			$avaliou_instituicao = false;
+			$avaliou_auto = false;
+			$avaliou_docente = false;
+	
+			$avaliacoes = new Avaliacao();
+			$avaliacoes->tipoAvaliacao = $tipoAvaliacao;
+			$avaliacoes->processoAvaliacaoId = $processoId;
+			$avaliacoes->avaliador = $funcionarios->getId();
+			$avaliacoes->group("itemAvaliado");
+			$avaliacoes->find();
+	
+			while($avaliacoes->fetch()){
+				switch($avaliacoes->getSubtipoAvaliacao()){
+					case "Instituição":{
+						$avaliou_instituicao = true;
+						break;
+					}
+				}
+			}
+							
+			//if avaliou todos os tipos de avaliacao então marca como avaliado
+			if($avaliou_instituicao){
+				$qtdAvaliaram++;
+			}
+	
+		}
+	
 	}
 	
-	//concatenar com turma has aluno pra ver qtos alunos tem na tabela
+	$conteiner_id = 0;
+	$all_chart = "";
+		
+	//cria os conteiners pra conter os graficos
+	$chart = "
+								$(document).ready(function() {
+									drawConteiners(".$conteiner_id.");
+									drawInfo(".$conteiner_id.",'".$dashinfo."');
+									qtd++;
+	
+								});
+	
+							";
+		
+		
+	$chart .= "function drawChart".$conteiner_id."(){
 	
 	
-	//verifica na tabela correspondente ao avaliador a qtd de avaliadores
 	
-	//verifica na tabela avaliacoes a qtd de avaliadores q avaliaram
+						var data_".$conteiner_id." = google.visualization.arrayToDataTable([
+    					['Classificacao', 'Qtd'],
+    					['Avaliaram',".$qtdAvaliaram."],
+    					['Pendentes',".($qtdTotal - $qtdAvaliaram)."]
+    							]);
+    					";
+		
+	// Define a table
+	$chart .= "var chart = new google.visualization.PieChart(document.getElementById('chart1_".$conteiner_id."'));
+    			            chart.draw(data_".$conteiner_id.",
+    			            {
+    			            		'width': '100%',
+    			            		'height': '400',
+    			            		'is3D': true,
+    			            		'colors':['#82CCB5','#F8A792']
+    						});
+    		
+    			            		}
+    			            ";
+		
+		
+	$conteiner_id += 1;
+	$all_chart .= $chart;
 	
-	//
+		
+	return $all_chart;
 	
 	
 
 }
+
+
 
 /**
  * @name relatorioAcessos
