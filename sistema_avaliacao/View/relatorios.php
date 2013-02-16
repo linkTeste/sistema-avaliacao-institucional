@@ -1155,7 +1155,8 @@ function marcaOpcaoCheckbox(obj){
 						<label><input type="radio" value="" name="avaliador" id="op1_Professor" onclick="loadOptions(1, 'Professor', this);" />Professor</label>
 						<label><input type="radio" value="" name="avaliador" id="op1_Coordenador" onclick="loadOptions(1, 'Coordenador', this);" />Coordenador</label>
 						<label><input type="radio" value="" name="avaliador" id="op1_Funcionário" onclick="loadOptions(1, 'Funcionário', this);" />Funcionário</label>
-					</div>
+					</div>			
+					
 					
 				</div>
 				
@@ -1178,19 +1179,26 @@ function marcaOpcaoCheckbox(obj){
 				}
 				?>
 				
-				
 				</div><!-- rel menus -->
-				<br /><br /><br />
+				<br />
+				
+				<br /><br />
 				<div class="remove_at_print">
 					<br style="clear: both" />
 					
-	
-					<!--         <div id="questionarios"> -->
+					<br />
+					<br />
+					<br />
+					<a href="../Controller/relatorioController.php?relatorio_id=12&tipo=Aluno">Participa&ccedil;&atilde;o dos Alunos</a><br />
+					
+					<a href="../Controller/relatorioController.php?relatorio_id=13&tipo=Professor">Participa&ccedil;&atilde;o dos Professores</a><br />
+					
+					<a href="../Controller/relatorioController.php?relatorio_id=13&tipo=Coordenador">Participa&ccedil;&atilde;o dos Coordenadores</a><br />
+					
+					<a href="../Controller/relatorioController.php?relatorio_id=13&tipo=Funcionário">Participa&ccedil;&atilde;o dos Funcion&aacute;rios</a>
+					
 					<div id="chart_div"></div>
-					<!-- <div id="chart_div" style="width: '100%'; height: 300px;"></div> -->
-					<h3><?php //echo $_SESSION["s_rel_name"]; ?></h3>
-	
-					<?php //echo $_SESSION["s_active_chart_comment"]; ?>
+					
 				</div>
 				
 				
