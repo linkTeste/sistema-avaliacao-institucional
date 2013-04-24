@@ -1,0 +1,37 @@
+@CHARSET "ISO-8859-1";
+
+/*
+* Theme: Red
+* Author: Fabio Cezar Baía
+* Date: 18/07/2012 17:31
+*/
+#header_client_logo {
+	background: url(images/header_logo_960605.png) no-repeat;
+	height: 109px;
+	width: 328px;
+	margin: 0;
+}
+
+#menu ul li a:hover, #menu ul li a.active {
+	color: #960605;
+}
+
+#menu ul li a.home_link {
+	border-left: 1px solid #f3f3f3;
+}
+
+/*links normais*/
+a.link2:hover {
+	text-decoration: underline;
+	color: #960605;
+}
+
+/*---- PAGINAÇÃO -----*/
+#paginacao span {
+	background: #960605;
+	color: white;
+}
+
+#paginacao a:hover {
+	color: #960605;
+}

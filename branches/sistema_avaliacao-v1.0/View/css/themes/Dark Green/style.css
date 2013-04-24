@@ -1,0 +1,27 @@
+@CHARSET "ISO-8859-1";
+
+/*
+* Theme: Dark Green
+* Author: Fabio Cezar Baía
+* Date: 18/07/2012 17:56
+*/
+#header_client_logo {
+	background: url(images/header_logo_008c69.png) no-repeat;
+	height: 109px;
+	width: 328px;
+	margin: 0;
+}
+
+#menu ul li a:hover, #menu ul li a.active {
+	color: #008c69;
+}
+
+#menu ul li a.home_link {
+	border-left: 1px solid #f3f3f3;
+}
+
+/*links normais*/
+a.link2:hover {
+	text-decoration: underline;
+	color: #008c69;
+}

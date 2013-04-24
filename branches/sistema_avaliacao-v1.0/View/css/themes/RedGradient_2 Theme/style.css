@@ -1,0 +1,39 @@
+@CHARSET "ISO-8859-1";
+
+/*
+* Theme: RedGradient-2
+* Author: Fabio Cezar Baía
+* Date: 02/08/2012 22:13
+*/
+#header_client_logo {
+	background: url(images/header_logo.png) no-repeat;
+	height: 109px;
+	width: 328px;
+	margin: 0;
+}
+
+#menu ul li a:hover{
+	color: #DA0028;
+}
+#menu ul li a.active {
+	color: #820b1e;
+}
+#menu ul li a.home_link {
+	border-left: 1px solid #f3f3f3;
+}
+
+/*links normais*/
+a.link2:hover {
+	text-decoration: underline;
+	color: #820b1e;
+}
+
+/*---- PAGINAÇÃO -----*/
+#paginacao span {
+	background: #820b1e;
+	color: white;
+}
+
+#paginacao a:hover {
+	color: #820b1e;
+}
