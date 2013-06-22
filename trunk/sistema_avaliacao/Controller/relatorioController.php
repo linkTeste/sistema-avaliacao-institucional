@@ -1011,7 +1011,7 @@ function avaliadoresPendentes($tipoAvaliacao, $curso = null, $semestre = null) {
 }
 
 function avaliadoresPendentes2($tipoAvaliacao) {
-	$acuracia = 1;
+	$acuracia = 0.7;
 	
 		
 	//pegar processoId
