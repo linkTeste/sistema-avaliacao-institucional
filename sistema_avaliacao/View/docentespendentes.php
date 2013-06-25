@@ -6,9 +6,9 @@ require '../lumine-conf.php';
 //inicializa a configuracao
 $cfg = new Lumine_Configuration( $lumineConfig );
 
-require_once '../system/application/models/dao/Aluno.php';
 require_once '../system/application/models/dao/Turma.php';
-require_once '../system/application/models/dao/TurmaHasAluno.php';
+require_once '../system/application/models/dao/TurmaHasLaboratorio.php';
+require_once '../system/application/models/dao/Laboratorio.php';
 require_once '../system/application/models/dao/Professor.php';
 require_once '../system/application/models/dao/Avaliacao.php';
 require_once '../system/application/models/dao/ProcessoAvaliacao.php';
@@ -149,101 +149,7 @@ google.load("visualization", "1", {
     	}
     	
     	?>
-    	<form action="" method="post" style="float: right;">
-    	<?php
-    		if(sizeof($cursos_coordenados) >1) {   	
-    	?>
-    	<div class="selectFiltro botaoGoogleGrey">
-    	<select name="curso-selecionado">
-    		<option value="">Escolha o curso</option>
-    		<?php 
-    		foreach ($cursos_coordenados as $curso) {
-    			//select serie from turma where (curso="Servi�o Social"  or curso = "Psicologia") and periodo_letivo = '2/2011' group by serie ;
-    			echo "<option value='".utf8_encode($curso)."'>".utf8_encode($curso)."</option>";
-    		}
-    		
-    		?>
-    	</select>
-    	</div>
     	
-    	
-    		<?php
-    		
-			}//fecha if(sizeof)
-    		
-    		$turmaA = new Turma();
-    		$turmaA->alias("turma");
-    		$turmaA->select("turma.curso, turma.coordenadorId, turma.turma");
-    		$turmaA->where("turma.curso = '".$cursos_coordenados[0]."'");
-    		//$turmaA->group("turma.curso");
-    		$turmaA->group("turma.turma");
-    		$qtdTurmas = $turmaA->find();
-    		
-    		if($qtdTurmas >1){
-    		?>
-    		
-    	<div class="selectFiltro botaoGoogleGrey">
-    	<select name="turma-selecionada">
-    	<option value="">Escolha a turma</option>
-    		
-    		<?php
-    		while($turmaA->fetch()) {
-				if($turmaA->turma != ""){
-    		?>
-    		<option value="<?php echo $turmaA->turma;?>"><?php echo $turmaA->turma;?></option>
-    		<?php
-				}//fecha if
-			}//fecha while
-			?>
-    	</select>
-    	</div>
-    	<?php 
-    		}//fecha if
-    	?>
-    	
-    	
-    	
-    		<?php
-    		
-    		$turmaA = new Turma();
-    		$turmaA->alias("turma");
-    		$turmaA->select("turma.curso, turma.coordenadorId, turma.turma, turma.serie");
-    		$turmaA->where("turma.curso = '".$cursos_coordenados[0]."'");
-    		//$turmaA->group("turma.curso");
-    		$turmaA->group("turma.serie");
-    		$qtdSemestres = $turmaA->find();
-    		
-    		if($qtdSemestres >1){
-    		?>    		
-    	<div class="selectFiltro botaoGoogleGrey">
-    	<select name="semestre-selecionado">
-    	<option value="">Escolha o semestre</option>
-    		
-    		<?php
-    		 		
-    		while($turmaA->fetch()) {
-    			$value = explode("º", utf8_encode($turmaA->serie));
-    			if($turmaA->serie != ""){
-    		?>
-    		<option value="<?php echo $value[0];?>"><?php echo utf8_encode($turmaA->serie);?></option>
-    		<?php 
-				}//fecha if
-    		}//fecha while
-			?>
-
-    	</select>
-    	</div>
-    	<?php 
-    		}//fecha if
-    	?>
-    	
-    	<button class="botaoGoogleBlue float-right" type="submit" name="enviar" >Carregar</button>
-    	
-    	</form>
-    	<br />
-    	<br />
-    	<br />
-    	<br />
     	<?php
     	
     	$qtd_pendente = 0;
@@ -259,19 +165,18 @@ google.load("visualization", "1", {
     	$professor->select("professor.nome, turma.periodoLetivo, professor.id");
 
     	
-    	$professor->where("turma.periodoLetivo = '".$periodo_atual."'".
+    	$professor->where("turma.periodoLetivo = '".$periodo_atual."' AND professor.id != '".$usuario_logado->getId()."'".
     		$where_curso." ".$where_turma." ".$where_semestre);
     	    	
-    	//teste
-//     	$alunos->where("turma.periodoLetivo = '".$periodo_atual."' and alunos.sitAcademica=1 and alunos.ra");
+
     	$professor->group("professor.id");
     	$professor->order("professor.nome");
     	$qtd_professores = $professor->find();
     	
     	
     	
-     	echo "TOTAL DE PROFESSORES ATIVOS DO PERIODO ATUAL: ".$qtd_professores;
-     	echo "<br />";
+     	//echo "TOTAL DE PROFESSORES ATIVOS DO PERIODO ATUAL: ".$qtd_professores;
+     	//echo "<br />";
 
     	?>
     	
@@ -291,93 +196,133 @@ google.load("visualization", "1", {
     		
     	<div id="accordion">
 
-    	<?php     	
+    	<?php
+    	  	
+    	
     	while( $professor->fetch() ) {
+    		$listaAvaliacoes = array();
     		
-    		$id_aluno = $professor->id;
-    		//$cur = $alunos->curso;
+    		$id_professor = $professor->id;
     		
-    		//$total = $alunos->total;
-    		//$totalA = $alunos->totalA;
+    		//verificar qtos avaliacoes o professor tem
+    		$query = "SELECT * FROM turma WHERE professor_id = '".$id_professor."' GROUP BY coordenador_id";
+    		$result = mysql_query($query);
+    		//$total = mysql_num_rows($result) + 2;// 2 = avaliacao institucional + auto-avaliacao 
+    		
+    		$listaAvaliacoes[0] = "Auto-avaliação-professor";
+    		$listaAvaliacoes[1] = "Instituição";
+    		while($dados = mysql_fetch_object($result)){
+    			$listaAvaliacoes[] = "Coordenador-".$dados->coordenador_id;
+    		}
+    		
+    		//verifica quais labs o professor precisa avaliar
+    		$turmasDoProfessor_array[] = array();
+    		$turmasProfessor = new Turma();
+    		$turmasProfessor->periodoLetivo = $periodo_atual;
+    		$turmasProfessor->where("professor_id = ".$id_professor);
+    		$turmasProfessor->groupBy("nomeDisciplina");
+    		$qtd = $turmasProfessor->find();
+    		//echo "total de turmas encontradas: ".$qtd;
+    		while ($turmasProfessor->fetch()) {
+    			$turmasDoProfessor_array[] = $turmasProfessor->idTurma;
+    		}
+    		//print_r($turmasDoProfessor_array);
+    		$labs = new TurmaHasLaboratorio();
+    		$labs->find();
+    		
+    		//$laboratorios = array();    		
+    		while ($labs->fetch()) {
+    			if(in_array($labs->turmaIdTurma, $turmasDoProfessor_array)){
+    				$lab_name = new Laboratorio();
+    				$lab_name->get($labs->laboratorioId);
+    		
+    				//$laboratorios[] = array("id" => $labs->laboratorioId, "nome" => $lab_name->getNome(),
+    						//"usado" => "sim", "avaliado" => "não");
+    				
+    				//verifica se o lab ja n�o esta na lista
+    				if(!in_array(utf8_encode( "Lab_".$lab_name->getNome() ), $listaAvaliacoes)){
+						$listaAvaliacoes[] = utf8_encode( "Lab_".$lab_name->getNome() );
+					}
+					
+    			}
+    		}
+    		
+    		$total = sizeof($listaAvaliacoes);
+    		//
+    		
+    		
+    		//debug
+    		//echo "Array -->>";
+    		//print_r($listaAvaliacoes);
+    		    		
+    		$query = "SELECT * FROM avaliacao WHERE avaliador = '".$id_professor."' AND tipo_avaliacao != 'Coordenador' GROUP BY item_avaliado ORDER BY subtipo_avaliacao";
+    		$result = mysql_query($query);
+    		$totalA = mysql_num_rows($result);    		
     		
   		
-    		$qtd_pendente_aluno = 0;
+    		$qtd_pendente_professor = 0;
     		
     		if($total == $totalA){
-    			 //incrementa a qtd de alunos q avaliaram tudo
-    			 $qtd_alunos_avaliaram++;
+    			 //incrementa a qtd de professores q avaliaram tudo
+    			 $qtd_professores_avaliaram++;
     		}else{
-    			echo "<h4><a href='#'>".utf8_encode($alunos->nome)."<span style='float: right;'>Avaliou ".$totalA." de ".$total."</span></a></h4>";
-    		}
+    			echo "<h4><a href='#'>".utf8_encode($professor->nome)."<span style='float: right;'>Avaliou ".$totalA." de ".$total."</span></a></h4>";
+    			$qtd_pendente_professor = $total - $totalA;
+			}
     		?>
     		
     		
     		<?php 
-//     		echo "Nome: ".$alunos->nome;
-//     		echo "<br />";
-//     		echo "RA: ".$ra_aluno;
-    	
-    		$a = new Aluno();
-    		$a->get($ra_aluno);
-    		
-    		$a->alias('a');
-    		
-    		$t = new Turma();
-    		$a->join($t,'INNER','t');
-    		    		
-    		$tha = new TurmaHasAluno();
-    		
-    		$a->join($tha,'INNER','tha');
-    		
-    		$a->select("t.idTurma, t.nomeDisciplina, t.professorId, t.periodoLetivo, t.serie, t.curso, t.turma, a.nome, a.curso, tha.avaliado");
-    		$a->where("t.periodoLetivo = '".$periodo_atual."' and a.ra = '".$ra_aluno."' and tha.turmaIdTurma = t.idTurma ".$where_semestre2." ".$where_turma2);
-    		
-    		//$a->groupBy("t.idTurma");
-    		
-    		$a->find();
-    		
+//     		    		
     		if($total == $totalA){
-    		
+    			$qtd_avaliada++;
     		}else{
     			
     		?>
     		
     		<div>
     		<table>
-    		<caption>Avaliações Pendentes: <?php //echo $qtd_pendente_aluno;?></caption>
+    		<caption>Avaliações Pendentes: <?php echo $qtd_pendente_professor;?></caption>
     	<tr>
-    	<th>TURMA</th>
-    	<th>DISCIPLINA</th>
-    	<th>SERIE</th>
-    	<th>CURSO</th>
+    	<th>AVALIA&Ccedil;&Otilde;ES</th>
     	</tr>
     		
     		<?php 
     		
     		}
     		
-    		while( $a->fetch() ) {
+    		while( $dados = mysql_fetch_object($result) ) {
     			
-    			if($a->avaliado == "Avaliado"){
-    				    				
+				if( (in_array($dados->subtipo_avaliacao, $listaAvaliacoes)) || (in_array($dados->subtipo_avaliacao."-".$dados->item_avaliado, $listaAvaliacoes)) ||in_array("Lab_".$dados->subtipo_avaliacao, $listaAvaliacoes)  ){
+    				//remove item do array
+    				$key;
+    				if(in_array($dados->subtipo_avaliacao, $listaAvaliacoes)){
+						$key = array_search($dados->subtipo_avaliacao, $listaAvaliacoes);						
+					}
+					if(in_array($dados->subtipo_avaliacao."-".$dados->item_avaliado, $listaAvaliacoes)){
+						$key = array_search($dados->subtipo_avaliacao."-".$dados->item_avaliado, $listaAvaliacoes);						
+					}
+					if(in_array("Lab_".$dados->subtipo_avaliacao, $listaAvaliacoes)){
+						$key = array_search("Lab_".$dados->subtipo_avaliacao, $listaAvaliacoes);
+					}
+					unset($listaAvaliacoes[$key]);
+    				
     				//incrementa total de pendentes
     				$qtd_avaliada++;
-    			}else{
+    			}else{							
     				
-    				echo "<tr>";
-    				echo "<td style='width: 5%;'>".$a->turma."</td>";
-    				echo "<td>".$a->id_turma." - ".utf8_encode($a->nome_disciplina)."</td>";
-    				echo "<td style='width: 10%;'>".utf8_encode($a->serie)."</td>";
-    				echo "<td style='width: 30%;'>".utf8_encode($a->curso)."</td>";
-    				   						
-    				echo "</tr>";
-    				
-    				
-    				//incrementa total de pendentes
-    				$qtd_pendente++;
-    				$qtd_pendente_aluno++;
-    			}
+    			}  			   			
     			
+    		}
+    		
+    		//
+    		foreach($listaAvaliacoes as $av){
+    			echo "<tr>";
+    			echo "<td style='width: 10%;'>".$av."</td>";
+    			echo "</tr>";
+    			//incrementa total de pendentes
+    			$qtd_pendente++;
+    			$qtd_pendente_professor++;
     		}
     		
     		if($total == $totalA){
@@ -401,13 +346,13 @@ google.load("visualization", "1", {
        	
     	
     	//echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES PENDENTES: ".$qtd_pendente;
-    	echo "<br />";
-    	//echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
-//     	echo "<br />";
-//     	echo "TOTAL DE ALUNOS QUE NÃO CONCLUIRAM A AVALIAÇÃO: ".($qtd_alunos - $qtd_alunos_avaliaram);
-//     	echo "<br />";
-//     	echo "TOTAL DE ALUNOS QUE CONCLUIRAM A AVALIAÇÃO: ".$qtd_alunos_avaliaram;  	
-    	
+    	/*echo "<br />";
+    	echo "TOTAL DE AVALIA&Ccedil;&Otilde;ES CONCLUIDAS: ".$qtd_avaliada;
+     	echo "<br />";
+     	echo "TOTAL DE PROFESSORES QUE NÃO CONCLUIRAM A AVALIAÇÃO: ".($qtd_professores - $qtd_professores_avaliaram);
+     	echo "<br />";
+     	echo "TOTAL DE PROFESSORES QUE CONCLUIRAM A AVALIAÇÃO: ".$qtd_professores_avaliaram;  	
+    	*/
     	
     	?>
         
@@ -419,8 +364,8 @@ google.load("visualization", "1", {
         	// Create and populate the data table.
         	  var data = new google.visualization.DataTable();
               data.addColumn('string', 'alunos');
-              data.addColumn('number', 'Alunos que concluíram a avaliação');
-              data.addColumn('number', 'Alunos pendentes');
+              data.addColumn('number', 'Professores que concluíram a avaliação');
+              data.addColumn('number', 'Professores pendentes');
 
               <?php
               //$qtd_alunos_avaliaram = 75;
@@ -428,12 +373,12 @@ google.load("visualization", "1", {
               ?>
               var data = google.visualization.arrayToDataTable([                                                         
                                                                 ['Classificação', 'Qtd'],
-                                                                ['Alunos que concluíram a avaliação',     <?php echo $qtd_alunos_avaliaram;?>],
-                                                                ['Alunos pendentes',      <?php echo $qtd_alunos - $qtd_alunos_avaliaram?>]
+                                                                ['Professores que concluíram a avaliação',     <?php echo $qtd_professores_avaliaram;?>],
+                                                                ['Professores pendentes',      <?php echo $qtd_professores - $qtd_professores_avaliaram?>]
                                                               ]);
 
       var options = {
-              title: 'Alunos que concluíram a avaliação X Alunos pendentes',
+              title: 'Professores que concluíram a avaliação X Professores pendentes',
               is3D: true
             };
 

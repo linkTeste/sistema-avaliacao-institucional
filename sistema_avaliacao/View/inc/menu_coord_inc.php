@@ -28,15 +28,23 @@ if($page == "alunospendentes.php"){
 	$relatorios_active = "";
 	$pendentes_active = "class='active'";
 }
+if($page == "docentespendentes.php"){
+	$index_active = "class='home_link'";
+	$avaliacoes_active = "";
+	$relatorios_active = "";
+	$pendentes_active = "";
+	$docentespendentes_active = "class='active'";
+}
 
 
 if($menu_caps){
 	?>
 	<div id="menu">
 	<ul>
-	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("indexCoordenador.php");?>" title="P&aacute;gina Inicial" <?php echo $index_active;?>><?php echo strtoupper(strtr("Página Inicial" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?></a></li>
-	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoesCoordenador.php");?>" title="Avalia&ccedil;&otilde;es" <?php echo $avaliacoes_active;?>><?php echo strtoupper(strtr("Avaliações" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?></a></li>
-	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("alunospendentes.php");?>" title="Alunos Pendentes" <?php echo $pendentes_active;?>><?php echo strtoupper(strtr("Alunos Pendentes" ,"áéíóúâêôãõàèìòùç","ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));?></a></li>
+	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("indexCoordenador.php");?>" title="P&aacute;gina Inicial" <?php echo $index_active;?>><?php echo "PÁGINA INICIAL";?></a></li>
+	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoesCoordenador.php");?>" title="Avalia&ccedil;&otilde;es" <?php echo $avaliacoes_active;?>><?php echo "AVALIAÇÕES";?></a></li>
+	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("alunospendentes.php");?>" title="Alunos Pendentes" <?php echo $pendentes_active;?>><?php echo "ALUNOS PENDENTES";?></a></li>
+	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("docentespendentes.php");?>" title="Docentes Pendentes" <?php echo $docentespendentes_active;?>><?php echo "DOCENTES PENDENTES";?></a></li>
 	</ul>
 	<?php include_once 'inc/info_usuario_inc.php';?>
 				</div>
