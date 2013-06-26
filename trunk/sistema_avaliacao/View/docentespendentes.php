@@ -151,10 +151,8 @@ google.load("visualization", "1", {
     	?>
     	
     	<?php
-    	
     	$qtd_pendente = 0;
-    	$qtd_avaliada = 0;
-    	
+    	$qtd_avaliada = 0;    	
 
     	$professor = new Professor();
     	$professor->alias('professor');
