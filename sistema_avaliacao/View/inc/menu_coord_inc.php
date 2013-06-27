@@ -36,6 +36,14 @@ if($page == "docentespendentes.php"){
 	$docentespendentes_active = "class='active'";
 }
 
+if($page == "coordenadorespendentes.php"){
+	$index_active = "class='home_link'";
+	$avaliacoes_active = "";
+	$relatorios_active = "";
+	$pendentes_active = "";
+	$coordenadorespendentes_active = "class='active'";
+}
+
 
 if($menu_caps){
 	?>
@@ -45,6 +53,7 @@ if($menu_caps){
 	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("avaliacoesCoordenador.php");?>" title="Avalia&ccedil;&otilde;es" <?php echo $avaliacoes_active;?>><?php echo "AVALIAÇÕES";?></a></li>
 	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("alunospendentes.php");?>" title="Alunos Pendentes" <?php echo $pendentes_active;?>><?php echo "ALUNOS PENDENTES";?></a></li>
 	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("docentespendentes.php");?>" title="Docentes Pendentes" <?php echo $docentespendentes_active;?>><?php echo "DOCENTES PENDENTES";?></a></li>
+	<li><a href="../Controller/pageController.php?pg=<?php echo codifica("coordenadorespendentes.php");?>" title="Coordenadores Pendentes" <?php echo $coordenadorespendentes_active;?>><?php echo "CORDENADORES PENDENTES";?></a></li>
 	</ul>
 	<?php include_once 'inc/info_usuario_inc.php';?>
 				</div>
