@@ -107,11 +107,11 @@ google.load("visualization", "1", {
     
     <div class="white">
     <br />
-    	<h3>Docentes com Avaliações Pendentes</h3>
+    	<h3>Coordenadores com Avaliações Pendentes</h3>
     	<?php 
     	
-    	$qtd_docentes;
-    	$qtd_docentes_avaliaram = 0;
+    	$qtd_coordenadores;
+    	$qtd_coordenadores_avaliaram = 0;
     	
     	if(isset($_POST["semestre-selecionado"]) && $_POST["semestre-selecionado"] != ""){
     		//filtro por semestre
@@ -154,26 +154,25 @@ google.load("visualization", "1", {
     	$qtd_pendente = 0;
     	$qtd_avaliada = 0;    	
 
-    	$professor = new Professor();
-    	$professor->alias('professor');
+    	$coordenador = new Professor();
+    	$coordenador->alias('professor');
     	
     	$turma = new Turma();
-    	$professor->join($turma, 'INNER', 'turma');
+    	$coordenador->join($turma, 'INNER', 'turma');
     	
-    	$professor->select("professor.nome, turma.periodoLetivo, professor.id");
+    	$coordenador->select("professor.nome, turma.periodoLetivo, professor.id");
 
     	
-    	$professor->where("turma.periodoLetivo = '".$periodo_atual."' AND professor.id != '".$usuario_logado->getId()."'".
+    	$coordenador->where("turma.periodoLetivo = '".$periodo_atual."' AND coordenador.id != '".$usuario_logado->getId()."'".
     		$where_curso." ".$where_turma." ".$where_semestre);
     	    	
 
-    	$professor->group("professor.id");
-    	$professor->order("professor.nome");
-    	$qtd_professores = $professor->find();
+    	$coordenador->group("coordenador.id");
+    	$coordenador->order("professor.nome");
+    	$qtd_coordenadores = $coordenador->find();   	
     	
     	
-    	
-     	//echo "TOTAL DE PROFESSORES ATIVOS DO PERIODO ATUAL: ".$qtd_professores;
+     	echo "TOTAL DE COORDENADORES ATIVOS DO PERIODO ATUAL: ".$qtd_coordenadores;
      	//echo "<br />";
 
     	?>
@@ -200,10 +199,10 @@ google.load("visualization", "1", {
     	while( $professor->fetch() ) {
     		$listaAvaliacoes = array();
     		
-    		$id_professor = $professor->id;
+    		$id_coordenador = $coordenador->id;
     		
-    		//verificar qtos avaliacoes o professor tem
-    		$query = "SELECT * FROM turma WHERE professor_id = '".$id_professor."' GROUP BY coordenador_id";
+    		//verificar qtos avaliacoes o coordenador tem
+    		$query = "SELECT * FROM turma WHERE coordenador_id = '".$id_coordenador."'";
     		$result = mysql_query($query);
     		//$total = mysql_num_rows($result) + 2;// 2 = avaliacao institucional + auto-avaliacao 
     		
