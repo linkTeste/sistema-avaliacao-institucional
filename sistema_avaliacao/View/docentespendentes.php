@@ -203,7 +203,9 @@ google.load("visualization", "1", {
     		$id_professor = $professor->id;
     		
     		//verificar qtos avaliacoes o professor tem
-    		$query = "SELECT * FROM turma WHERE professor_id = '".$id_professor."' GROUP BY coordenador_id";
+    		$query = "SELECT * FROM turma WHERE professor_id = '".$id_professor."' AND periodo_letivo = '1/2012' GROUP BY coordenador_id";
+    		//$query = "SELECT * FROM turma WHERE professor_id = '".$id_professor."'";
+    		//$query = "SELECT * FROM turma WHERE professor_id = '".$id_professor."' AND coordenador_id = '".$usuario_logado->getId()."'";
     		$result = mysql_query($query);
     		//$total = mysql_num_rows($result) + 2;// 2 = avaliacao institucional + auto-avaliacao 
     		
@@ -214,13 +216,17 @@ google.load("visualization", "1", {
     		}
     		
     		//verifica quais labs o professor precisa avaliar
-    		$turmasDoProfessor_array[] = array();
+    		$turmasDoProfessor_array = array();
     		$turmasProfessor = new Turma();
     		$turmasProfessor->periodoLetivo = $periodo_atual;
     		$turmasProfessor->where("professor_id = ".$id_professor);
-    		$turmasProfessor->groupBy("nomeDisciplina");
+    		//$turmasProfessor->groupBy("nomeDisciplina");
     		$qtd = $turmasProfessor->find();
-    		//echo "total de turmas encontradas: ".$qtd;
+    		
+    		//debug
+    		//echo "periodo ".$periodo_atual;
+			//echo "total de turmas encontradas: ".$qtd;
+    		
     		while ($turmasProfessor->fetch()) {
     			$turmasDoProfessor_array[] = $turmasProfessor->idTurma;
     		}
@@ -240,7 +246,15 @@ google.load("visualization", "1", {
     				//verifica se o lab ja não esta na lista
     				if(!in_array(utf8_encode( "Lab_".$lab_name->getNome() ), $listaAvaliacoes)){
 						$listaAvaliacoes[] = utf8_encode( "Lab_".$lab_name->getNome() );
+						
+						/*
+						echo "Lab: ".utf8_encode( "Lab_".$lab_name->getNome() );
+						echo "<br />";
+						echo "Turma: ".$labs->turmaIdTurma;
+						echo "<hr />";
+						*/
 					}
+					
 					
     			}
     		}
