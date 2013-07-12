@@ -295,7 +295,7 @@ function prepareSession(questionario $questionario, questao $questao, $action, $
  * função que redireciona pra uma pagina específica
  **/
 function redirectTo($page) {
-	$url_base = "http://faculdadeunicampo.edu.br/ca/sistema_avaliacao/View/";
+	$url_base = "http://ca.faculdadeunicampo.edu.br/sistema_avaliacao/View/";
 	header("Location: ".$url_base.$page);
 }
 
